@@ -1,18 +1,25 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/publicar.css">
-    <link rel="stylesheet" href="../assets/css/global.css">
+
     <title>CodeConnect</title>
 </head>
 
 <body>
+    <div id="aside-container"></div>
+
+    <script>
+        fetch('../components/aside.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('aside-container').innerHTML = data;
+            });
+    </script>
     <main>
-        <div id="aside-container"></div>
-        
         <div class="container-upload-imagem">
             <div class="container-imagem">
                 <img src="./img/imagem1.png" alt="" class="main-imagem">
@@ -48,7 +55,6 @@
             </form>
         </div>
     </main>
-    <script src="../assets/js/publicar.js"></script>
 </body>
 
 </html>
