@@ -84,7 +84,7 @@ texarea {
 
 .botao-descartar::after {
   content: "";
-  background-image: url("./img/trash.svg");
+  background-image: url("../img/publicar/trash.svg");
   background-size: contain;
   background-repeat: no-repeat;
   width: 15px;
@@ -105,7 +105,7 @@ texarea {
 
 .botao-publicar::after {
   content: "";
-  background-image: url("../img/arrow_forward2.svg");
+  background-image: url("../img/publicar/arrow_forward2.svg");
   background-size: contain;
   background-repeat: no-repeat;
   width: 15px;
@@ -151,7 +151,7 @@ texarea {
 
 .container-upload-imagem button::after {
   content: "";
-  background-image: url("./img/upload.svg");
+  background-image: url("../img/publicar/upload.svg");
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
