@@ -1,11 +1,11 @@
+fetch('../components/aside.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('aside-container').innerHTML = data;
+            });
+
 const uploadBtn = document.getElementById("upload-btn");
 const inputUpload = document.getElementById("image-upload");
-
-// Carrega o aside dinamicamente
-fetch("../components/aside.html")
-.then(response => response.text())
-.then(data => document.getElementById("aside-container").innerHTML = data)
-.catch(error => console.error("Erro ao carregar o aside:", error));
 
 uploadBtn.addEventListener("click", () => {
   inputUpload.click();
