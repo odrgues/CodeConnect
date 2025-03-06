@@ -1,15 +1,22 @@
 @import url(global.css);
 
+body{
+    background-image: url(../img/login/Símbolo.png), url(../img/login/Símbolo.png);
+    background-repeat: no-repeat, no-repeat;
+    background-position: 200px -50px, 1300px 600px;
+    background-size: 407px 487px, 407px 487px;
+    align-items: center;
+}
 
 main {
     background-color: var(--itens-background);
-    border-radius: 10px;
+    border-radius: 20px;
     padding: 32px;
     display: flex;
     gap: 24px;
     width: 996px;
     height: 740px;
-    margin: 100px 90px;
+    margin: 80px 90px;
 }
 
 .img-main{
@@ -84,7 +91,13 @@ form div input {
     font-size: 18px;
     font-weight: 500;
 }
-
+.img-login{
+    position: fixed;
+    width: 35px;
+    height: 20px;
+    margin-top: 2px;
+    padding-left: 10px;
+}
 .linha-texto{
     display: flex;
     align-items: center;
@@ -114,6 +127,9 @@ a{
 .cadastro{
     color: var(--primary-color);
     font-size: 18px;
+}
+.img-cadastro{
+    padding-left: 15px;
 }
 
 p{
