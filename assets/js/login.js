@@ -1,55 +1,79 @@
-const btnLogin = document.getElementById("btn-login");
+//colocar funçao de ocultar e mostrar a senha
+//colocar requisitos dinamicos pra senha
+//colocar ícone dinâmico de carregamento no meio do botao de login e de cadastro
+//pensar no design responsivo
 
 
-async function loginUser(email, password) {
-  const url = "http://localhost:3000/usuarios"; 
-  try{
-      const response = await fetch(url,{
-          method: "POST",
-          headers:{
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify({email,password}),
-      });
+document.addEventListener("DOMContentLoaded", () => {
+  const btnLogin = document.getElementById("btn-login");
+  const emailLogin = document.getElementById("email-login");
+  const senhaLogin = document.getElementById("senha-login");
+  const mensagemLogin = document.getElementById("mensagem-login");
 
-      if (!response.ok){
-          throw new Error ("Erro ao fazer login. Verifique seu email e senha.");
+  btnLogin.addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    const emailDigitado = emailLogin.value;
+    const senhaDigitada = senhaLogin.value;
+
+    if (!emailDigitado || !senhaDigitada) {
+      exibirMensagemLogin("Preencha todos os campos.", "red");
+      return;
+    }
+
+    try {
+      btnLogin.disabled = true;
+      btnLogin.textContent = "Carregando...";
+
+      const usuario = await buscarUsuarioPorEmail(emailDigitado);
+
+      if (usuario.senha !== senhaDigitada) {
+          throw new Error("Senha incorreta.");
+        }
+
+        console.log("Usuário logado:", usuario);
+        exibirMensagemLogin("Login realizado com sucesso!", "green");
+
+        setTimeout(() => {
+          window.location.href = "../pages/feed.html";
+        }, 1000);
+    } catch (error) {
+        console.error("Erro no login:", error);
+        exibirMensagemLogin("Email ou senha incorretos.", "red");
+    } finally {
+        setTimeout(() =>{
+          btnLogin.disabled = false;
+          btnLogin.textContent = "Login";
+        },2000);
+      
+    }
+  });
+
+  async function buscarUsuarioPorEmail(email) {
+    const url = `http://localhost:3000/usuarios?email=${email}`;
+
+    try {
+      const response = await fetch(url);
+      console.log("Resposta do JSON Server:", response);
+
+      if (!response.ok) {
+        throw new Error("Erro ao verificar credenciais.");
       }
-  const data = await response.json();
-  return data;
 
-  }catch(error){
-      throw new Error (error.message)
+      const data = await response.json();
 
-  }
-}
+      if (data.length === 0) {
+        throw new Error("E-mail não cadastrado.");
+      }
 
-
-btnLogin.addEventListener("click", async (event) => {
-  event.preventDefault();
-
-  const email = document.getElementById("email-login").value;
-  const senha = document.getElementById("senha-login").value;
-
-  if (!email || !senha) {
-    alert("Preencha todos os campos.");
-    return;
+      return data[0];
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
-  try {
-    btnLogin.disabled = true;
-    btnLogin.textContent = "Carregando...";
-    const response = await loginUser(email, senha);
-    window.location.href = "../pages/feed.html";
-  } catch (error) {
-    alert(error.message);
-  } finally {
-    btnLogin.disabled = false;
-    btnLogin.textContent = "Login";
+  function exibirMensagemLogin(texto, cor) {
+    mensagemLogin.textContent = texto;
+    mensagemLogin.style.color = cor;
   }
 });
-
-
-
-
-

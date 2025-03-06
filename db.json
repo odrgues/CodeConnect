@@ -1,10 +1,28 @@
 {
   "usuarios": [
     {
-      "id": "570b",
-      "nome": "maria",
-      "email": {},
-      "senha": {}
+      "id": "1",
+      "nome": "João",
+      "email": "joao@exemplo.com",
+      "senha": "senha123"
+    },
+    {
+      "id": "2",
+      "nome": "Maria",
+      "email": "maria@exemplo.com",
+      "senha": "senha456"
+    },
+    {
+      "id": "47fe",
+      "nome": "ana",
+      "email": "ana@exemplo.com",
+      "senha": "ana123"
+    },
+    {
+      "id": "6700",
+      "nome": "teste",
+      "email": "teste@exemplo.com",
+      "senha": "senha123"
     }
-]
+  ]
 }
