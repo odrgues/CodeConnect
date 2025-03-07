@@ -1,0 +1,142 @@
+@import url(global.css);
+
+body{
+    background-image: url(../img/cadastro/Símbolo.png), url(../img/cadastro/Símbolo.png);
+    background-repeat: no-repeat, no-repeat;
+    background-position: 200px -50px, 1500px 700px;
+    background-size: 407px 487px, 407px 487px;
+    align-items: center;
+}
+
+main {
+    background-color: var(--itens-background);
+    border-radius: 20px;
+    padding: 32px;
+    display: flex;
+    gap: 24px;
+    width: 996px;
+    height: 740px;
+    margin: 80px 90px;
+}
+
+.img-main{
+    width: 407px;
+    height: 628px;
+    padding: 32px 32px 32px 32px;
+}
+
+.container-form{
+    width: 410px;
+    height: 604;
+    padding: 32px 0px 32px 32px;
+}
+
+h1{
+    margin-bottom: 20px;
+}
+
+h2{
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 40px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 317.7px;
+    height: 308px;
+    justify-items: center;
+
+}
+
+form div label {
+    font-size: 18px;
+    font-weight: 400;
+    display: block;
+    margin-bottom: 8px;
+}
+
+form div input {
+    width: 100%;
+    padding: 8px 16px;
+    background-color: var(--secondary-color);
+    border: none;
+    border-radius: 4px;
+    font-family: var(--font-family);
+    line-height: 22.5px;
+    height: 39px;
+}
+
+.container-botao{
+    justify-items: center;
+    width: 346px;
+    height: 509px;
+}
+
+.btn-cadastro {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border: none;
+    position: relative;
+    width: 317.7px;
+    height: 51px;
+    padding: 12px 32px 12px 12px;
+    text-align: center;
+    border-radius: 8px;
+    font-family: var(--font-family);
+    font-size: 18px;
+    font-weight: 500;
+}
+.img-btn-cadastro{
+    position: fixed;
+    width: 35px;
+    height: 20px;
+    margin-top: 2px;
+    padding-left: 10px;
+}
+
+.linha-texto{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-size: 15px;
+}
+
+.linha-texto::before,
+.linha-texto::after{
+    content: "";
+    flex: 1;
+    border-bottom: 2px solid gray;
+    margin: 0 10px;
+}
+
+.container-links{
+    display: flex;
+    gap: 20px;
+    justify-content: center;  
+}
+
+a{
+    text-decoration: none;
+    text-align: center;
+}
+
+.container-link-login{
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.link-login{
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.img-login{
+    padding-left: 15px;
+}
+

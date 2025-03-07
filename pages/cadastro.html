@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/cadastro.css">
+    <title>Code Connect</title>
 </head>
 
 <body>
     <main>
-        <img src="../assets/img/login/img-2.png" alt="imagem-cadastro">
-        <div>
+        <img src="../assets/img/cadastro/img-2.png" alt="imagem-cadastro" class="img-main">
+        <div class="container-form">
             <h1>Cadastro</h1>
             <h2>Olá! Preencha seus dados.</h2>
 
@@ -21,25 +22,31 @@
                 </div>
                 <div>
                     <label for="email">Email
-                    <input type="email" id="email-cadastro" name="email">
+                        <input type="email" id="email-cadastro" name="email">
                 </div>
                 <div>
                     <label for="senha">Senha</label>
                     <input type="password" id="senha-cadastro" name="senha">
                 </div>
                 <div id="mensagem-cadastro"></div>
-                <div class="container-botoes">
-                    <button class="btn-cadastro" id="btn-cadastro">Cadastrar</button>
+                <div class="container-botao">
+                    <button class="btn-cadastro" id="btn-cadastro">Cadastrar <img class="img-btn-cadastro"
+                            src="../assets/img/cadastro/seta-cadastro.png" alt=""></button>
+                </div>
+
+                <p class="linha-texto">ou entre com outras contas</p>
+                <div class="container-links">
+                    <a href="#">Github</a>
+                    <a href="#">Gmail</a>
+                </div>
+
+                <div class="container-link-login">
+                    <p>Já tem conta?</p>
+                    <a class="link-login" href="./login.html">Faça seu login! <img class="img-login" src="../assets/img/cadastro/simbolo-login.png" alt=""></a>
                 </div>
             </form>
 
-            <p><span>ou entre com outras contas</span></p>
-            <a href="#">Github</a>
-            <a href="#">Gmail</a>
 
-            <p>Já tem conta?</p>
-            <a href="./login.html">Faça seu login!</a>
-            </form>
         </div>
     </main>
     <script src="../assets/js/cadastro.js" defer></script>
