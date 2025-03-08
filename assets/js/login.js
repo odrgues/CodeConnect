@@ -5,8 +5,6 @@
 
 //comando pro json: json-server --watch db.json --port 3000
 
-
-
 document.addEventListener("DOMContentLoaded", () => {
   const btnLogin = document.getElementById("btn-login");
   const emailLogin = document.getElementById("email-login");
@@ -24,6 +22,19 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (!validarEmail(emailDigitado)) {
+      exibirMensagemLogin(
+        "Email inválido. Certifique-se de incluir '@' e um domínio válido.",
+        "red"
+      );
+      return;
+    }
+
+    if (!validarSenha(senhaDigitada)) {
+      exibirMensagemLogin("A senha deve ter no mínimo 6 caracteres.", "red");
+      return;
+    }
+
     try {
       btnLogin.disabled = true;
       btnLogin.textContent = "Carregando...";
@@ -31,33 +42,32 @@ document.addEventListener("DOMContentLoaded", () => {
       const usuario = await buscarUsuarioPorEmail(emailDigitado);
 
       if (usuario.senha !== senhaDigitada) {
-          throw new Error("Senha incorreta.");
-        }
+        throw new Error("Senha incorreta.");
+      }
 
-        console.log("Usuário logado:", usuario);
-        exibirMensagemLogin("Login realizado com sucesso!", "green");
+      console.log("Usuário logado:", usuario);
+      exibirMensagemLogin("Login realizado com sucesso!", "green");
 
-        setTimeout(() => {
-          window.location.href = "../pages/feed.html";
-        }, 1000);
+      setTimeout(() => {
+        window.location.href = "../pages/feed.html";
+      }, 1000);
     } catch (error) {
-        console.error("Erro no login:", error);
-        exibirMensagemLogin("Email ou senha incorretos.", "red");
+      console.error("Erro no login:", error);
+      exibirMensagemLogin("Email ou senha incorretos.", "red");
     } finally {
-        setTimeout(() =>{
-          btnLogin.disabled = false;
-          btnLogin.textContent = "Login";
-        },2000);
-      
+      setTimeout(() => {
+        btnLogin.disabled = false;
+        btnLogin.textContent = "Login";
+      }, 2000);
     }
   });
 
-  function validarEmail(email){
+  function validarEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   }
 
-  function validarSenha(senha){
+  function validarSenha(senha) {
     return senha.length >= 6;
   }
 
@@ -82,18 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       throw new Error(error.message);
     }
-
-
-    if (!validarEmail(email)){
-      exibirMensagemCadastro("Email inválido." , "red");
-      return;
-    }
-    
-    if(!validarSenha(senha)){
-      exibirMensagemCadastro("A senha deve ter no mínimo 6 caracteres.", "red");
-    }
-
-    
   }
 
   function exibirMensagemLogin(texto, cor) {
