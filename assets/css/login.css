@@ -1,11 +1,12 @@
 @import url(global.css);
 
-body{
-    background-image: url(../img/login/Símbolo.png), url(../img/login/Símbolo.png);
-    background-repeat: no-repeat, no-repeat;
-    background-position: 200px -50px, 1500px 700px;
-    background-size: 407px 487px, 407px 487px;
+body {
+    background-image: url(../img/login/Símbolo.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
     align-items: center;
+    min-height: 100vh;
 }
 
 main {
@@ -14,21 +15,24 @@ main {
     padding: 32px;
     display: flex;
     gap: 24px;
-    width: 996px;
-    height: 740px;
-    margin: 80px 90px;
+    max-width: 996px;
+    width: 90%;
+    height: auto;
+    margin: 40px auto;
+    flex-direction: column;
 }
 
-.img-main{
-    width: 407px;
-    height: 628px;
-    padding: 32px 32px 32px 32px;
+.img-main {
+    width: 100%;
+    max-width: 407px;
+    height: auto;
+    padding: 16px;
 }
 
-.container-form{
-    width: 410px;
-    height: 604;
-    padding: 32px 0px 32px 32px;
+.container-form {
+    width: 100%;
+    max-width: 410px;
+    padding: 16px;
 }
 
 h1,
@@ -37,7 +41,7 @@ h2 {
     gap: 50px;
 }
 
-h2{
+h2 {
     font-size: 18px;
     font-weight: 400;
     margin-bottom: 40px;
@@ -46,11 +50,9 @@ h2{
 form {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    width: 317.7px;
-    height: 308px;
-    justify-items: center;
-
+    gap: 16px;
+    width: 100%;
+    max-width: 317.7px;
 }
 
 form div label {
@@ -71,34 +73,20 @@ form div input {
     height: 39px;
 }
 
-.container-botao{
-    justify-items: center;
-    width: 346px;
-    height: 509;
-}
-
 .btn-login {
     background-color: var(--primary-color);
     color: var(--background-color);
     border: none;
-    position: relative;
-    width: 317.7px;
-    height: 51px;
-    padding: 12px 32px 12px 12px;
-    text-align: center;
+    width: 100%;
+    max-width: 317.7px;
+    padding: 12px;
     border-radius: 8px;
     font-family: var(--font-family);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
 }
-.img-login{
-    position: fixed;
-    width: 35px;
-    height: 20px;
-    margin-top: 2px;
-    padding-left: 10px;
-}
-.linha-texto{
+
+.linha-texto {
     display: flex;
     align-items: center;
     text-align: center;
@@ -106,33 +94,70 @@ form div input {
 }
 
 .linha-texto::before,
-.linha-texto::after{
+.linha-texto::after {
     content: "";
     flex: 1;
     border-bottom: 2px solid gray;
     margin: 0 10px;
 }
 
-.container-links{
+.container-links {
     display: flex;
-    gap: 20px;
+    gap: 10px;
     justify-content: center;
-    align-self:center;
+    flex-wrap: wrap;
 }
 
-a{
+a {
     text-decoration: none;
     text-align: center;
 }
-.cadastro{
+
+.cadastro {
     color: var(--primary-color);
     font-size: 18px;
 }
-.img-cadastro{
-    padding-left: 15px;
-}
 
-p{
+p {
     text-align: center;
     font-size: 15px;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    body {
+        background-position: 100px -50px, 800px 700px;
+    }
+
+    main {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .img-main {
+        padding: 16px;
+    }
+
+    .container-form {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        background-position: 50px -50px, 480px 700px;
+    }
+
+    main {
+        padding: 16px;
+        margin: 20px auto;
+    }
+
+    .btn-login {
+        font-size: 14px;
+    }
+
+    .container-links {
+        flex-direction: column;
+    }
 }

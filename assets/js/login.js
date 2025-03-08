@@ -3,6 +3,9 @@
 //colocar ícone dinâmico de carregamento no meio do botao de login e de cadastro
 //pensar no design responsivo
 
+//comando pro json: json-server --watch db.json --port 3000
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const btnLogin = document.getElementById("btn-login");
@@ -49,6 +52,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  function validarEmail(email){
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
+  function validarSenha(senha){
+    return senha.length >= 6;
+  }
+
   async function buscarUsuarioPorEmail(email) {
     const url = `http://localhost:3000/usuarios?email=${email}`;
 
@@ -70,6 +82,18 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       throw new Error(error.message);
     }
+
+
+    if (!validarEmail(email)){
+      exibirMensagemCadastro("Email inválido." , "red");
+      return;
+    }
+    
+    if(!validarSenha(senha)){
+      exibirMensagemCadastro("A senha deve ter no mínimo 6 caracteres.", "red");
+    }
+
+    
   }
 
   function exibirMensagemLogin(texto, cor) {

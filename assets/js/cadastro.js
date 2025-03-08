@@ -6,6 +6,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const mensagemCadastro = document.getElementById("mensagem-cadastro");
   
     
+  function validarEmail(email){
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
+  function validarSenha(senha){
+    return senha.length >= 6;
+  }
+
+
+
     async function verificaEmail(email) {
       try {
         const response = await fetch(`http://localhost:3000/usuarios?email=${email}`);
@@ -30,6 +41,15 @@ document.addEventListener("DOMContentLoaded", () => {
         exibirMensagemCadastro("Preencha todos os campos.", "red");
         return;
       }
+
+      if (!validarEmail(email)){
+        exibirMensagemCadastro("Email inválido." , "red");
+        return;
+      }
+      
+      if(!validarSenha(senha)){
+        exibirMensagemCadastro("A senha deve ter no mínimo 6 caracteres.", "red");
+      }
   
       try {
     
@@ -40,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
   
         btnCadastro.disabled = true;
-        btnCadastro.textContent = "Registrando...";
+        // btnCadastro.textContent = "Registrando...";
   
         const response = await cadastrarUsuario(nome, email, senha);
         console.log("Resposta do JSON Server:", response);
@@ -55,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         exibirMensagemCadastro(error.message, "red");
       } finally {
         btnCadastro.disabled = false;
-        btnCadastro.textContent = "Cadastrar";
+        // btnCadastro.textContent = "Cadastrar";
       }
     });
   
@@ -73,13 +93,13 @@ document.addEventListener("DOMContentLoaded", () => {
   
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.message || "Erro ao cadastrar usuário.");
+          throw new Error("Erro ao cadastrar usuário.");
         }
   
         const data = await response.json();
         return data;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error("Erro ao cadastrar usuário");
       }
     }
   
