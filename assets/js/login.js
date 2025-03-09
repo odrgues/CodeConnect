@@ -1,8 +1,3 @@
-//colocar funçao de ocultar e mostrar a senha
-//colocar requisitos dinamicos pra senha
-//colocar ícone dinâmico de carregamento no meio do botao de login e de cadastro
-//pensar no design responsivo
-
 //comando pro json: json-server --watch db.json --port 3000
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -10,12 +5,60 @@ document.addEventListener("DOMContentLoaded", () => {
   const emailLogin = document.getElementById("email-login");
   const senhaLogin = document.getElementById("senha-login");
   const mensagemLogin = document.getElementById("mensagem-login");
+  const toggleSenha = document.getElementById("toggle-senha");
+
+  toggleSenha.addEventListener("click", () => {
+    if (senhaLogin.type === "password") {
+      senhaLogin.type = "text";
+      toggleSenha.textContent = "🙈";
+    } else {
+      senhaLogin.type = "password";
+      toggleSenha.textContent = "👁️";
+    }
+  });
+
+  function validarEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
+  function validarSenha(senha) {
+    const temTamanhoMinimo = senha.length >= 8 && senha.length <= 20;
+    const temMaiuscula = /[A-Z]/.test(senha);
+    const temEspecial = /[!@#$%^&*()_.]/.test(senha);
+    return temTamanhoMinimo && temMaiuscula && temEspecial;
+  }
+
+  async function buscarUsuarioPorEmail(email) {
+    const url = `http://localhost:3000/usuarios?email=${email}`;
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Erro ao verificar credenciais.");
+      }
+
+      const data = await response.json();
+      if (data.length === 0) {
+        throw new Error("E-mail não cadastrado.");
+      }
+
+      return data[0];
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  function exibirMensagemLogin(texto, cor) {
+    mensagemLogin.textContent = texto;
+    mensagemLogin.style.color = cor;
+  }
 
   btnLogin.addEventListener("click", async (event) => {
     event.preventDefault();
 
-    const emailDigitado = emailLogin.value;
-    const senhaDigitada = senhaLogin.value;
+    const emailDigitado = emailLogin.value.trim();
+    const senhaDigitada = senhaLogin.value.trim();
 
     if (!emailDigitado || !senhaDigitada) {
       exibirMensagemLogin("Preencha todos os campos.", "red");
@@ -31,7 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!validarSenha(senhaDigitada)) {
-      exibirMensagemLogin("A senha deve ter no mínimo 6 caracteres.", "red");
+      exibirMensagemLogin(
+        "A senha deve ter entre 8 e 20 caracteres, uma letra maiúscula e um caractere especial.",
+        "red"
+      );
       return;
     }
 
@@ -45,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error("Senha incorreta.");
       }
 
-      console.log("Usuário logado:", usuario);
       exibirMensagemLogin("Login realizado com sucesso!", "green");
 
       setTimeout(() => {
@@ -58,44 +103,22 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         btnLogin.disabled = false;
         btnLogin.textContent = "Login";
-      }, 2000);
+      }, 1000);
     }
   });
 
-  function validarEmail(email) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  }
 
-  function validarSenha(senha) {
-    return senha.length >= 6;
-  }
-
-  async function buscarUsuarioPorEmail(email) {
-    const url = `http://localhost:3000/usuarios?email=${email}`;
-
-    try {
-      const response = await fetch(url);
-      console.log("Resposta do JSON Server:", response);
-
-      if (!response.ok) {
-        throw new Error("Erro ao verificar credenciais.");
-      }
-
-      const data = await response.json();
-
-      if (data.length === 0) {
-        throw new Error("E-mail não cadastrado.");
-      }
-
-      return data[0];
-    } catch (error) {
-      throw new Error(error.message);
+  emailLogin.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      senhaLogin.focus();
     }
-  }
+  });
 
-  function exibirMensagemLogin(texto, cor) {
-    mensagemLogin.textContent = texto;
-    mensagemLogin.style.color = cor;
-  }
+  senhaLogin.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      btnLogin.click();
+    }
+  });
 });

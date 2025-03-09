@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -15,29 +15,34 @@
             <h1>Login</h1>
             <h2>Boas vindas! Faça seu login.</h2>
 
-            <form>
+            <form id="form-login">
                 <div>
-                    <label for="login">Email</label>
-                    <input type="email" id="email-login" name="email" />
+                    <label for="email-login">Email</label>
+                    <input type="email" id="email-login" name="email" required autofocus />
                 </div>
                 <div>
-                    <label for="senha">Senha</label>
-                    <input type="password" id="senha-login" name="senha"></input>
+                    <label for="senha-login">Senha</label>
+                    <div style="position: relative;">
+                        <input type="password" id="senha-login" name="senha" required />
+                        <button type="button" id="toggle-senha" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">
+                            👁️
+                        </button>
+                    </div>
                 </div>
-                <div id="mensagem-login"></div>
+
+           
+
+                <div id="mensagem-login" role="alert"></div>
                 <div class="container-botao">
-                    <button class="btn-login" id="btn-login">Login <img class="img-login" src="../assets/img/login/seta-login.png" alt=""></button>
+                    <button type="submit" id="btn-login">
+                        <span id="btn-texto">Login</span>
+                    </button>
                 </div>
 
-                <p class="linha-texto">ou entre com outras contas</p>
-                <div class="container-links">
-                    <a href="#">Github</a>
-                    <a href="#">Gmail</a>
-                </div>
-                <p>Ainda não tem conta?</p> 
-                <a href="./cadastro.html" class="cadastro">Crie seu cadastro! <img class="img-cadastro" src="../assets/img/login/assignment.png" alt=""></a>
-                
-
+                <p>Ainda não tem conta?</p>
+                <a href="./cadastro.html" class="cadastro">Crie seu cadastro!
+                    <img class="img-cadastro" src="../assets/img/login/assignment.png" alt="Ícone de cadastro" aria-label="Ícone de cadastro">
+                </a>
             </form>
         </div>
     </main>

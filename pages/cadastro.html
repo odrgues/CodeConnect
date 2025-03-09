@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -15,38 +15,49 @@
             <h1>Cadastro</h1>
             <h2>Olá! Preencha seus dados.</h2>
 
-            <form>
+            <form id="form-cadastro">
                 <div>
                     <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome" />
+                    <input type="text" id="nome" name="nome" required autofocus />
                 </div>
                 <div>
-                    <label for="email">Email
-                        <input type="email" id="email-cadastro" name="email">
+                    <label for="email-cadastro">Email</label>
+                    <input type="email" id="email-cadastro" name="email" required />
                 </div>
                 <div>
-                    <label for="senha">Senha</label>
-                    <input type="password" id="senha-cadastro" name="senha">
-                </div>
-                <div id="mensagem-cadastro"></div>
-                <div class="container-botao">
-                    <button class="btn-cadastro" id="btn-cadastro">Cadastrar <img class="img-btn-cadastro"
-                            src="../assets/img/cadastro/seta-cadastro.png" alt=""></button>
+                    <label for="senha-cadastro">Senha</label>
+                    <div style="position: relative;">
+                        <input type="password" id="senha-cadastro" name="senha" required />
+                        <button type="button" id="toggle-senha" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">
+                            👁️
+                        </button>
+                    </div>
                 </div>
 
-                <p class="linha-texto">ou entre com outras contas</p>
-                <div class="container-links">
-                    <a href="#">Github</a>
-                    <a href="#">Gmail</a>
+               
+                <ul id="requisitos-senha">
+                    <li id="requisito-tamanho">Mínimo de 8 e máximo de 20 caracteres</li>
+                    <li id="requisito-maiuscula">Pelo menos uma letra maiúscula</li>
+                    <li id="requisito-especial">Pelo menos um caractere especial (!@#$%^&*()_.</li>
+                </ul>
+
+                <div id="mensagem-cadastro" role="alert"></div>
+                <div class="container-botao">
+                    <button type="button" id="btn-cadastro">
+                        <span id="btn-texto">Cadastrar</span>
+                    </button>
+                    
                 </div>
+                <button onclick="window.location.href = '/pages/login.html'">Testar Redirecionamento</button>
+                
 
                 <div class="container-link-login">
                     <p>Já tem conta?</p>
-                    <a class="link-login" href="./login.html">Faça seu login! <img class="img-login" src="../assets/img/cadastro/simbolo-login.png" alt=""></a>
+                    <a class="link-login" href="./login.html">Faça seu login!
+                        <img class="img-login" src="../assets/img/cadastro/simbolo-login.png" alt="Ícone de login" aria-label="Ícone de login">
+                    </a>
                 </div>
             </form>
-
-
         </div>
     </main>
     <script src="../assets/js/cadastro.js" defer></script>
