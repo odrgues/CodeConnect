@@ -1,3 +1,4 @@
+<!-- TODO: revisar esse código (refazer as classes) -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -36,9 +37,9 @@
 
                
                 <ul id="requisitos-senha">
-                    <li id="requisito-tamanho">Mínimo de 8 e máximo de 20 caracteres</li>
-                    <li id="requisito-maiuscula">Pelo menos uma letra maiúscula</li>
-                    <li id="requisito-especial">Pelo menos um caractere especial (!@#$%^&*()_.</li>
+                    <li id="requisito-tamanho">8-20 caracteres</li>
+                    <li id="requisito-maiuscula">Letra maiúscula</li>
+                    <li id="requisito-especial">Caractere especial (!@#$%^&*()_.</li>
                 </ul>
 
                 <div id="mensagem-cadastro" role="alert"></div>
@@ -48,15 +49,18 @@
                     </button>
                     
                 </div>
-                <button onclick="window.location.href = '/pages/login.html'">Testar Redirecionamento</button>
+                
                 
 
                 <div class="container-link-login">
-                    <p>Já tem conta?</p>
-                    <a class="link-login" href="./login.html">Faça seu login!
+                    <p class="already-account">Já tem conta?</p>
+                    <a class="link-login" href="./login.html">
+                        Faça seu login!
                         <img class="img-login" src="../assets/img/cadastro/simbolo-login.png" alt="Ícone de login" aria-label="Ícone de login">
                     </a>
                 </div>
+                
+                
             </form>
         </div>
     </main>

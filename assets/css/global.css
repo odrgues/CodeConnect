@@ -1,18 +1,103 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Prompt:wght@100..900&display=swap');
+/*TODO: criar variáveis para as fontes de cada tipo de titlle*/
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Monsieur+La+Doulaise&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Shafarik&family=Sigmar&display=swap");
 
 :root {
   --background-color: #00090e;
   --text-color: #e1e1e1;
   --primary-color: #81fe88;
+  --botao-after: #132E35;
   --secondary-color: #888888;
   --tag-color: #171d1f;
-  --font-family: "Inter", sans-serif; 
   --itens-background: #171d1f;
-  --font-size-base: 16px;
+  --font-family: "Inter", sans-serif;
 
-  --spacing-small: 8px;
-  --spacing-medium: 16px;
-  --spacing-large: 24px;
+  /* EXEMPLO PRA USAR COM AS VARIAVEIS DOS ASSETS (cleanCode) --pra isso, preciso criar novas classes no html: 
+:root {
+  
+  --font-family: 'Prompt', sans-serif;
+
+  
+  --font-heading: 44px;
+  --font-heading-small: 37px;
+
+  
+  --font-subtitle-large: 31px;
+  --font-subtitle: 26px;
+
+  
+  --font-paragraph-large: 22px;
+  --font-paragraph: 18px;
+  --font-paragraph-small: 15px;
+
+  
+  --font-label: 12.5px;
+
+  
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+
+  
+  --line-height-default: 150%;
+  --line-height-heading: 120%;
+}
+
+h1 {
+  font-family: var(--font-family);
+  font-size: var(--font-heading);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-heading);
+}
+
+h2 {
+  font-family: var(--font-family);
+  font-size: var(--font-heading-small);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-heading);
+}
+
+.subtitle-large {
+  font-family: var(--font-family);
+  font-size: var(--font-subtitle-large);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-default);
+}
+
+.subtitle {
+  font-family: var(--font-family);
+  font-size: var(--font-subtitle);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-default);
+}
+
+.paragraph-large {
+  font-family: var(--font-family);
+  font-size: var(--font-paragraph-large);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-default);
+}
+
+.paragraph {
+  font-family: var(--font-family);
+  font-size: var(--font-paragraph);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-default);
+}
+
+.paragraph-small {
+  font-family: var(--font-family);
+  font-size: var(--font-paragraph-small);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-default);
+}
+
+.label {
+  font-family: var(--font-family);
+  font-size: var(--font-label);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-default);
+}
+*/
 }
 
 * {
@@ -37,24 +122,3 @@ body {
   gap: var(--spacing-large);
   padding: 56px 0;
 }
-
-/* Para computadores */
-@media (max-width: 1024px) {
-  body {
-    padding: 40px 0;
-    gap: var(--spacing-medium);
-  }
-}
-
-/* Para tablets */
-@media (max-width: 768px) {
-  body {
-    padding: 20px 0;
-    gap: var(--spacing-small);
-  }
-
-  html {
-    font-size: 14px; 
-  }
-}
-
