@@ -21,14 +21,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   senhaCadastro.addEventListener("input", () => {
-    const senha = senhaCadastro.value;
+    const password = senhaCadastro.value;
 
     atualizarRequisito(
       requisitoTamanho,
-      senha.length >= 8 && senha.length <= 20
+      password.length >= 8 && password.length <= 20
     );
-    atualizarRequisito(requisitoMaiuscula, /[A-Z]/.test(senha));
-    atualizarRequisito(requisitoEspecial, /[!@#$%^&*()_.]/.test(senha));
+    atualizarRequisito(requisitoMaiuscula, /[A-Z]/.test(password));
+    atualizarRequisito(requisitoEspecial, /[!@#$%^&*()_.]/.test(password));
   });
 
   function atualizarRequisito(requisito, condicao) {
@@ -44,10 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return regex.test(email);
   }
 
-  function validarSenha(senha) {
-    const temTamanhoMinimo = senha.length >= 8 && senha.length <= 20;
-    const temMaiuscula = /[A-Z]/.test(senha);
-    const temEspecial = /[!@#$%^&*()_.]/.test(senha);
+  function validarSenha(password) {
+    const temTamanhoMinimo = password.length >= 8 && password.length <= 20;
+    const temMaiuscula = /[A-Z]/.test(password);
+    const temEspecial = /[!@#$%^&*()_.]/.test(password);
     return temTamanhoMinimo && temMaiuscula && temEspecial;
   }
 
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function cadastrarUsuario(nome, email, senha) {
+  async function cadastrarUsuario(username, email, password) {
     const url = "http://localhost:3000/usuarios";
 
     try {
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ nome, email, senha }),
+        body: JSON.stringify({ username, email, password }),
       });
 
       if (!response.ok) {
@@ -111,11 +111,11 @@ document.addEventListener("DOMContentLoaded", () => {
   btnCadastro.addEventListener("click", async (event) => {
     event.preventDefault();
 
-    const nome = nomeCadastro.value.trim();
+    const username = nomeCadastro.value.trim();
     const email = emailCadastro.value.trim();
-    const senha = senhaCadastro.value.trim();
+    const password = senhaCadastro.value.trim();
 
-    if (!nome || !email || !senha) {
+    if (!username || !email || !password) {
       exibirMensagemCadastro("Preencha todos os campos.", "red");
       return;
     }
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (!validarSenha(senha)) {
+    if (!validarSenha(password)) {
       exibirMensagemCadastro(
         "A senha deve ter entre 8 e 20 caracteres, uma letra maiúscula e um caractere especial.",
         "red"
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btnCadastro.disabled = true;
       btnCadastro.textContent = "Cadastrando...";
 
-      const response = await cadastrarUsuario(nome, email, senha);
+      const response = await cadastrarUsuario(username, email, password);
       console.log("Resposta do JSON Server:", response);
 
       exibirMensagemCadastro("Cadastro realizado com sucesso!", "green");
