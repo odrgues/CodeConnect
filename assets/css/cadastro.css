@@ -28,21 +28,21 @@ main {
 }
 
 .img-main {
-  width: 100%;
+  /* width: 100%; */
 
   width: 300px;
-  height: 450px;
+  height: 500px;
   border-radius: 10px;
   margin-left: 15px;
 }
 
 .container-form {
-  width: 280px;
-  height: 400px;
+  width: 300px;
+  height: 500px;
   display: flex;
   flex-direction: column; /* Organiza os itens na direção vertical */
-  gap: -10px; 
-  margin-top: -60px;/* Espaçamento vertical entre os itens */
+  gap: 10px; 
+  /* margin-top: -60px;Espaçamento vertical entre os itens */
 }
 
 h1 {
@@ -121,14 +121,15 @@ form div input::placeholder {
 }
 
 ul {
-  font-size: 12px;
+  font-size: 11px;
+  color: var(--text-color);
 }
 
 #mensagem-cadastro {
-  font-size: 14px;
-  color: #d84040;
+  font-size: 12px;
+  color: pink;
   text-align: center;
-  margin-top: 8px;
+  margin-top: -8px;
 }
 
 .container-botao {
@@ -154,7 +155,7 @@ ul {
   justify-content: center;
   gap: 8px;
   position: relative;
-  margin-top: -15px;
+  margin-top: -5px;
 }
 
 #btn-cadastro::after {
