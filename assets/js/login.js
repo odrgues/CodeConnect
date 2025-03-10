@@ -22,10 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return regex.test(email);
   }
 
-  function validarSenha(senha) {
-    const temTamanhoMinimo = senha.length >= 8 && senha.length <= 20;
-    const temMaiuscula = /[A-Z]/.test(senha);
-    const temEspecial = /[!@#$%^&*()_.]/.test(senha);
+  function validarSenha(password) {
+    const temTamanhoMinimo = password.length >= 8 && password.length <= 20;
+    const temMaiuscula = /[A-Z]/.test(password);
+    const temEspecial = /[!@#$%^&*()_.]/.test(password);
     return temTamanhoMinimo && temMaiuscula && temEspecial;
   }
 
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const usuario = await buscarUsuarioPorEmail(emailDigitado);
 
-      if (usuario.senha !== senhaDigitada) {
+      if (usuario.password !== senhaDigitada) {
         throw new Error("Senha incorreta.");
       }
 
