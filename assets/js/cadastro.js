@@ -51,18 +51,18 @@ document.addEventListener("DOMContentLoaded", () => {
     return temTamanhoMinimo && temMaiuscula && temEspecial;
   }
 
-  async function verificaEmail(email) {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/usuarios?email=${email}`
-      );
-      const usuarios = await response.json();
-      return usuarios.length > 0;
-    } catch (error) {
-      console.error("Erro ao verificar e-mail:", error);
-      return false;
-    }
-  }
+  // async function verificaEmail(email) {
+  //   try {
+  //     const response = await fetch(
+  //       `http://localhost:3000/usuarios?email=${email}`
+  //     );
+  //     const usuarios = await response.json();
+  //     return usuarios.length > 0;
+  //   } catch (error) {
+  //     console.error("Erro ao verificar e-mail:", error);
+  //     return false;
+  //   }
+  // }
 
   async function cadastrarUsuario(username, email, password) {
     const url = "http://localhost:3000/usuarios";

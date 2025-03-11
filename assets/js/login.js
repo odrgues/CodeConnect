@@ -29,25 +29,31 @@ document.addEventListener("DOMContentLoaded", () => {
     return temTamanhoMinimo && temMaiuscula && temEspecial;
   }
 
-  async function buscarUsuarioPorEmail(email) {
-    const url = `http://localhost:3000/usuarios?email=${email}`;
+  async function enviarDadosDeLogin(email, password) {
+    const url = "http://localhost:3000/login"; 
+
+    const dados = { email, password };
 
     try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Erro ao verificar credenciais.");
-      }
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dados), 
+        });
 
-      const data = await response.json();
-      if (data.length === 0) {
-        throw new Error("E-mail não cadastrado.");
-      }
+        if (!response.ok) {
+            throw new Error("Erro ao realizar login.");
+        }
 
-      return data[0];
+        const respostaJson = await response.json(); 
+        return respostaJson; 
     } catch (error) {
-      throw new Error(error.message);
+        throw new Error(error.message);
     }
-  }
+}
+
 
   function exibirMensagemLogin(texto, cor) {
     mensagemLogin.textContent = texto;
@@ -85,9 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
       btnLogin.disabled = true;
       btnLogin.textContent = "Carregando...";
 
-      const usuario = await buscarUsuarioPorEmail(emailDigitado);
+      const usuario = await enviarDadosDeLogin(emailDigitado);
 
-      if (usuario.password !== senhaDigitada) {
+      if (usuario.senha !== senhaDigitada) {
         throw new Error("Senha incorreta.");
       }
 
