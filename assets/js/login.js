@@ -1,5 +1,3 @@
-//comando pro json: json-server --watch db.json --port 3000
-
 document.addEventListener("DOMContentLoaded", () => {
   const btnLogin = document.getElementById("btn-login");
   const emailLogin = document.getElementById("email-login");
@@ -29,21 +27,29 @@ document.addEventListener("DOMContentLoaded", () => {
     return temTamanhoMinimo && temMaiuscula && temEspecial;
   }
 
-  async function buscarUsuarioPorEmail(email) {
-    const url = `http://localhost:3000/usuarios?email=${email}`;
+  async function login(email, password) {
+    const url = "http://localhost:8080/api/v1/usuarios/login"; // Seu endpoint de login
+
+    const loginData = {
+      email: email,
+      password: password,
+    };
 
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData), // Envia o email e senha no corpo da requisição
+      });
+
       if (!response.ok) {
         throw new Error("Erro ao verificar credenciais.");
       }
 
       const data = await response.json();
-      if (data.length === 0) {
-        throw new Error("E-mail não cadastrado.");
-      }
-
-      return data[0];
+      return data; // O retorno será a mensagem de sucesso ou qualquer outra coisa da resposta
     } catch (error) {
       throw new Error(error.message);
     }
@@ -85,11 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
       btnLogin.disabled = true;
       btnLogin.textContent = "Carregando...";
 
-      const usuario = await buscarUsuarioPorEmail(emailDigitado);
-
-      if (usuario.password !== senhaDigitada) {
-        throw new Error("Senha incorreta.");
-      }
+      // Faz a chamada para o endpoint de login
+      await login(emailDigitado, senhaDigitada);
 
       exibirMensagemLogin("Login realizado com sucesso!", "green");
 
@@ -106,7 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 1000);
     }
   });
-
 
   emailLogin.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {

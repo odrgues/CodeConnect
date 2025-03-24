@@ -1,4 +1,3 @@
-// ERRO: a pagina de login redireciona com delay pra pagina do feed (esperado), e a pagina de cadastro redireciona pro login mas sem delay (nao esperado)
 document.addEventListener("DOMContentLoaded", () => {
   const btnCadastro = document.getElementById("btn-cadastro");
   const nomeCadastro = document.getElementById("nome");
@@ -32,11 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function atualizarRequisito(requisito, condicao) {
-    if (condicao) {
-      requisito.style.color = "green";
-    } else {
-      requisito.style.color = "red";
-    }
+    requisito.style.color = condicao ? "green" : "red";
   }
 
   function validarEmail(email) {
@@ -45,27 +40,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function validarSenha(password) {
-    const temTamanhoMinimo = password.length >= 8 && password.length <= 20;
-    const temMaiuscula = /[A-Z]/.test(password);
-    const temEspecial = /[!@#$%^&*()_.]/.test(password);
-    return temTamanhoMinimo && temMaiuscula && temEspecial;
-  }
-
-  async function verificaEmail(email) {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/usuarios?email=${email}`
-      );
-      const usuarios = await response.json();
-      return usuarios.length > 0;
-    } catch (error) {
-      console.error("Erro ao verificar e-mail:", error);
-      return false;
-    }
+    return (
+      password.length >= 8 &&
+      password.length <= 20 &&
+      /[A-Z]/.test(password) &&
+      /[!@#$%^&*()_.]/.test(password)
+    );
   }
 
   async function cadastrarUsuario(username, email, password) {
-    const url = "http://localhost:3000/usuarios";
+    const url = "http://localhost:8080/api/v1/usuarios";
 
     try {
       const response = await fetch(url, {
@@ -78,11 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error("Erro ao cadastrar usuário.");
+        throw new Error(errorData.message || "Erro ao cadastrar usuário.");
       }
 
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch (error) {
       throw new Error("Erro ao cadastrar usuário");
     }
@@ -92,17 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
     mensagemCadastro.textContent = texto;
     mensagemCadastro.style.color = cor;
   }
-
-  //   btnCadastro.addEventListener("click", async (event) => {
-  //     event.preventDefault();
-
-  //     exibirMensagemCadastro("Cadastro simulado com sucesso!", "green");
-
-  //     setTimeout(() => {
-  //         console.log("Redirecionando para a página de login...");
-  //         window.location.href = "/pages/login.html";
-  //     }, 3000);
-  // });
 
   function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -137,29 +109,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const emailExistente = await verificaEmail(email);
-      if (emailExistente) {
-        exibirMensagemCadastro(
-          "E-mail já cadastrado. Use outro e-mail.",
-          "red"
-        );
-        return;
-      }
-
       btnCadastro.disabled = true;
       btnCadastro.textContent = "Cadastrando...";
 
-      const response = await cadastrarUsuario(username, email, password);
-      console.log("Resposta do JSON Server:", response);
+      await cadastrarUsuario(username, email, password);
 
       exibirMensagemCadastro("Cadastro realizado com sucesso!", "green");
 
-      window.location.href = "../pages/login.html";
-
-
+      setTimeout(() => {
+        window.location.href = "../pages/login.html";
+      }, 2000);
     } catch (error) {
       console.error("Erro no cadastro:", error.message);
-      // exibirMensagemCadastro(error.message, "red"); TO DO: trocar a mensagem que aparece pro usuario 
+
+      if (error.message.includes("E-mail já cadastrado")) {
+        exibirMensagemCadastro("E-mail já cadastrado. Use outro.", "red");
+      } else {
+        exibirMensagemCadastro("Erro ao cadastrar. Tente novamente.", "red");
+      }
     } finally {
       btnCadastro.disabled = false;
       btnCadastro.textContent = "Cadastrar";
