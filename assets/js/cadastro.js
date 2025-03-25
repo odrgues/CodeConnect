@@ -1,189 +1,188 @@
-// ERRO: a pagina de login redireciona com delay pra pagina do feed (esperado), e a pagina de cadastro redireciona pro login mas sem delay (nao esperado)
-document.addEventListener("DOMContentLoaded", () => {
-  const btnCadastro = document.getElementById("btn-cadastro");
-  const nomeCadastro = document.getElementById("nome");
-  const emailCadastro = document.getElementById("email-cadastro");
-  const senhaCadastro = document.getElementById("senha-cadastro");
-  const mensagemCadastro = document.getElementById("mensagem-cadastro");
-  const toggleSenha = document.getElementById("toggle-senha");
-  const requisitoTamanho = document.getElementById("requisito-tamanho");
-  const requisitoMaiuscula = document.getElementById("requisito-maiuscula");
-  const requisitoEspecial = document.getElementById("requisito-especial");
+const CONFIG = {
+  API_URL: "http://localhost:8080/api/v1/usuarios",
+  REDIRECT_DELAY: 2000,
+  LOGIN_PAGE: "../pages/login.html",
+};
 
-  toggleSenha.addEventListener("click", () => {
-    if (senhaCadastro.type === "password") {
-      senhaCadastro.type = "text";
-      toggleSenha.textContent = "🙈";
-    } else {
-      senhaCadastro.type = "password";
-      toggleSenha.textContent = "👁️";
-    }
-  });
+const DOM = {
+  form: document.getElementById("form-cadastro"),
+  nome: document.getElementById("nome"),
+  email: document.getElementById("email-cadastro"),
+  senha: document.getElementById("senha"),
+  toggleSenha: document.getElementById("toggle-senha"),
+  iconeSenha: document.querySelector(".icone-senha"),
+  requisitosSenha: {
+    tamanho: document.getElementById("req-tamanho"),
+    maiuscula: document.getElementById("req-maiuscula"),
+    especial: document.getElementById("req-especial"),
+  },
+  mensagem: document.getElementById("mensagem-cadastro"),
+  btnCadastro: document.getElementById("btn-cadastro"),
+};
 
-  senhaCadastro.addEventListener("input", () => {
-    const password = senhaCadastro.value;
+const IMAGES = {
+  show: "../assets/img/cadastro/visibility.png",
+  hide: "../assets/img/cadastro/visibility_off.png",
+};
 
-    atualizarRequisito(
-      requisitoTamanho,
-      password.length >= 8 && password.length <= 20
-    );
-    atualizarRequisito(requisitoMaiuscula, /[A-Z]/.test(password));
-    atualizarRequisito(requisitoEspecial, /[!@#$%^&*()_.]/.test(password));
-  });
-
-  function atualizarRequisito(requisito, condicao) {
-    if (condicao) {
-      requisito.style.color = "green";
-    } else {
-      requisito.style.color = "red";
-    }
-  }
-
-  function validarEmail(email) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  }
-
-  function validarSenha(password) {
-    const temTamanhoMinimo = password.length >= 8 && password.length <= 20;
-    const temMaiuscula = /[A-Z]/.test(password);
-    const temEspecial = /[!@#$%^&*()_.]/.test(password);
-    return temTamanhoMinimo && temMaiuscula && temEspecial;
-  }
-
-  // async function verificaEmail(email) {
-  //   try {
-  //     const response = await fetch(
-  //       `http://localhost:3000/usuarios?email=${email}`
-  //     );
-  //     const usuarios = await response.json();
-  //     return usuarios.length > 0;
-  //   } catch (error) {
-  //     console.error("Erro ao verificar e-mail:", error);
-  //     return false;
-  //   }
-  // }
-
-  async function cadastrarUsuario(username, email, password) {
-    const url = "http://localhost:3000/usuarios";
-
+const API = {
+  cadastrarUsuario: async (dados) => {
     try {
-      const response = await fetch(url, {
+      const response = await fetch(CONFIG.API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify(dados),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error("Erro ao cadastrar usuário.");
+        throw new Error(errorData.message || "Erro ao cadastrar usuário");
       }
 
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch (error) {
-      throw new Error("Erro ao cadastrar usuário");
+      console.error("Erro na API:", error);
+      throw error;
     }
-  }
+  },
+};
 
-  function exibirMensagemCadastro(texto, cor) {
-    mensagemCadastro.textContent = texto;
-    mensagemCadastro.style.color = cor;
-  }
+const Utils = {
+  validarEmail: (email) => {
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return regex.test(email);
+  },
 
-  //   btnCadastro.addEventListener("click", async (event) => {
-  //     event.preventDefault();
+  validarSenha: (senha) => {
+    const temTamanho = senha.length >= 8 && senha.length <= 20;
+    const temMaiuscula = /[A-Z]/.test(senha);
+    const temEspecial = /[!@#$%^&*()_.]/.test(senha);
+    return {
+      temTamanho,
+      temMaiuscula,
+      temEspecial,
+      valida: temTamanho && temMaiuscula && temEspecial,
+    };
+  },
 
-  //     exibirMensagemCadastro("Cadastro simulado com sucesso!", "green");
+  exibirMensagem: (elemento, texto, tipo = "erro") => {
+    elemento.textContent = texto;
+    elemento.className = tipo;
+    elemento.style.display = "block";
 
-  //     setTimeout(() => {
-  //         console.log("Redirecionando para a página de login...");
-  //         window.location.href = "/pages/login.html";
-  //     }, 3000);
-  // });
+    if (tipo === "sucesso") {
+      elemento.style.color = "#4CAF50";
+    } else {
+      elemento.style.color = "#f44336";
+    }
 
-  function delay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+    setTimeout(() => {
+      elemento.style.display = "none";
+    }, 5000);
+  },
 
-  btnCadastro.addEventListener("click", async (event) => {
+  atualizarRequisitosSenha: (senha) => {
+    const { temTamanho, temMaiuscula, temEspecial } = Utils.validarSenha(senha);
+
+    DOM.requisitosSenha.tamanho.setAttribute("data-valido", temTamanho);
+    DOM.requisitosSenha.maiuscula.setAttribute("data-valido", temMaiuscula);
+    DOM.requisitosSenha.especial.setAttribute("data-valido", temEspecial);
+
+    DOM.requisitosSenha.tamanho.classList.toggle("valido", temTamanho);
+    DOM.requisitosSenha.maiuscula.classList.toggle("valido", temMaiuscula);
+    DOM.requisitosSenha.especial.classList.toggle("valido", temEspecial);
+  },
+};
+
+const Handlers = {
+  toggleVisibilidadeSenha: () => {
+    const isSenhaVisivel = DOM.senha.type === "text";
+    DOM.senha.type = isSenhaVisivel ? "password" : "text";
+
+    DOM.iconeSenha.src = isSenhaVisivel ? IMAGES.show : IMAGES.hide;
+    DOM.toggleSenha.setAttribute(
+      "aria-label",
+      isSenhaVisivel ? "Mostrar senha" : "Ocultar senha"
+    );
+  },
+
+  validarCampoSenha: () => {
+    Utils.atualizarRequisitosSenha(DOM.senha.value);
+  },
+
+  handleSubmit: async (event) => {
     event.preventDefault();
 
-    const username = nomeCadastro.value.trim();
-    const email = emailCadastro.value.trim();
-    const password = senhaCadastro.value.trim();
+    DOM.btnCadastro.disabled = true;
+    DOM.btnCadastro.innerHTML = '<span id="btn-texto">Aguarde...</span>';
 
-    if (!username || !email || !password) {
-      exibirMensagemCadastro("Preencha todos os campos.", "red");
-      return;
-    }
-
-    if (!validarEmail(email)) {
-      exibirMensagemCadastro(
-        "Email inválido. Certifique-se de incluir '@' e um domínio válido.",
-        "red"
-      );
-      return;
-    }
-
-    if (!validarSenha(password)) {
-      exibirMensagemCadastro(
-        "A senha deve ter entre 8 e 20 caracteres, uma letra maiúscula e um caractere especial.",
-        "red"
-      );
-      return;
-    }
+    const dados = {
+      nome: DOM.nome.value.trim(),
+      email: DOM.email.value.trim(),
+      senha: DOM.senha.value.trim(),
+    };
 
     try {
-      const emailExistente = await verificaEmail(email);
-      if (emailExistente) {
-        exibirMensagemCadastro(
-          "E-mail já cadastrado. Use outro e-mail.",
-          "red"
-        );
-        return;
+      if (!dados.nome || !dados.email || !dados.senha) {
+        throw new Error("Preencha todos os campos.");
       }
 
-      btnCadastro.disabled = true;
-      btnCadastro.textContent = "Cadastrando...";
+      if (!Utils.validarEmail(dados.email)) {
+        throw new Error("E-mail inválido. Use o formato exemplo@dominio.com");
+      }
 
-      const response = await cadastrarUsuario(username, email, password);
-      console.log("Resposta do JSON Server:", response);
+      const { valida: senhaValida } = Utils.validarSenha(dados.senha);
+      if (!senhaValida) {
+        throw new Error("A senha não atende a todos os requisitos.");
+      }
 
-      exibirMensagemCadastro("Cadastro realizado com sucesso!", "green");
+      const response = await API.cadastrarUsuario(dados);
 
-      window.location.href = "../pages/login.html";
+      Utils.exibirMensagem(
+        DOM.mensagem,
+        "Cadastro realizado com sucesso! Redirecionando...",
+        "sucesso"
+      );
 
-
+      setTimeout(() => {
+        window.location.href = CONFIG.LOGIN_PAGE;
+      }, CONFIG.REDIRECT_DELAY);
     } catch (error) {
-      console.error("Erro no cadastro:", error.message);
-      // exibirMensagemCadastro(error.message, "red"); TO DO: trocar a mensagem que aparece pro usuario 
+      console.error("Erro no cadastro:", error);
+      Utils.exibirMensagem(
+        DOM.mensagem,
+        error.message || "Erro ao cadastrar. Tente novamente.",
+        "erro"
+      );
     } finally {
-      btnCadastro.disabled = false;
-      btnCadastro.textContent = "Cadastrar";
+      DOM.btnCadastro.disabled = false;
+      DOM.btnCadastro.innerHTML = '<span id="btn-texto">Cadastrar</span>';
     }
+  },
+};
+
+const init = () => {
+  DOM.toggleSenha.addEventListener("click", Handlers.toggleVisibilidadeSenha);
+  DOM.senha.addEventListener("input", Handlers.validarCampoSenha);
+  DOM.form.addEventListener("submit", Handlers.handleSubmit);
+  DOM.senha.addEventListener("input", (e) => {
+    Handlers.validarCampoSenha();
   });
 
-  nomeCadastro.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      emailCadastro.focus();
-    }
+  DOM.nome.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") DOM.email.focus();
   });
 
-  emailCadastro.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      senhaCadastro.focus();
-    }
+  DOM.email.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") DOM.senha.focus();
   });
 
-  senhaCadastro.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      btnCadastro.click();
-    }
+  DOM.senha.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") DOM.form.requestSubmit();
   });
-});
+};
+
+document.addEventListener("DOMContentLoaded", init);

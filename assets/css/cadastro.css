@@ -1,208 +1,273 @@
-/* TODO: colocar imagem no fundo */
-/* TODO: arrumar todas as variaveis em conjunto com o global.css */
-/* TODO: clean code. */
-
 @import url(global.css);
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  /* background-image: url(../img/cadastro/Símbolo.png); */
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+  display: flex;
+  justify-content: center;
   align-items: center;
   min-height: 100vh;
+  padding: 1rem;
+  font-family: var(--fonte-principal);
+  color: var(--cor-texto);
+  background-color: var(--cor-fundo);
 }
 
 main {
-  background-color: var(--itens-background);
-  border-radius: 32px;
-  padding: 40px;
+  width: calc(100% - 2rem); 
+  max-width: 730px;
   display: flex;
-  gap: 40px;
-
-  width: 730px;
-  height: 550px;
-  flex-direction: row;
-  align-items: center;
-  padding: 32px 32px, 32px 32px;
+  flex-direction: column;
+  gap: var(--espacamento-lg);
+  background-color: var(--cor-verde-petroleo); 
+  border-radius: 32px;
+  padding: var(--espacamento-lg);
+  box-sizing: border-box;
 }
 
-.img-main {
-  /* width: 100%; */
 
-  width: 300px;
-  height: 500px;
-  border-radius: 10px;
-  margin-left: 15px;
-}
 
 .container-form {
-  width: 300px;
-  height: 500px;
-  display: flex;
-  flex-direction: column; /* Organiza os itens na direção vertical */
-  gap: 10px; 
-  /* margin-top: -60px;Espaçamento vertical entre os itens */
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 h1 {
-  font-size: 25px;
+  font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 16px;
-  text-align: start;
-  color: var(--primary-color);
+  margin-bottom: 1rem;
+  text-align: center;
+  color: var(--cor-texto);
 }
 
 h2 {
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 400;
-  margin-bottom: 40px;
-  text-align: start;
-  color: var(--text-color);
+  margin-bottom: 2.5rem;
+  text-align: center;
+  color: var(--cor-texto);
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.625rem;
   width: 100%;
-  ;
 }
 
-#form-cadastro {
-  margin-top: -30px;
+form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 form div label {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--text-color);
 }
 
 form div input {
   width: 100%;
-  padding: 12px 16px;
-  background-color: var(--secondary-color);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-family: var(--font-family);
-  font-size: 14px;
-  color: var(--background-color);
+  padding: 0.75rem 1rem;
+  background-color: var(--cor-input);
+  border: 1px solid var(--cor-input);
+  border-radius: 0.5rem;
+  font-family: var(--fonte-principal);
+  font-size: 0.875rem;
+  color: var(--cor-verde-petroleo);
   outline: none;
-}
-form div input {
-  width: 100%;
-  padding: 12px 16px;
-  background-color: var(--secondary-color);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-family: var(--font-family);
-  font-size: 14px;
-  color: var(--background-color);
-  outline: none;
+  box-sizing: border-box;
 }
 
 form div input:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  border-color: var(--cor-cinza-escuro);
 }
 
-form div input::placeholder {
-  color: var(--background-color);
-}
-
-#toggle-senha {
+/* #toggle-senha {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
-  font-size: 18px;
-  color: var(--text-color);
+  font-size: 1.125rem;
+  color: var(--cor-texto);
 }
 
-ul {
-  font-size: 11px;
-  color: var(--text-color);
+#toggle-senha:hover {
+  color: var(--cor-verde-destaque);
+} */
+
+
+
+.campo-senha {
+  position: relative; /* Pai para posicionamento absoluto */
+  margin-bottom: 1rem;
 }
 
-#mensagem-cadastro {
-  font-size: 12px;
-  color: pink;
+.input-container {
+  position: relative;
+  width: 100%;
+}
+
+#senha {
+  width: 100%;
+  padding: 10px 40px 10px 12px; /* Espaço para o ícone à direita */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.btn-toggle {
+  position: absolute;
+  right: 10px; /* Distância da borda direita */
+  top: 50%; /* Alinhamento vertical */
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.icone-senha {
+  display: block;
+  pointer-events: none; /* Permite clicar no botão */
+}
+#mensagem-login {
+  font-size: 0.875rem;
+  color: #d84040;
   text-align: center;
-  margin-top: -8px;
+  margin-top: 0.5rem;
 }
 
 .container-botao {
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
 }
 
-#btn-cadastro {
-  background-color: var(--primary-color);
-  color: black;
-  border: none;
+#btn-login {
   width: 100%;
-  max-width: 317.7px;
-  padding: 12px;
-  border-radius: 8px;
-  font-family: var(--font-family);
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  position: relative;
-  margin-top: -5px;
+  gap: 0.5rem;
+  background-color: var(--cor-verde-destaque);
+  color: var(--cor-verde-petroleo);
+  border: none;
+  border-radius: 0.5rem;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-#btn-cadastro::after {
+#btn-login::after {
   content: "";
+  width: 1.25rem;
+  height: 1.25rem;
   background-image: url("/assets/img/login/seta-login.png");
   background-size: contain;
   background-repeat: no-repeat;
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  top: 50%;
   transition: filter 0.3s ease;
-  margin-left: 1px;
+  margin-left: 0.0625rem;
 }
 
-#btn-cadastro:hover {
-  background-color: var(--background-color);
+#btn-login:hover {
+  background-color: var(--cor-fundo);
   color: var(--text-color);
 }
 
-#btn-cadastro:hover::after {
+#btn-login:hover::after {
   filter: brightness(0.8);
 }
 
-.container-link-login {
-  display: flex; /* Flex para alinhar os itens lado a lado */
+p {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-color);
+  margin-top: 1rem;
+}
+
+.redireciona-cadastro {
+  display: flex;
   align-items: center;
-  justify-items: center; /* Alinha verticalmente os itens */
-  gap: 8px; /* Espaçamento entre os itens */
-}
-
-.already-account {
-  color: white; /* Cor branca para a frase "Já tem conta?" */
-  font-size: 15px;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--primary-color);
+  font-size: 1rem;
   font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.link-login {
-  color: var(--primary-color); 
-  font-size: 15px;
-  text-decoration: none; 
-  display: inline-flex;
-  align-items: center; /* Alinha verticalmente o texto e a imagem */
+.img-cadastro {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
-.img-login {
-  width: 16px; /* Tamanho da imagem */
-  height: 16px;
-  margin-left: 5px; /* Espaço entre o texto e a imagem */
+/* Media Queries para telas maiores */
+@media (min-width: 768px) {
+  main {
+    flex-direction: row;
+    height: auto;
+    min-height: 525px;
+  }
+  
+  .img-main {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    max-height: 450px;
+    border-radius: 0.625rem;
+    margin-left: 0.9375rem;
+  }
+  
+  .container-form {
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  h1, h2 {
+    text-align: start;
+  }
 }
+
+@media (min-width: 992px) {
+  main {
+    padding: 2rem;
+  }
+}
+
+
+
+
+
+/* 2. elemento.className = tipo;
+Objetivo: Aplica uma classe CSS ao elemento para estilização condicional.
+
+Funcionamento:
+
+Se tipo = "erro" → Adiciona a classe erro ao elemento.
+
+Se tipo = "sucesso" → Adiciona a classe sucesso.
+
+Exemplo de CSS:
+
+css
+Copy
+.erro {
+  color: red;
+  background: #ffe6e6;
+}
+.sucesso {
+  color: green;
+  background: #e6ffe6;
+} */

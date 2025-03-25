@@ -3,122 +3,149 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Monsieur+La+Doulaise&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Shafarik&family=Sigmar&display=swap");
 
 :root {
-  --background-color: #00090e;
-  --text-color: #e1e1e1;
-  --primary-color: #81fe88;
-  --botao-after: #132E35;
-  --secondary-color: #888888;
-  --tag-color: #171d1f;
-  --itens-background: #171d1f;
-  --font-family: "Inter", sans-serif;
+  /*Cores */
+  --cor-fundo: #01080e;
+  --cor-texto: #e1e1e1;
+  --cor-input: #888888;
+  --cor-principal: #171d1f;
+  --cor-verde-destaque: #81fe88;
+  --cor-verde-pastel: #bfffc3;
+  --cor-verde-petroleo: #132e35;
+  --cor-cinza: #3e3e3f;
+  --cor-cinza-claro: #bcbcbc;
+  --cor-cinza-escuro:#171D1F;
+  --cor-offwhite: #e1e1e1;
+  --cor-branco: #ffffff;
 
-  /* EXEMPLO PRA USAR COM AS VARIAVEIS DOS ASSETS (cleanCode) --pra isso, preciso criar novas classes no html: 
-:root {
-  
-  --font-family: 'Prompt', sans-serif;
+  /*Tipografia */
+  --fonte-principal: "Prompt", sans-serif;
 
-  
-  --font-heading: 44px;
-  --font-heading-small: 37px;
+  /*Títulos */
+  --tamanho-titulo: 44px;
+  --peso-titulo: 500;
+  --altura-linha-titulo: 120%;
 
-  
-  --font-subtitle-large: 31px;
-  --font-subtitle: 26px;
+  --tamanho-titulo-pequeno: 37px;
 
-  
-  --font-paragraph-large: 22px;
-  --font-paragraph: 18px;
-  --font-paragraph-small: 15px;
+  /*Subtítulos */
+  --tamanho-subtitulo-grande: 31px;
+  --peso-subtitulo: 400;
+  --altura-linha-subtitulo: 150%;
 
-  
-  --font-label: 12.5px;
+  --tamanho-subtitulo: 26px;
 
-  
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
+  /*Parágrafos */
+  --tamanho-paragrafo-grande: 22px;
+  --peso-paragrafo: 400;
+  --altura-linha-paragrafo: 150%;
 
-  
-  --line-height-default: 150%;
-  --line-height-heading: 120%;
+  --tamanho-paragrafo: 18px;
+  --tamanho-paragrafo-pequeno: 15px;
+
+  /*Label*/
+  --tamanho-label: 12.5px;
+
+  /*Espaçamentos*/
+  --espacamento-xxs: 4px;
+  --espacamento-xs: 8px;
+  --espacamento-sm: 12px;
+  --espacamento-md: 16px;
+  --espacamento-lg: 24px;
+  --espacamento-xl: 32px;
+  --espacamento-xxl: 56px;
+
+  /*Largura & Altura*/
+  --largura-maxima: 1200px;
+  --largura-container: 90%;
+  --altura-header: 60px;
+  --altura-botao: 48px;
 }
 
-h1 {
-  font-family: var(--font-family);
-  font-size: var(--font-heading);
-  font-weight: var(--font-weight-medium);
-  line-height: var(--line-height-heading);
-}
-
-h2 {
-  font-family: var(--font-family);
-  font-size: var(--font-heading-small);
-  font-weight: var(--font-weight-medium);
-  line-height: var(--line-height-heading);
-}
-
-.subtitle-large {
-  font-family: var(--font-family);
-  font-size: var(--font-subtitle-large);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-default);
-}
-
-.subtitle {
-  font-family: var(--font-family);
-  font-size: var(--font-subtitle);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-default);
-}
-
-.paragraph-large {
-  font-family: var(--font-family);
-  font-size: var(--font-paragraph-large);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-default);
-}
-
-.paragraph {
-  font-family: var(--font-family);
-  font-size: var(--font-paragraph);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-default);
-}
-
-.paragraph-small {
-  font-family: var(--font-family);
-  font-size: var(--font-paragraph-small);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-default);
-}
-
-.label {
-  font-family: var(--font-family);
-  font-size: var(--font-label);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-default);
-}
-*/
-}
-
+/* Reset completo para eliminar conflitos */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-html {
-  font-size: var(--font-size-base);
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 body {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  font-family: var(--font-family);
-  line-height: 1.6;
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: center;
   min-height: 100vh;
-  gap: var(--spacing-large);
-  padding: 56px 0;
+  padding: 1rem;
+  background-color: var(--cor-fundo);
+  font-family: var(--fonte-principal);
+  color: var(--cor-texto);
+}
+
+main {
+  width: 100%;
+  max-width: 730px;
+  background-color: var(--cor-cinza-escuro);
+  border-radius: 32px;
+  padding: var(--espacamento-lg);
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+
+body.debug::after {
+  content: "Área do Body";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: red;
+  font-size: 2rem;
+  z-index: -1;
+}
+
+/*Estilização de Títulos*/
+h1 {
+  font-size: var(--tamanho-titulo);
+  font-weight: var(--peso-titulo);
+  line-height: var(--altura-linha-titulo);
+ }
+
+h2 {
+  font-size: var(--tamanho-titulo-pequeno);
+}
+
+h3 {
+  font-size: var(--tamanho-subtitulo-grande);
+  font-weight: var(--peso-subtitulo);
+  line-height: var(--altura-linha-subtitulo);
+}
+
+/*Parágrafos*/
+p {
+  font-size: var(--tamanho-paragrafo);
+  font-weight: var(--peso-paragrafo);
+  line-height: var(--altura-linha-paragrafo);
+}
+
+/*Label */
+label {
+  font-size: var(--tamanho-label);
+}
+
+/*Botões */
+button {
+  background-color: var(--cor-principal);
+  color: var(--cor-branco);
+  padding: var(--espacamento-md);
+  border-radius: var(--raio-borda);
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--cor-verde-destaque);
+  color: var(--cor-fundo);
 }
