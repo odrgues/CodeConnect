@@ -1,5 +1,3 @@
-//comando pro json: json-server --watch db.json --port 3000
-
 document.addEventListener("DOMContentLoaded", () => {
   const btnLogin = document.getElementById("btn-login");
   const email = document.getElementById("email-login");
@@ -30,9 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function login(email, password) {
+<<<<<<< HEAD
     const url = "http://localhost:3000/";
+=======
+    const url = "http://localhost:8080/api/v1/usuarios/login"; // Seu endpoint de login
+>>>>>>> 108d2a611fc3f2bc2203e46cfe799a34aa740aac
 
-    const dados = { email, password };
+    const loginData = {
+      email: email,
+      password: password,
+    };
 
     try {
       const response = await fetch(url, {
@@ -40,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: {
           "Content-Type": "application/json",
         },
+<<<<<<< HEAD
         body: JSON.stringify(dados),
       });
 
@@ -49,6 +55,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const respostaJson = await response.json();
       return respostaJson;
+=======
+        body: JSON.stringify(loginData), // Envia o email e senha no corpo da requisição
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao verificar credenciais.");
+      }
+
+      const data = await response.json();
+      return data; // O retorno será a mensagem de sucesso ou qualquer outra coisa da resposta
+>>>>>>> 108d2a611fc3f2bc2203e46cfe799a34aa740aac
     } catch (error) {
       throw new Error(error.message);
     }
@@ -90,11 +107,16 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.disabled = true;
       // btn.textContent = "Carregando...";
 
+<<<<<<< HEAD
       const usuario = await login(emailDigitado);
 
       if (usuario.senha !== senhaDigitada) {
         throw new Error("Senha incorreta.");
       }
+=======
+      // Faz a chamada para o endpoint de login
+      await login(emailDigitado, senhaDigitada);
+>>>>>>> 108d2a611fc3f2bc2203e46cfe799a34aa740aac
 
       mensagem("Login realizado com sucesso!", "green");
 
@@ -112,7 +134,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+<<<<<<< HEAD
   email.addEventListener("keydown", (event) => {
+=======
+  emailLogin.addEventListener("keydown", (event) => {
+>>>>>>> 108d2a611fc3f2bc2203e46cfe799a34aa740aac
     if (event.key === "Enter") {
       event.preventDefault();
       senha.focus();
