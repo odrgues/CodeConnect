@@ -51,9 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
       return data; // O retorno será a mensagem de sucesso ou qualquer outra coisa da resposta
     } catch (error) {
-      throw new Error(error.message);
+        throw new Error(error.message);
     }
-  }
+}
+
 
   function exibirMensagemLogin(texto, cor) {
     mensagemLogin.textContent = texto;
