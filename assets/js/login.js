@@ -1,9 +1,6 @@
-//A resposta do botao login está mt rápida, eu preciso mudar isso?
-
-
 const CONFIG = {
-  API_URL: "http://localhost:3000/",
-  REDIRECT_DELAY: 2000,
+  API_URL: "http://localhost:3000/api/v1/login",
+  REDIRECT_DELAY: 3000,
   FEED_PAGE: "../pages/feed.html",
 };
 
@@ -22,7 +19,6 @@ const IMAGES = {
   hide: "../assets/img/cadastro-login/visibility_off.png",
 };
 
-
 const API = {
   loginUsuario: async (dados) => {
     try {
@@ -33,7 +29,6 @@ const API = {
           Accept: "application/json",
         },
         body: JSON.stringify(dados),
-        
       });
       if (!response.ok) {
         const errorData = await response.json();
@@ -43,7 +38,7 @@ const API = {
       return await response.json();
     } catch (error) {
       console.error("Erro na API:", error);
-      console.error("Dados enviados: ", dados)
+      console.error("Dados enviados: ", dados);
       throw error;
     }
   },
@@ -87,6 +82,8 @@ const Handlers = {
 
     DOM.btnLogin.disabled = true;
     DOM.btnLogin.innerHTML = '<span id="btn-texto">Aguarde...</span>';
+    DOM.btnLogin.style.opacity = "0.7";
+    DOM.btnLogin.style.transition = "all 0.3s ease";
 
     const dados = {
       email: DOM.email.value.trim(),
@@ -115,6 +112,7 @@ const Handlers = {
     } finally {
       DOM.btnLogin.disabled = false;
       DOM.btnLogin.innerHTML = '<span id="btn-texto">Login</span>';
+      DOM.btnLogin.style.opacity = "1";
     }
   },
 };
@@ -127,13 +125,12 @@ const init = () => {
   if (DOM.form) {
     DOM.form.addEventListener("submit", Handlers.handleSubmit);
   }
-
   DOM.email.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") DOM.email.focus();
+    if (e.key === "Enter") DOM.senha.focus();
   });
 
   DOM.senha.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") DOM.senha.focus();
+    if (e.key === "Enter") DOM.form.requestSubmit();
   });
 };
 
