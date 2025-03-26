@@ -5,42 +5,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/login.css">
-    <title>Code Connect</title>
+    <title>Code Connect - Login</title>
 </head>
 
 <body>
     <main>
-        <img src="../assets/img/login/img-1.png" alt="imagem-login" class="img-main">
+        <img src="../assets/img/cadastro-login/img-1.png" alt="imagem-login" class="img-main">
         <div class="container-form">
-            <h1 >Login</h1>
-            <h2 >Boas vindas! Faça seu login.</h2>
+            <h1>Login</h1>
+            <h2>Boas vindas! Faça seu login.</h2>
 
-            <form id="form-login">
-                <div>
-                    <label for="email-login">Email</label>
-                    <input type="email" id="email-login" name="email" required autofocus />
+            <form id="form-login" aria-labelledby="titulo-login">
+                <div role="group" aria-labelledby="label-email">
+                    <label for="email-login" id="label-email">Email</label>
+                    <input type="email" id="email-login" name="email" required aria-required="true" autofocus />
                 </div>
-                <div>
-                    <label for="senha-login">Senha</label>
-                    <div style="position: relative;">
-                        <input type="password" id="senha-login" name="senha" required />
-                        <button type="button" id="toggle-senha" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">
-                            👁️
+
+                <div class="campo-senha" role="group" aria-labelledby="label-senha">
+                    <label for="senha-login" id="label-senha">Senha</label>
+                    <div class="input-container">
+                        <input type="password" id="senha-login" name="senha" placeholder="Digite sua senha" required
+                            aria-required="true" />
+
+                        <button type="button" id="toggle-senha" class="btn-toggle" aria-label="Mostrar senha"
+                            aria-controls="senha-login">
+                            <img src="../assets/img/cadastro-login/visibility.png" alt="Ícone de senha"
+                                class="icone-senha-login" width="20" height="20">
                         </button>
                     </div>
                 </div>
 
-                <div id="mensagem-login" role="alert"></div>
+                <output id="mensagem-login" role="status" aria-live="polite"></output>
+
                 <div class="container-botao">
                     <button type="submit" id="btn-login">
                         <span id="btn-texto">Login</span>
                     </button>
                 </div>
 
-                <p>Ainda não tem conta?</p>
-                <a href="./cadastro.html" class="redireciona-cadastro">Crie seu cadastro!
-                    <img class="img-cadastro" src="../assets/img/login/assignment.png" alt="Ícone de cadastro" aria-label="Ícone de cadastro">
-                </a>
+                <div class="container-link-cadastro">
+                    <p class="register-account">Ainda não tem conta?</p>
+                    <a class="link-cadastro" href="../pages/cadastro.html">Crie seu Cadastro!</a>
+                    <img class="img-cadastro" src="../assets/img/cadastro-login/assignment.png" alt="Ícone de cadastro"
+                        aria-label="Ícone de cadastro">
+                </div>
             </form>
         </div>
     </main>

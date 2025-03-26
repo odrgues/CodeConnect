@@ -10,7 +10,7 @@ const DOM = {
   email: document.getElementById("email-cadastro"),
   senha: document.getElementById("senha"),
   toggleSenha: document.getElementById("toggle-senha"),
-  iconeSenha: document.querySelector(".icone-senha"),
+  iconeSenha: document.querySelector(".icone-senha-cadastro"),
   requisitosSenha: {
     tamanho: document.getElementById("req-tamanho"),
     maiuscula: document.getElementById("req-maiuscula"),
@@ -21,8 +21,8 @@ const DOM = {
 };
 
 const IMAGES = {
-  show: "../assets/img/cadastro/visibility.png",
-  hide: "../assets/img/cadastro/visibility_off.png",
+  show: "../assets/img/cadastro-login/visibility.png",
+  hide: "../assets/img/cadastro-login/visibility_off.png",
 };
 
 const API = {
@@ -126,10 +126,6 @@ const Handlers = {
     };
 
     try {
-      if (!dados.nome || !dados.email || !dados.senha) {
-        throw new Error("Preencha todos os campos.");
-      }
-
       if (!Utils.validarEmail(dados.email)) {
         throw new Error("E-mail inválido. Use o formato exemplo@dominio.com");
       }
@@ -143,7 +139,7 @@ const Handlers = {
 
       Utils.exibirMensagem(
         DOM.mensagem,
-        "Cadastro realizado com sucesso! Redirecionando...",
+        "Cadastro realizado com sucesso!",
         "sucesso"
       );
 

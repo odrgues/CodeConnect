@@ -1,154 +1,137 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const btnLogin = document.getElementById("btn-login");
-  const email = document.getElementById("email-login");
-  const senha = document.getElementById("senha-login");
-  const mensagemLogin = document.getElementById("mensagem-login");
-  const toggleSenha = document.getElementById("toggle-senha");
+//A resposta do botao login está mt rápida, eu preciso mudar isso?
 
-  toggleSenha.addEventListener("click", () => {
-    if (senha.type === "password") {
-      senha.type = "text";
-      toggleSenha.textContent = "🙈";
-    } else {
-      senha.type = "password";
-      toggleSenha.textContent = "👁️";
-    }
-  });
 
-  function validarEmail(email) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  }
+const CONFIG = {
+  API_URL: "http://localhost:3000/",
+  REDIRECT_DELAY: 2000,
+  FEED_PAGE: "../pages/feed.html",
+};
 
-  function validarSenha(password) {
-    const temTamanhoMinimo = password.length >= 8 && password.length <= 20;
-    const temMaiuscula = /[A-Z]/.test(password);
-    const temEspecial = /[!@#$%^&*()_.]/.test(password);
-    return temTamanhoMinimo && temMaiuscula && temEspecial;
-  }
+const DOM = {
+  btnLogin: document.getElementById("btn-login"),
+  form: document.getElementById("form-login"),
+  email: document.getElementById("email-login"),
+  senha: document.getElementById("senha-login"),
+  toggleSenha: document.getElementById("toggle-senha"),
+  iconeSenha: document.querySelector(".icone-senha-login"),
+  mensagem: document.getElementById("mensagem-login"),
+};
 
-  async function login(email, password) {
-<<<<<<< HEAD
-    const url = "http://localhost:3000/";
-=======
-    const url = "http://localhost:8080/api/v1/usuarios/login"; // Seu endpoint de login
->>>>>>> 108d2a611fc3f2bc2203e46cfe799a34aa740aac
+const IMAGES = {
+  show: "../assets/img/cadastro-login/visibility.png",
+  hide: "../assets/img/cadastro-login/visibility_off.png",
+};
 
-    const loginData = {
-      email: email,
-      password: password,
-    };
-
+const API = {
+  loginUsuario: async (dados) => {
     try {
-      const response = await fetch(url, {
+      const response = await fetch(CONFIG.API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-<<<<<<< HEAD
         body: JSON.stringify(dados),
       });
-
       if (!response.ok) {
-        throw new Error("Erro ao realizar login.");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Erro ao realizar login.");
       }
 
-      const respostaJson = await response.json();
-      return respostaJson;
-=======
-        body: JSON.stringify(loginData), // Envia o email e senha no corpo da requisição
-      });
-
-      if (!response.ok) {
-        throw new Error("Erro ao verificar credenciais.");
-      }
-
-      const data = await response.json();
-      return data; // O retorno será a mensagem de sucesso ou qualquer outra coisa da resposta
->>>>>>> 108d2a611fc3f2bc2203e46cfe799a34aa740aac
+      return await response.json();
     } catch (error) {
-      throw new Error(error.message);
+      console.error("Erro na API:", error);
+      throw error;
     }
-  }
+  },
+};
 
-  function mensagem(texto, cor) {
-    mensagemLogin.textContent = texto;
-    mensagemLogin.style.color = cor;
-  }
+const Utils = {
+  exibirMensagem: (elemento, texto, tipo = "erro") => {
+    elemento.textContent = texto;
+    elemento.className = tipo;
+    elemento.style.display = "block";
 
-  btn.addEventListener("click", async (event) => {
+    if (tipo === "sucesso") {
+      elemento.style.color = "#4CAF50";
+    } else {
+      elemento.style.color = "#f44336";
+    }
+
+    setTimeout(() => {
+      elemento.style.display = "none";
+    }, 5000);
+  },
+};
+
+const Handlers = {
+  toggleVisibilidadeSenha: () => {
+    const isSenhaVisivel = DOM.senha.type === "text";
+    DOM.senha.type = isSenhaVisivel ? "password" : "text";
+
+    if (DOM.iconeSenha) {
+      DOM.iconeSenha.src = isSenhaVisivel ? IMAGES.show : IMAGES.hide;
+    }
+
+    DOM.toggleSenha.setAttribute(
+      "aria-label",
+      isSenhaVisivel ? "Mostrar senha" : "Ocultar senha"
+    );
+  },
+
+  handleSubmit: async (event) => {
     event.preventDefault();
 
-    const emailDigitado = email.value.trim();
-    const senhaDigitada = senha.value.trim();
+    DOM.btnLogin.disabled = true;
+    DOM.btnLogin.innerHTML = '<span id="btn-texto">Aguarde...</span>';
 
-    if (!emailDigitado || !senhaDigitada) {
-      mensagem("Preencha todos os campos.", "red");
-      return;
-    }
-
-    if (!validarEmail(emailDigitado)) {
-      mensagem(
-        "Email inválido. Certifique-se de incluir '@' e um domínio válido.",
-        "red"
-      );
-      return;
-    }
-
-    if (!validarSenha(senhaDigitada)) {
-      mensagem(
-        "A senha deve ter entre 8 e 20 caracteres, uma letra maiúscula e um caractere especial.",
-        "red"
-      );
-      return;
-    }
+    const dados = {
+      email: DOM.email.value.trim(),
+      senha: DOM.senha.value.trim(),
+    };
 
     try {
-      btn.disabled = true;
-      // btn.textContent = "Carregando...";
+      const response = await API.loginUsuario(dados);
 
-<<<<<<< HEAD
-      const usuario = await login(emailDigitado);
-
-      if (usuario.senha !== senhaDigitada) {
-        throw new Error("Senha incorreta.");
-      }
-=======
-      // Faz a chamada para o endpoint de login
-      await login(emailDigitado, senhaDigitada);
->>>>>>> 108d2a611fc3f2bc2203e46cfe799a34aa740aac
-
-      mensagem("Login realizado com sucesso!", "green");
+      Utils.exibirMensagem(
+        DOM.mensagem,
+        "Login realizado com sucesso!",
+        "sucesso"
+      );
 
       setTimeout(() => {
-        window.location.href = "../pages/feed.html";
-      }, 1000);
+        window.location.href = CONFIG.FEED_PAGE;
+      }, CONFIG.REDIRECT_DELAY);
     } catch (error) {
       console.error("Erro no login:", error);
-      mensagem("Email ou senha incorretos.", "red");
+      Utils.exibirMensagem(
+        DOM.mensagem,
+        error.message || "Erro ao fazer login. Tente novamente.",
+        "erro"
+      );
     } finally {
-      setTimeout(() => {
-        btnLogin.disabled = false;
-        btnLogin.textContent = "Login";
-      }, 1000);
+      DOM.btnLogin.disabled = false;
+      DOM.btnLogin.innerHTML = '<span id="btn-texto">Login</span>';
     }
+  },
+};
+
+const init = () => {
+  if (DOM.toggleSenha) {
+    DOM.toggleSenha.addEventListener("click", Handlers.toggleVisibilidadeSenha);
+  }
+
+  if (DOM.form) {
+    DOM.form.addEventListener("submit", Handlers.handleSubmit);
+  }
+
+  DOM.email.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") DOM.email.focus();
   });
 
-<<<<<<< HEAD
-  email.addEventListener("keydown", (event) => {
-=======
-  emailLogin.addEventListener("keydown", (event) => {
->>>>>>> 108d2a611fc3f2bc2203e46cfe799a34aa740aac
-    if (event.key === "Enter") {
-      event.preventDefault();
-      senha.focus();
-    }
+  DOM.senha.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") DOM.senha.focus();
   });
+};
 
-  senha.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      btnLogin.click();
-    }
-  });
-});
+document.addEventListener("DOMContentLoaded", init);

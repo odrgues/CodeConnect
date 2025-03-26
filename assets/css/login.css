@@ -1,4 +1,4 @@
-@import url(global.css);
+/* @import url(global.css);
 
 html, body {
   height: 100%;
@@ -177,7 +177,7 @@ p {
 }
 
 /* Media Queries para telas maiores */
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   main {
     flex-direction: row;
     height: auto;
@@ -202,10 +202,10 @@ p {
   h1, h2 {
     text-align: start;
   }
-}
+} */
 
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   main {
     padding: 2rem;
   }
-}
+} */ 
