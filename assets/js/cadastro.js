@@ -11,11 +11,11 @@ const DOM = {
   senha: document.getElementById("senha"),
   toggleSenha: document.getElementById("toggle-senha"),
   iconeSenha: document.querySelector(".icone-senha-cadastro"),
-  requisitosSenha: {
-    tamanho: document.getElementById("req-tamanho"),
-    maiuscula: document.getElementById("req-maiuscula"),
-    especial: document.getElementById("req-especial"),
-  },
+  // requisitosSenha: {
+  //   tamanho: document.getElementById("req-tamanho"),
+  //   maiuscula: document.getElementById("req-maiuscula"),
+  //   especial: document.getElementById("req-especial"),
+  // },
   mensagem: document.getElementById("mensagem-cadastro"),
   btnCadastro: document.getElementById("btn-cadastro"),
 };
@@ -56,17 +56,17 @@ const Utils = {
     return regex.test(email);
   },
 
-  validarSenha: (senha) => {
-    const temTamanho = senha.length >= 8 && senha.length <= 20;
-    const temMaiuscula = /[A-Z]/.test(senha);
-    const temEspecial = /[!@#$%^&*()_.]/.test(senha);
-    return {
-      temTamanho,
-      temMaiuscula,
-      temEspecial,
-      valida: temTamanho && temMaiuscula && temEspecial,
-    };
-  },
+  // validarSenha: (senha) => {
+  //   const temTamanho = senha.length >= 8 && senha.length <= 20;
+  //   const temMaiuscula = /[A-Z]/.test(senha);
+  //   const temEspecial = /[!@#$%^&*()_.]/.test(senha);
+  //   return {
+  //     temTamanho,
+  //     temMaiuscula,
+  //     temEspecial,
+  //     valida: temTamanho && temMaiuscula && temEspecial,
+  //   };
+  // },
 
   exibirMensagem: (elemento, texto, tipo = "erro") => {
     elemento.textContent = texto;
@@ -74,9 +74,9 @@ const Utils = {
     elemento.style.display = "block";
 
     if (tipo === "sucesso") {
-      elemento.style.color = "#4CAF50";
+      elemento.style.color = "#4CAF50"; //css aqui
     } else {
-      elemento.style.color = "#f44336";
+      elemento.style.color = "#f44336"; //css aqui
     }
 
     setTimeout(() => {
@@ -84,17 +84,17 @@ const Utils = {
     }, 5000);
   },
 
-  atualizarRequisitosSenha: (senha) => {
-    const { temTamanho, temMaiuscula, temEspecial } = Utils.validarSenha(senha);
+  // atualizarRequisitosSenha: (senha) => {
+  //   const { temTamanho, temMaiuscula, temEspecial } = Utils.validarSenha(senha);
 
-    DOM.requisitosSenha.tamanho.setAttribute("data-valido", temTamanho);
-    DOM.requisitosSenha.maiuscula.setAttribute("data-valido", temMaiuscula);
-    DOM.requisitosSenha.especial.setAttribute("data-valido", temEspecial);
+  //   DOM.requisitosSenha.tamanho.setAttribute("data-valido", temTamanho);
+  //   DOM.requisitosSenha.maiuscula.setAttribute("data-valido", temMaiuscula);
+  //   DOM.requisitosSenha.especial.setAttribute("data-valido", temEspecial);
 
-    DOM.requisitosSenha.tamanho.classList.toggle("valido", temTamanho);
-    DOM.requisitosSenha.maiuscula.classList.toggle("valido", temMaiuscula);
-    DOM.requisitosSenha.especial.classList.toggle("valido", temEspecial);
-  },
+  //   DOM.requisitosSenha.tamanho.classList.toggle("valido", temTamanho);
+  //   DOM.requisitosSenha.maiuscula.classList.toggle("valido", temMaiuscula);
+  //   DOM.requisitosSenha.especial.classList.toggle("valido", temEspecial);
+  // },
 };
 
 const Handlers = {
@@ -109,9 +109,9 @@ const Handlers = {
     );
   },
 
-  validarCampoSenha: () => {
-    Utils.atualizarRequisitosSenha(DOM.senha.value);
-  },
+  // validarCampoSenha: () => {
+  //   Utils.atualizarRequisitosSenha(DOM.senha.value);
+  // },
 
   handleSubmit: async (event) => {
     event.preventDefault();
@@ -120,20 +120,20 @@ const Handlers = {
     DOM.btnCadastro.innerHTML = '<span id="btn-texto">Aguarde...</span>';
 
     const dados = {
-      nome: DOM.nome.value.trim(),
+      username: DOM.nome.value.trim(),
       email: DOM.email.value.trim(),
-      senha: DOM.senha.value.trim(),
+      password: DOM.senha.value.trim(),
     };
 
     try {
-      if (!Utils.validarEmail(dados.email)) {
-        throw new Error("E-mail inválido. Use o formato exemplo@dominio.com");
-      }
+      // if (!Utils.validarEmail(dados.email)) {
+      //   throw new Error("E-mail inválido. Use o formato exemplo@dominio.com");
+      // }
 
-      const { valida: senhaValida } = Utils.validarSenha(dados.senha);
-      if (!senhaValida) {
-        throw new Error("A senha não atende a todos os requisitos.");
-      }
+      // const { valida: senhaValida } = Utils.validarSenha(dados.senha);
+      // if (!senhaValida) {
+      //   throw new Error("A senha não atende a todos os requisitos.");
+      // }
 
       const response = await API.cadastrarUsuario(dados);
 
@@ -162,11 +162,11 @@ const Handlers = {
 
 const init = () => {
   DOM.toggleSenha.addEventListener("click", Handlers.toggleVisibilidadeSenha);
-  DOM.senha.addEventListener("input", Handlers.validarCampoSenha);
+  // DOM.senha.addEventListener("input", Handlers.validarCampoSenha);
   DOM.form.addEventListener("submit", Handlers.handleSubmit);
-  DOM.senha.addEventListener("input", (e) => {
-    Handlers.validarCampoSenha();
-  });
+  // DOM.senha.addEventListener("input", (e) => {
+  //   Handlers.validarCampoSenha();
+  // });
 
   DOM.nome.addEventListener("keydown", (e) => {
     if (e.key === "Enter") DOM.email.focus();

@@ -87,7 +87,7 @@ const Handlers = {
 
     const dados = {
       email: DOM.email.value.trim(),
-      senha: DOM.senha.value.trim(),
+      password: DOM.senha.value.trim(),
     };
 
     try {

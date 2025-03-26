@@ -1,5 +1,3 @@
-/*TODO: criar variáveis para as fontes de cada tipo de titlle*/
-
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Monsieur+La+Doulaise&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Shafarik&family=Sigmar&display=swap");
 
 :root {
@@ -12,6 +10,7 @@
   --cor-verde-pastel: #bfffc3;
   --cor-verde-petroleo: #132e35;
   --cor-cinza: #3e3e3f;
+  --cor-cinza-medio:#888888;
   --cor-cinza-claro: #bcbcbc;
   --cor-cinza-escuro:#171D1F;
   --cor-offwhite: #e1e1e1;
@@ -25,14 +24,14 @@
   --peso-titulo: 500;
   --altura-linha-titulo: 120%;
 
-  --tamanho-titulo-pequeno: 37px;
+  --tamanho-titulo-pequeno: 26px;
 
   /*Subtítulos */
   --tamanho-subtitulo-grande: 31px;
   --peso-subtitulo: 400;
   --altura-linha-subtitulo: 150%;
 
-  --tamanho-subtitulo: 26px;
+  --tamanho-subtitulo: 16px;
 
   /*Parágrafos */
   --tamanho-paragrafo-grande: 22px;
@@ -74,7 +73,7 @@ html, body {
   overflow-x: hidden;
 }
 
-body {
+/* body {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -107,7 +106,7 @@ body.debug::after {
 }
 
 /*Estilização de Títulos*/
-h1 {
+/* h1 {
   font-size: var(--tamanho-titulo);
   font-weight: var(--peso-titulo);
   line-height: var(--altura-linha-titulo);
@@ -121,21 +120,21 @@ h3 {
   font-size: var(--tamanho-subtitulo-grande);
   font-weight: var(--peso-subtitulo);
   line-height: var(--altura-linha-subtitulo);
-}
+} */
 
 /*Parágrafos*/
-p {
+/* p {
   font-size: var(--tamanho-paragrafo);
   font-weight: var(--peso-paragrafo);
   line-height: var(--altura-linha-paragrafo);
-}
+} */
 
 /*Label */
-label {
+/* label {
   font-size: var(--tamanho-label);
-}
+} */
 
-/*Botões */
+/* Botões
 button {
   background-color: var(--cor-principal);
   color: var(--cor-branco);
@@ -148,4 +147,4 @@ button {
 button:hover {
   background-color: var(--cor-verde-destaque);
   color: var(--cor-fundo);
-}
+} */
