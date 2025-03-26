@@ -11,11 +11,13 @@ const DOM = {
   senha: document.getElementById("senha"),
   toggleSenha: document.getElementById("toggle-senha"),
   iconeSenha: document.querySelector(".icone-senha-cadastro"),
+
   // requisitosSenha: {
   //   tamanho: document.getElementById("req-tamanho"),
   //   maiuscula: document.getElementById("req-maiuscula"),
   //   especial: document.getElementById("req-especial"),
   // },
+
   mensagem: document.getElementById("mensagem-cadastro"),
   btnCadastro: document.getElementById("btn-cadastro"),
 };
@@ -35,6 +37,7 @@ const API = {
           Accept: "application/json",
         },
         body: JSON.stringify(dados),
+        console
       });
 
       if (!response.ok) {
@@ -51,10 +54,10 @@ const API = {
 };
 
 const Utils = {
-  // validarEmail: (email) => {
-  //   const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-  //   return regex.test(email);
-  // },
+  validarEmail: (email) => {
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return regex.test(email);
+  },
 
   // validarSenha: (senha) => {
   //   const temTamanho = senha.length >= 8 && senha.length <= 20;
@@ -164,9 +167,9 @@ const init = () => {
   DOM.toggleSenha.addEventListener("click", Handlers.toggleVisibilidadeSenha);
   // DOM.senha.addEventListener("input", Handlers.validarCampoSenha);
   DOM.form.addEventListener("submit", Handlers.handleSubmit);
-  // DOM.senha.addEventListener("input", (e) => {
-  //   Handlers.validarCampoSenha();
-  // });
+  DOM.email.addEventListener("input", (e) => {
+    Handlers.validarEmail();
+  });
 
   DOM.nome.addEventListener("keydown", (e) => {
     if (e.key === "Enter") DOM.email.focus();

@@ -22,6 +22,7 @@ const IMAGES = {
   hide: "../assets/img/cadastro-login/visibility_off.png",
 };
 
+
 const API = {
   loginUsuario: async (dados) => {
     try {
@@ -32,6 +33,7 @@ const API = {
           Accept: "application/json",
         },
         body: JSON.stringify(dados),
+        
       });
       if (!response.ok) {
         const errorData = await response.json();
@@ -41,6 +43,7 @@ const API = {
       return await response.json();
     } catch (error) {
       console.error("Erro na API:", error);
+      console.error("Dados enviados: ", dados)
       throw error;
     }
   },
