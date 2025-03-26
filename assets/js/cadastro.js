@@ -51,10 +51,10 @@ const API = {
 };
 
 const Utils = {
-  validarEmail: (email) => {
-    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    return regex.test(email);
-  },
+  // validarEmail: (email) => {
+  //   const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  //   return regex.test(email);
+  // },
 
   // validarSenha: (senha) => {
   //   const temTamanho = senha.length >= 8 && senha.length <= 20;
