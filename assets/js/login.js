@@ -1,5 +1,5 @@
 const CONFIG = {
-  API_URL: "http://localhost:3000/api/v1/login",
+  API_URL: "http://localhost:8080/api/v1/usuarios",
   REDIRECT_DELAY: 3000,
   FEED_PAGE: "../pages/feed.html",
 };
