@@ -1,3 +1,7 @@
+//  TODO: o codigo nao entrega resposta do email ja registrado
+// quando acontece um erro, por exemplo no email, o usuario nao consegue editar e tentar cadastrar DragEvent, por conta do botao desativda
+
+
 const CONFIG = {
   API_URL: "http://localhost:8080/api/v1/usuarios",
   REDIRECT_DELAY: 2000,
@@ -13,6 +17,8 @@ const DOM = {
   iconeSenha: document.querySelector(".icone-senha-cadastro"),
   mensagem: document.getElementById("mensagem-cadastro"),
   btnCadastro: document.getElementById("btn-cadastro"),
+  contadorSenha: document.getElementById("contador-senha"),
+  requisitoSenha: document.querySelector(".requisito"),
 };
 
 const IMAGES = {
@@ -33,103 +39,132 @@ const API = {
       });
 
       if (!response.ok) {
+        const error = new Error(errorData.message || "bananinha 123");
         const errorData = await response.json();
-        throw new Error(errorData.message || "Erro ao cadastrar usuário");
+        error.status = response.status;
+        throw error;
       }
-
       return await response.json();
     } catch (error) {
-      console.error("Erro na API:", error);
+      console.error("Erro técnico na API:", {
+        message: error.message,
+        status: error.status,
+        stack: error.stack,
+      });
       throw error;
     }
   },
 };
 
 const Utils = {
-  validarEmail: (email) => {
-    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    return regex.test(email);
+  validarSenha: (senha) => {
+    return senha.length >= 8 && senha.length <= 20;
   },
 
+  validarEmail: (email) => {
+    return email.includes('@') && email.includes('.com');
+  },
 
-  exibirMensagem: (elemento, texto, tipo = "erro") => {
-    elemento.textContent = texto;
-    elemento.className = tipo;
-    elemento.style.display = "block";
+  exibirMensagem: (elemento, erro) => {
+    let mensagemUsuario;
 
-    if (tipo === "sucesso") {
-      elemento.style.color = "#4CAF50"; //css aqui
+    if (erro.status === 409) {
+      mensagemUsuario =
+        "Este e-mail já está cadastrado. Por favor, use outro e-mail ou faça login.";
     } else {
-      elemento.style.color = "#f44336"; //css aqui
+      mensagemUsuario =
+        "Ocorreu um erro ao cadastrar. Por favor, tente novamente.";
     }
+
+    elemento.textContent = mensagemUsuario;
+    elemento.className = "erro";
+    elemento.style.display = "block";
+    elemento.style.color = "#f44336";
 
     setTimeout(() => {
       elemento.style.display = "none";
     }, 5000);
   },
-
 };
 
 const Handlers = {
   toggleVisibilidadeSenha: () => {
     const isSenhaVisivel = DOM.senha.type === "text";
     DOM.senha.type = isSenhaVisivel ? "password" : "text";
-
     DOM.iconeSenha.src = isSenhaVisivel ? IMAGES.show : IMAGES.hide;
-    DOM.toggleSenha.setAttribute(
-      "aria-label",
-      isSenhaVisivel ? "Mostrar senha" : "Ocultar senha"
-    );
+  },
+
+  atualizarValidacaoSenha: () => {
+    const senha = DOM.senha.value;
+    const valido = Utils.validarSenha(senha);
+
+    DOM.contadorSenha.textContent = `${senha.length}/20`;
+    DOM.contadorSenha.style.color = senha.length > 20 ? "#f44336" : "#666";
+    DOM.senha.style.borderColor = valido
+      ? "#4CAF50"
+      : senha.length > 0
+      ? "#f44336"
+      : "";
   },
 
   handleSubmit: async (event) => {
     event.preventDefault();
-
     DOM.btnCadastro.disabled = true;
-    DOM.btnCadastro.innerHTML = '<span id="btn-texto">Aguarde...</span>';
+    DOM.btnCadastro.textContent = "Aguarde...";
 
     const dados = {
       username: DOM.nome.value.trim(),
-      email: DOM.email.value.trim(),
+      email: DOM.email.value.trim().toLowerCase(),
       password: DOM.senha.value.trim(),
     };
 
     try {
-      if (!Utils.validarEmail(dados.email)) {
-        throw new Error("E-mail inválido. Use o formato exemplo@dominio.com");
+      if (!dados.username || !dados.email || !dados.password) {
+        throw { message: "Campos obrigatórios faltando" };
       }
 
-      const response = await API.cadastrarUsuario(dados);
+      if (!Utils.validarEmail(dados.email)) {
+        throw new Error("Por favor, insira um e-mail válido com @ e .com");
+      }
 
-      Utils.exibirMensagem(
-        DOM.mensagem,
-        "Cadastro realizado com sucesso!",
-        "sucesso"
-      );
+      if (!Utils.validarSenha(dados.password)) {
+        throw { message: "Senha inválida" };
+      }
+
+      await API.cadastrarUsuario(dados);
+
+      DOM.mensagem.textContent = "Cadastro realizado com sucesso!";
+      DOM.mensagem.style.color = "#4CAF50";
+      DOM.mensagem.style.display = "block";
 
       setTimeout(() => {
         window.location.href = CONFIG.LOGIN_PAGE;
       }, CONFIG.REDIRECT_DELAY);
+
+
     } catch (error) {
-      console.error("Erro no cadastro:", error);
-      Utils.exibirMensagem(
-        DOM.mensagem,
-        error.message || "Erro ao cadastrar. Tente novamente.",
-        "erro"
-      );
-    } finally {
-      DOM.btnCadastro.disabled = false;
-      DOM.btnCadastro.innerHTML = '<span id="btn-texto">Cadastrar</span>';
+ if (error.message.includes("e-mail válido")) {
+        DOM.mensagem.textContent = error.message;
+      } 
+      else if (error.status === 409) {
+        DOM.mensagem.textContent = "Este e-mail já está cadastrado. Por favor, use outro e-mail.";
+      }
+      else {
+        DOM.mensagem.textContent = "Ocorreu um erro ao cadastrar. Por favor, tente novamente.";
+      }
+      
+      DOM.mensagem.style.color = "#f44336";
+      DOM.mensagem.style.display = "block";
     }
-  },
+  }
 };
 
 const init = () => {
+  if (!DOM.form) return;
+
   DOM.toggleSenha.addEventListener("click", Handlers.toggleVisibilidadeSenha);
   DOM.form.addEventListener("submit", Handlers.handleSubmit);
-  DOM.email.addEventListener("input", (e) => {
-    Handlers.validarEmail();
-  });
+  DOM.senha.addEventListener("input", Handlers.atualizarValidacaoSenha);
 
   DOM.nome.addEventListener("keydown", (e) => {
     if (e.key === "Enter") DOM.email.focus();
@@ -142,6 +177,8 @@ const init = () => {
   DOM.senha.addEventListener("keydown", (e) => {
     if (e.key === "Enter") DOM.form.requestSubmit();
   });
+
+  DOM.contadorSenha.textContent = "0/20";
 };
 
 document.addEventListener("DOMContentLoaded", init);

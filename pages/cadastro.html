@@ -30,24 +30,17 @@
 
                     <div class="campo-senha" role="group" aria-labelledby="label-senha">
                         <label for="senha" id="label-senha">Senha</label>
-                        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required
-                            aria-required="true" />
+                        <input type="password" id="senha" name="senha" placeholder="Digite sua senha (8-20 caracteres)"
+                            required aria-required="true" minlength="8" maxlength="20" />
 
                         <button type="button" id="toggle-senha" class="btn-toggle" aria-label="Mostrar senha"
                             aria-controls="senha">
                             <img src="../assets/img/cadastro-login/visibility.png" alt="Ícone de senha"
                                 class="icone-senha-cadastro" width="20" height="20">
                         </button>
-
                     </div>
 
-                    <!-- <div id="requisitos-senha" class="requisitos-senha" aria-live="polite">
-                        <ul>
-                            <li id="req-tamanho" data-valido="false">8-20 caracteres</li>
-                            <li id="req-maiuscula" data-valido="false">1 letra maiúscula</li>
-                            <li id="req-especial" data-valido="false">1 caractere especial (!@#$%^&*()_.</li>
-                        </ul>
-                    </div> -->
+
 
                     <output id="mensagem-cadastro" role="status" aria-live="polite"></output>
 
