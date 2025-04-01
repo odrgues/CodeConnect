@@ -31,6 +31,7 @@ const API = {
         body: JSON.stringify(dados),
       });
       if (!response.ok) {
+        
         const errorData = await response.json();
         throw new Error(errorData.message || "Erro ao realizar login.");
       }
