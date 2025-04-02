@@ -20,18 +20,18 @@
   --fonte-principal: "Prompt", sans-serif;
 
   /*Títulos */
-  --tamanho-titulo: 44px;
+  --tamanho-titulo: 24px;
   --peso-titulo: 500;
   --altura-linha-titulo: 120%;
 
-  --tamanho-titulo-pequeno: 26px;
+  --tamanho-titulo-pequeno: 24px;
 
   /*Subtítulos */
   --tamanho-subtitulo-grande: 31px;
   --peso-subtitulo: 400;
   --altura-linha-subtitulo: 150%;
 
-  --tamanho-subtitulo: 16px;
+  --tamanho-subtitulo: 14px;
 
   /*Parágrafos */
   --tamanho-paragrafo-grande: 22px;

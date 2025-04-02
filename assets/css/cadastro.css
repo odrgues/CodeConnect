@@ -1,0 +1,287 @@
+    @import url(global.css);
+
+    body {
+        background-image: url(../img/cadastro-login/Símbolo.png), url(../img/cadastro-login/Símbolo.png);
+        background-repeat: no-repeat, no-repeat;
+        background-position: 100px -60px, 980px 330px;
+        background-size: 307px 387px, 307px 387px;
+        background-color: var(--cor-fundo);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0px;
+        font-family: var(--fonte-principal);
+    }
+
+    main {
+        background-color: var(--cor-cinza-escuro);
+        width: 650px;
+        height: 540px;
+        padding: 20px;
+        margin: 0px 20px;
+        border-radius: 22px;
+    }
+
+    .content-container {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        gap: 24px;
+        margin: 30px 50px 30px 20px;
+    }
+
+    .img-main {
+        width: 240x;
+        height: 434px;
+        object-fit: cover;
+    }
+
+    .container-form {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 22px;
+        margin-top: -25px;
+        /* para o container do forms subir um pouco: */
+    }
+
+    form {
+        width: 240px;
+        height: 200px;
+    }
+
+    #titulo-cadastro {
+        margin-bottom: 20px;
+        color: var(--cor-texto);
+        font-size: var(--tamanho-titulo);
+        font-weight: var(--peso-titulo);
+    }
+
+    h2 {
+        font-size: var(--tamanho-subtitulo);
+        font-weight: var(--peso-subtitulo);
+        margin-bottom: 25px;
+        color: var(--cor-texto);
+    }
+
+    form div label {
+        font-size: 12px;
+        font-weight: var(--peso-subtitulo);
+        display: block;
+        margin-bottom: 4px;
+        color: var(--cor-texto);
+    }
+
+    form div input {
+        width: 100%;
+        padding: 7px 14px;
+        background-color: var(--cor-input);
+        border: none;
+        border-radius: 4px;
+        line-height: 22px;
+        height: 25px;
+        margin-bottom: 15px;
+    }
+
+    .campo-senha {
+        position: relative;
+        /* Container pai para posicionamento absoluto */
+        width: 100%;
+        /* Mesma largura que o input */
+        margin-bottom: 20px;
+        /* Manter margem inferior */
+    }
+
+    .campo-senha input {
+        width: 100%;
+        /* Agora ocupa 100% do container */
+        padding-right: 40px;
+        /* Espaço para o botão dentro */
+        box-sizing: border-box;
+        /* Garante que o padding não aumente a largura */
+    }
+
+    .btn-toggle {
+        position: absolute;
+        right: 10px;
+        top: 60%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    #btn-cadastro {
+        background-color: var(--cor-verde-destaque);
+        color: var(--cor-fundo);
+        border: none;
+        width: 100%;
+        height: 30px;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: var(--peso-subtitulo);
+    }
+
+    .container-link-login {
+        margin-top: 80px;
+        /* Adiciona espaço acima do container */
+        margin-right: 40px;
+        display: flex;
+        align-items: center;
+        /* Alinha os itens verticalmente */
+        gap: 8px;
+        /* Espaço entre o texto e o link */
+        border-top: 2px solid var(--cor-texto);
+        padding-top: 20px;
+    }
+
+    .already-account {
+        margin-left: 20px;
+        /* Remove margens padrão do parágrafo */
+        color: var(--cor-texto);
+        font-size: 12px;
+        /* Use sua variável de fonte */
+    }
+
+    .link-login {
+        color: var(--cor-verde-destaque);
+        /* Ou a cor que preferir */
+        text-decoration: none;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        gap: 10px;
+    }
+
+    .img-login {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* Escondendo todas as versões das imagens */
+    .img-desktop,
+    .img-tablet,
+    .img-mobile {
+        display: none;
+    }
+
+    /* Mostrando a versão desktop por padrão */
+    .img-desktop {
+        display: block;
+    }
+
+
+    /* 📱 Tablet - Telas entre 768px e 1023px */
+    @media (max-width: 1023px) {
+        body {
+            background-position: -20px -30px, 600px 690px;
+            background-size: 220px 280px, 220px 280px;
+            height: 150vh;
+        }
+
+        main {
+            width: 500px;
+            height: auto;
+            padding: 30px 20px;
+            margin: 30px auto;
+        }
+
+        .content-container {
+            flex-direction: column;
+            gap: 25px;
+            margin: 0;
+            align-items: center;
+        }
+        
+        /*ocultando a imagem desktop */
+        .img-desktop{
+            display: none;
+        }
+
+        .img-tablet {
+            display: block;
+            width: 400px;
+            height: 320px;
+            object-fit: cover;
+        }
+
+        .container-form {
+            width: 100%;
+            max-width: 400px;
+            padding: 0;
+            margin-top: 0;
+        }
+
+        form {
+            width: 100%;
+            height: auto;
+        }
+
+        .container-link-login {
+            margin-top: 40px;
+            margin-right: 0;
+            justify-content: center;
+        }
+    }
+
+    /* 📱 Celular - Telas menores que 767px */
+    @media (max-width: 767px) {
+        body {
+            background-position: 50px 10px, 510px 680px;
+            background-size: 140px 200px, 140px 200px;
+            align-items: flex-start;
+            padding-top: 30px;
+            height: auto;
+            min-height: 100vh;
+        }
+
+        main {
+            width: 300px;
+            padding: 20px 15px;
+            border-radius: 15px;
+        }
+        /*Ocutando imagem do tablet*/
+        .img-tablet{
+            display: none;
+        }
+        .img-mobile {
+            display: block;
+            width: 280px;
+            height: 290px;
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+
+        #titulo-cadastro {
+            font-size: calc(var(--tamanho-titulo) * 0.8);
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-size: calc(var(--tamanho-subtitulo) * 0.8);
+            margin-bottom: 20px;
+        }
+
+        form div input {
+            height: 35px;
+            margin-bottom: 12px;
+        }
+
+        #btn-cadastro {
+            height: 35px;
+        }
+
+        .container-link-login {
+            margin-top: 30px;
+            padding-top: 15px;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .already-account {
+            margin-left: 0;
+        }
+    }

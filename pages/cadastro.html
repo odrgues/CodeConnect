@@ -11,7 +11,15 @@
 <body>
     <main>
         <div class="content-container">
-            <img src="../assets/img/cadastro-login/img-2.png" alt="Ilustração de cadastro" class="img-main">
+            <!-- Versão Desktop -->
+            <img src="../assets/img/cadastro-login/img-2.png" alt="Ilustração de cadastro" class="img-main img-desktop">
+            
+             <!-- Versão Tablet -->
+            <img src="../assets/img/cadastro-login/IMG2_Tablet.png" alt="Ilustração de cadastro" class="img-main img-tablet">
+    
+            <!-- Versão Mobile -->
+            <img src="../assets/img/cadastro-login/IMG2_Mobile.png" alt="Ilustração de cadastro" class="img-main img-mobile">
+
 
             <div class="container-form">
                 <h1 id="titulo-cadastro">Cadastro</h1>
@@ -19,12 +27,12 @@
 
                 <form id="form-cadastro" aria-labelledby="titulo-cadastro">
                     <div role="group" aria-labelledby="label-nome">
-                        <label for="nome" id="label-nome">Nome</label><br>
+                        <label for="nome" id="label-nome">Nome</label>
                         <input type="text" id="nome" name="nome" required aria-required="true" autofocus />
                     </div>
 
                     <div role="group" aria-labelledby="label-email">
-                        <label for="email-cadastro" id="label-email">Email</label><br>
+                        <label for="email-cadastro" id="label-email">Email</label>
                         <input type="email" id="email-cadastro" name="email" required aria-required="true" />
                     </div>
 
