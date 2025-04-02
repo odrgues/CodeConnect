@@ -1,7 +1,3 @@
-//  TODO: o codigo nao entrega resposta do email ja registrado
-// quando acontece um erro, por exemplo no email, o usuario nao consegue editar e tentar cadastrar DragEvent, por conta do botao desativda
-
-
 const CONFIG = {
   API_URL: "http://localhost:8080/api/v1/usuarios",
   REDIRECT_DELAY: 2000,
@@ -38,13 +34,15 @@ const API = {
         body: JSON.stringify(dados),
       });
 
+      const errorData = await response.json();
+
       if (!response.ok) {
-        const error = new Error(errorData.message || "bananinha 123");
-        const errorData = await response.json();
+        const error = new Error(errorData.message || "Erro ao processar a solicitação.");
         error.status = response.status;
         throw error;
       }
-      return await response.json();
+      return errorData;
+
     } catch (error) {
       console.error("Erro técnico na API:", {
         message: error.message,
@@ -146,8 +144,8 @@ const Handlers = {
  if (error.message.includes("e-mail válido")) {
         DOM.mensagem.textContent = error.message;
       } 
-      else if (error.status === 409) {
-        DOM.mensagem.textContent = "Este e-mail já está cadastrado. Por favor, use outro e-mail.";
+      else if (error.status === 500) {
+        DOM.mensagem.textContent = "Este e-mail já está cadastrado. Por favor, use outro e-mail ou faça login.";
       }
       else {
         DOM.mensagem.textContent = "Ocorreu um erro ao cadastrar. Por favor, tente novamente.";
