@@ -5,16 +5,88 @@ const CONFIG = {
 };
 
 const DOM = {
-  form: document.getElementById("form-cadastro"),
-  nome: document.getElementById("nome"),
-  email: document.getElementById("email-cadastro"),
-  senha: document.getElementById("senha"),
-  toggleSenha: document.getElementById("toggle-senha"),
-  iconeSenha: document.querySelector(".icone-senha-cadastro"),
-  mensagem: document.getElementById("mensagem-cadastro"),
-  btnCadastro: document.getElementById("btn-cadastro"),
-  contadorSenha: document.getElementById("contador-senha"),
-  requisitoSenha: document.querySelector(".requisito"),
+  get form() {
+    return (
+      document.getElementById("form-cadastro") || {
+        addEventListener: () => {},
+        requestSubmit: () => {},
+      }
+    );
+  },
+  get nome() {
+    return (
+      document.getElementById("nome") || {
+        value: "",
+        addEventListener: () => {},
+        focus: () => {},
+        style: {},
+      }
+    );
+  },
+  get email() {
+    return (
+      document.getElementById("email-cadastro") || {
+        value: "",
+        addEventListener: () => {},
+        focus: () => {},
+        style: {},
+      }
+    );
+  },
+  get senha() {
+    return (
+      document.getElementById("senha") || {
+        value: "",
+        type: "password",
+        addEventListener: () => {},
+        focus: () => {},
+        style: {},
+      }
+    );
+  },
+  get toggleSenha() {
+    return (
+      document.getElementById("toggle-senha") || {
+        addEventListener: () => {},
+        setAttribute: () => {},
+      }
+    );
+  },
+  get iconeSenha() {
+    return (
+      document.querySelector(".icone-senha-cadastro") || {
+        src: "",
+      }
+    );
+  },
+  get mensagem() {
+    return (
+      document.getElementById("mensagem-cadastro") || {
+        textContent: "",
+        style: {},
+        className: "",
+        setAttribute: () => {},
+      }
+    );
+  },
+  get btnCadastro() {
+    return (
+      document.getElementById("btn-cadastro") || {
+        disabled: false,
+        style: {},
+        innerHTML: "",
+        textContent: "",
+      }
+    );
+  },
+  get contadorSenha() {
+    return (
+      document.getElementById("contador-senha") || {
+        textContent: "",
+        style: {},
+      }
+    );
+  },
 };
 
 const IMAGES = {
@@ -34,22 +106,17 @@ const API = {
         body: JSON.stringify(dados),
       });
 
-      const errorData = await response.json();
+      const data = await response.json();
 
       if (!response.ok) {
-        const error = new Error(errorData.message || "Erro ao processar a solicitação.");
+        const error = new Error(data.message || "Erro ao processar a solicitação.");
         error.status = response.status;
         throw error;
       }
-      return errorData;
-
+      return data; 
     } catch (error) {
-      console.error("Erro técnico na API:", {
-        message: error.message,
-        status: error.status,
-        stack: error.stack,
-      });
-      throw error;
+      console.error("Erro técnico na API:", error);
+      throw error; 
     }
   },
 };
@@ -60,30 +127,22 @@ const Utils = {
   },
 
   validarEmail: (email) => {
-    return email.includes('@') && email.includes('.com');
+    return email.includes("@") && email.includes(".com");
   },
 
-  exibirMensagem: (elemento, erro) => {
-    let mensagemUsuario;
-
-    if (erro.status === 409) {
-      mensagemUsuario =
-        "Este e-mail já está cadastrado. Por favor, use outro e-mail ou faça login.";
-    } else {
-      mensagemUsuario =
-        "Ocorreu um erro ao cadastrar. Por favor, tente novamente.";
-    }
-
-    elemento.textContent = mensagemUsuario;
-    elemento.className = "erro";
-    elemento.style.display = "block";
-    elemento.style.color = "#f44336";
+  exibirMensagem: (elemento, texto, tipo = "erro") => { 
+    elemento.textContent = texto;
+    elemento.className = tipo; 
+    // elemento.style.display = "block";
+    // elemento.style.color = tipo === "erro" ? "#f44336" : "#4CAF50"; 
 
     setTimeout(() => {
       elemento.style.display = "none";
     }, 5000);
   },
 };
+
+
 
 const Handlers = {
   toggleVisibilidadeSenha: () => {
@@ -98,17 +157,14 @@ const Handlers = {
 
     DOM.contadorSenha.textContent = `${senha.length}/20`;
     DOM.contadorSenha.style.color = senha.length > 20 ? "#f44336" : "#666";
-    DOM.senha.style.borderColor = valido
-      ? "#4CAF50"
-      : senha.length > 0
-      ? "#f44336"
-      : "";
   },
 
   handleSubmit: async (event) => {
     event.preventDefault();
+    
+    
     DOM.btnCadastro.disabled = true;
-    DOM.btnCadastro.textContent = "Aguarde...";
+    DOM.btnCadastro.innerHTML = '<div class="loader"></div>';
 
     const dados = {
       username: DOM.nome.value.trim(),
@@ -117,45 +173,60 @@ const Handlers = {
     };
 
     try {
-      if (!dados.username || !dados.email || !dados.password) {
-        throw { message: "Campos obrigatórios faltando" };
+     
+      if (!dados.username) {
+        throw new Error("O nome é obrigatório");
       }
-
+      if (!dados.email) {
+        throw new Error("O e-mail é obrigatório");
+      }
+      if (!dados.password) {
+        throw new Error("A senha é obrigatória");
+      }
       if (!Utils.validarEmail(dados.email)) {
         throw new Error("Por favor, insira um e-mail válido com @ e .com");
       }
-
       if (!Utils.validarSenha(dados.password)) {
-        throw { message: "Senha inválida" };
+        throw new Error("A senha deve ter entre 8 e 20 caracteres");
       }
 
+      
       await API.cadastrarUsuario(dados);
 
-      DOM.mensagem.textContent = "Cadastro realizado com sucesso!";
-      DOM.mensagem.style.color = "#4CAF50";
-      DOM.mensagem.style.display = "block";
+      
+      Utils.exibirMensagem(
+        DOM.mensagem,
+        "Cadastro realizado com sucesso!",
+        "sucesso"
+      );
 
+      
       setTimeout(() => {
         window.location.href = CONFIG.LOGIN_PAGE;
       }, CONFIG.REDIRECT_DELAY);
 
-
     } catch (error) {
- if (error.message.includes("e-mail válido")) {
-        DOM.mensagem.textContent = error.message;
-      } 
-      else if (error.status === 500) {
-        DOM.mensagem.textContent = "Este e-mail já está cadastrado. Por favor, use outro e-mail ou faça login.";
-      }
-      else {
-        DOM.mensagem.textContent = "Ocorreu um erro ao cadastrar. Por favor, tente novamente.";
-      }
       
-      DOM.mensagem.style.color = "#f44336";
-      DOM.mensagem.style.display = "block";
+      let mensagemErro = error.message;
+      
+      if (error.status === 500) { //TODO: alterar o numero de erro
+        mensagemErro = "Este e-mail já está cadastrado. Por favor, use outro e-mail ou faça login.";
+      }
+
+      
+      Utils.exibirMensagem(
+        DOM.mensagem,
+        mensagemErro,
+        "erro"
+      );
+
+    } finally {
+      
+      DOM.btnCadastro.disabled = false;
+      DOM.btnCadastro.textContent = "Cadastrar";
     }
   }
-};
+}; 
 
 const init = () => {
   if (!DOM.form) return;
