@@ -1,6 +1,7 @@
 const CONFIG = {
   API_URL: "http://localhost:8080/api/v1/usuarios",
-  REDIRECT_DELAY: 2000,
+  MIN_LOADER_TIME: 1500,
+  MESSAGE_DISPLAY_TIME: 3000,
   LOGIN_PAGE: "../pages/login.html",
 };
 
@@ -19,7 +20,6 @@ const DOM = {
         value: "",
         addEventListener: () => {},
         focus: () => {},
-        style: {},
       }
     );
   },
@@ -29,7 +29,6 @@ const DOM = {
         value: "",
         addEventListener: () => {},
         focus: () => {},
-        style: {},
       }
     );
   },
@@ -40,7 +39,6 @@ const DOM = {
         type: "password",
         addEventListener: () => {},
         focus: () => {},
-        style: {},
       }
     );
   },
@@ -48,7 +46,6 @@ const DOM = {
     return (
       document.getElementById("toggle-senha") || {
         addEventListener: () => {},
-        setAttribute: () => {},
       }
     );
   },
@@ -65,7 +62,6 @@ const DOM = {
         textContent: "",
         style: {},
         className: "",
-        setAttribute: () => {},
       }
     );
   },
@@ -73,7 +69,6 @@ const DOM = {
     return (
       document.getElementById("btn-cadastro") || {
         disabled: false,
-        style: {},
         innerHTML: "",
         textContent: "",
       }
@@ -83,7 +78,6 @@ const DOM = {
     return (
       document.getElementById("contador-senha") || {
         textContent: "",
-        style: {},
       }
     );
   },
@@ -109,14 +103,17 @@ const API = {
       const data = await response.json();
 
       if (!response.ok) {
-        const error = new Error(data.message || "Erro ao processar a solicitação.");
+        const error = new Error(
+          data.message || "Erro ao processar a solicitação."
+        );
         error.status = response.status;
         throw error;
       }
-      return data; 
+
+      return data;
     } catch (error) {
-      console.error("Erro técnico na API:", error);
-      throw error; 
+      console.error("Erro na API:", error);
+      throw error;
     }
   },
 };
@@ -127,22 +124,34 @@ const Utils = {
   },
 
   validarEmail: (email) => {
-    return email.includes("@") && email.includes(".com");
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regexEmail.test(email);
   },
 
-  exibirMensagem: (elemento, texto, tipo = "erro") => { 
+  exibirMensagem: (elemento, texto, tipo = "erro") => {
     elemento.textContent = texto;
-    elemento.className = tipo; 
-    // elemento.style.display = "block";
-    // elemento.style.color = tipo === "erro" ? "#f44336" : "#4CAF50"; 
+    elemento.className = tipo; //css pro caso de sucesso e erro
+    elemento.style.display = "block";
 
-    setTimeout(() => {
-      elemento.style.display = "none";
-    }, 5000);
+    setTimeout(
+      () => {
+        elemento.style.display = "none";
+      },
+      tipo === "sucesso" ? CONFIG.MESSAGE_DISPLAY_TIME : 5000
+    );
+  },
+
+  toggleLoader: (elemento, isLoading) => {
+    if (isLoading) {
+      elemento.dataset.originalText = elemento.textContent;
+      elemento.innerHTML = '<span class="loader"></span>'; //css pra clase loader
+      elemento.disabled = true;
+    } else {
+      elemento.textContent = elemento.dataset.originalText || "Cadastrar";
+      elemento.disabled = false;
+    }
   },
 };
-
-
 
 const Handlers = {
   toggleVisibilidadeSenha: () => {
@@ -153,18 +162,14 @@ const Handlers = {
 
   atualizarValidacaoSenha: () => {
     const senha = DOM.senha.value;
-    const valido = Utils.validarSenha(senha);
-
     DOM.contadorSenha.textContent = `${senha.length}/20`;
-    DOM.contadorSenha.style.color = senha.length > 20 ? "#f44336" : "#666";
   },
 
   handleSubmit: async (event) => {
     event.preventDefault();
-    
-    
-    DOM.btnCadastro.disabled = true;
-    DOM.btnCadastro.innerHTML = '<div class="loader"></div>';
+    const startTime = Date.now();
+
+    Utils.toggleLoader(DOM.btnCadastro, true);
 
     const dados = {
       username: DOM.nome.value.trim(),
@@ -173,60 +178,56 @@ const Handlers = {
     };
 
     try {
-     
-      if (!dados.username) {
-        throw new Error("O nome é obrigatório");
-      }
-      if (!dados.email) {
-        throw new Error("O e-mail é obrigatório");
-      }
-      if (!dados.password) {
-        throw new Error("A senha é obrigatória");
-      }
+      if (!dados.username) throw new Error("O nome é obrigatório");
+      if (!dados.email) throw new Error("O e-mail é obrigatório");
+      if (!dados.password) throw new Error("A senha é obrigatória");
       if (!Utils.validarEmail(dados.email)) {
-        throw new Error("Por favor, insira um e-mail válido com @ e .com");
+        throw new Error("Por favor, insira um e-mail válido");
       }
       if (!Utils.validarSenha(dados.password)) {
         throw new Error("A senha deve ter entre 8 e 20 caracteres");
       }
 
-      
-      await API.cadastrarUsuario(dados);
+      await Promise.all([
+        API.cadastrarUsuario(dados),
+        new Promise((resolve) => setTimeout(resolve, CONFIG.MIN_LOADER_TIME)),
+      ]);
 
-      
       Utils.exibirMensagem(
         DOM.mensagem,
         "Cadastro realizado com sucesso!",
         "sucesso"
       );
 
-      
-      setTimeout(() => {
-        window.location.href = CONFIG.LOGIN_PAGE;
-      }, CONFIG.REDIRECT_DELAY);
-
-    } catch (error) {
-      
-      let mensagemErro = error.message;
-      
-      if (error.status === 500) { //TODO: alterar o numero de erro
-        mensagemErro = "Este e-mail já está cadastrado. Por favor, use outro e-mail ou faça login.";
-      }
-
-      
-      Utils.exibirMensagem(
-        DOM.mensagem,
-        mensagemErro,
-        "erro"
+      const elapsed = Date.now() - startTime;
+      const remainingTime = Math.max(
+        CONFIG.MESSAGE_DISPLAY_TIME - elapsed,
+        1000
       );
 
+      setTimeout(() => {
+        window.location.href = CONFIG.LOGIN_PAGE;
+      }, remainingTime);
+    } catch (error) {
+      let mensagemErro = error.message;
+
+      if (error.status === 500) {
+        //mudar com backend
+        mensagemErro =
+          "Este e-mail já está cadastrado. Por favor, use outro e-mail ou faça login.";
+      }
+
+      Utils.exibirMensagem(DOM.mensagem, mensagemErro, "erro");
     } finally {
-      
-      DOM.btnCadastro.disabled = false;
-      DOM.btnCadastro.textContent = "Cadastrar";
+      const elapsed = Date.now() - startTime;
+      const remainingLoaderTime = Math.max(0, CONFIG.MIN_LOADER_TIME - elapsed);
+
+      setTimeout(() => {
+        Utils.toggleLoader(DOM.btnCadastro, false);
+      }, remainingLoaderTime);
     }
-  }
-}; 
+  },
+};
 
 const init = () => {
   if (!DOM.form) return;

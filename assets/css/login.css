@@ -1,3 +1,16 @@
+/*-O formulário nao está parecido com o figma, tenta ajustar os tamanhos da coisas (principalmente dos campos)
+-A responsividade com as imagens ao fundo nao está funcionando, no tablet elas ficam fora da formatação, e no caso do celular, uma delas até desaparece.
+-As mensagens de erro estão sem estilização, nao estão centralizadas e em uma cor diferentes (comentei no js do cadastro e login oq deve ser usado)
+-Ao passar o mouse em cima do botão de login e cadastro, o cursos nao muda, o que deixa o usuário confuso, pois nao sinaliza que o botão pode ser clicado.
+-Vai ser preciso estilizar o loader do botão, também marquei no js o que deve ser feito.
+-O formulário nao está parecido com o figma, tenta ajustar os tamanhos da coisas (principalmente dos campos)
+-A responsividade com as imagens ao fundo nao está funcionando, no tablet elas ficam fora da formatação, e no caso do celular, uma delas até desaparece.
+-As mensagens de erro estão sem estilização, nao estão centralizadas e em uma cor diferentes (comentei no js do cadastro e login oq deve ser usado)
+-Ao passar o mouse em cima do botão de login e cadastro, o cursos nao muda, o que deixa o usuário confuso, pois nao sinaliza que o botão pode ser clicado.
+-Vai ser preciso estilizar o loader do botão, também marquei no js o que deve ser feito.
+*/
+
+
 @import url(global.css);
 
 body {
