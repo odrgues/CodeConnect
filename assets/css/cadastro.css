@@ -3,7 +3,8 @@
     body {
         background-image: url(../img/cadastro-login/Símbolo.png), url(../img/cadastro-login/Símbolo.png);
         background-repeat: no-repeat, no-repeat;
-        background-position: 100px -60px, 980px 330px;
+        background-position: left -60px, right 330px;
+        background-attachment: fixed;
         background-size: 307px 387px, 307px 387px;
         background-color: var(--cor-fundo);
         display: flex;
@@ -111,6 +112,7 @@
         border: none;
         cursor: pointer;
         padding: 5px;
+        cursor: pointer;
     }
 
     #btn-cadastro {
@@ -122,6 +124,8 @@
         border-radius: 4px;
         font-size: 16px;
         font-weight: var(--peso-subtitulo);
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
 
     .container-link-login {
@@ -147,7 +151,6 @@
 
     .link-login {
         color: var(--cor-verde-destaque);
-        /* Ou a cor que preferir */
         text-decoration: none;
         font-weight: 500;
         display: flex;
@@ -173,12 +176,68 @@
         display: block;
     }
 
+    /*Estilização para o js*/
+    output {
+        display: none;
+        padding: 5px;
+        margin: 5px 0;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: var(--peso-subtitulo);
+    }
+
+    output.erro {
+        background-color: var(--cor-cinza-escuro);
+        color: #d32f2f;
+        border: 1px solid #ef9a9a;
+    }
+
+    output.sucesso {
+        background-color: var(--cor-cinza-escuro);
+        color: #2e7d32;
+        border: 1px solid #a5d6a7;
+    }
+
+    .loader {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--cor-fundo);
+        animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    #btn-cadastro {
+        position: relative;
+    }
+
+    #btn-cadastro .loader {
+        margin: 0 auto;
+    }
+
+    #contador-senha {
+        display: block;
+        text-align: right;
+        font-size: 12px;
+        color: var(--cor-texto);
+        margin-top: -10px;
+        margin-bottom: 15px;
+    }
+
 
     /* 📱 Tablet - Telas entre 768px e 1023px */
     @media (max-width: 1023px) {
         body {
-            background-position: -20px -30px, 600px 690px;
+            background-position: left -30px, right 390px;
             background-size: 220px 280px, 220px 280px;
+            background-attachment: fixed;
             height: 150vh;
         }
 
@@ -195,9 +254,9 @@
             margin: 0;
             align-items: center;
         }
-        
+
         /*ocultando a imagem desktop */
-        .img-desktop{
+        .img-desktop {
             display: none;
         }
 
@@ -230,8 +289,9 @@
     /* 📱 Celular - Telas menores que 767px */
     @media (max-width: 767px) {
         body {
-            background-position: 50px 10px, 510px 680px;
+            background-position: left 10px, right 430px;
             background-size: 140px 200px, 140px 200px;
+            background-attachment: fixed;
             align-items: flex-start;
             padding-top: 30px;
             height: auto;
@@ -243,10 +303,12 @@
             padding: 20px 15px;
             border-radius: 15px;
         }
+
         /*Ocutando imagem do tablet*/
-        .img-tablet{
+        .img-tablet {
             display: none;
         }
+
         .img-mobile {
             display: block;
             width: 280px;
