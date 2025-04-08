@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Monsieur+La+Doulaise&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Shafarik&family=Sigmar&display=swap");
 
 :root {
-  /*Cores */
   --cor-fundo: #01080e;
   --cor-texto: #e1e1e1;
   --cor-input: #888888;
@@ -10,30 +9,26 @@
   --cor-verde-pastel: #bfffc3;
   --cor-verde-petroleo: #132e35;
   --cor-cinza: #3e3e3f;
-  --cor-cinza-medio:#888888;
+  --cor-cinza-medio: #888888;
   --cor-cinza-claro: #bcbcbc;
-  --cor-cinza-escuro:#171D1F;
+  --cor-cinza-escuro: #171d1f;
   --cor-offwhite: #e1e1e1;
   --cor-branco: #ffffff;
 
-  /*Tipografia */
   --fonte-principal: "Prompt", sans-serif;
 
-  /*Títulos */
   --tamanho-titulo: 24px;
   --peso-titulo: 500;
   --altura-linha-titulo: 120%;
 
   --tamanho-titulo-pequeno: 24px;
 
-  /*Subtítulos */
   --tamanho-subtitulo-grande: 31px;
   --peso-subtitulo: 400;
   --altura-linha-subtitulo: 150%;
 
   --tamanho-subtitulo: 14px;
 
-  /*Parágrafos */
   --tamanho-paragrafo-grande: 22px;
   --peso-paragrafo: 400;
   --altura-linha-paragrafo: 150%;
@@ -41,10 +36,8 @@
   --tamanho-paragrafo: 18px;
   --tamanho-paragrafo-pequeno: 15px;
 
-  /*Label*/
   --tamanho-label: 12.5px;
 
-  /*Espaçamentos*/
   --espacamento-xxs: 4px;
   --espacamento-xs: 8px;
   --espacamento-sm: 12px;
@@ -53,98 +46,21 @@
   --espacamento-xl: 32px;
   --espacamento-xxl: 56px;
 
-  /*Largura & Altura*/
   --largura-maxima: 1200px;
   --largura-container: 90%;
   --altura-header: 60px;
   --altura-botao: 48px;
 }
 
-/* Reset completo para eliminar conflitos */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
 }
-
-/* body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 1rem;
-  background-color: var(--cor-fundo);
-  font-family: var(--fonte-principal);
-  color: var(--cor-texto);
-}
-
-main {
-  width: 100%;
-  max-width: 730px;
-  background-color: var(--cor-cinza-escuro);
-  border-radius: 32px;
-  padding: var(--espacamento-lg);
-  box-shadow: 0 0 20px rgba(0,0,0,0.2);
-}
-
-
-body.debug::after {
-  content: "Área do Body";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: red;
-  font-size: 2rem;
-  z-index: -1;
-}
-
-/*Estilização de Títulos*/
-/* h1 {
-  font-size: var(--tamanho-titulo);
-  font-weight: var(--peso-titulo);
-  line-height: var(--altura-linha-titulo);
- }
-
-h2 {
-  font-size: var(--tamanho-titulo-pequeno);
-}
-
-h3 {
-  font-size: var(--tamanho-subtitulo-grande);
-  font-weight: var(--peso-subtitulo);
-  line-height: var(--altura-linha-subtitulo);
-} */
-
-/*Parágrafos*/
-/* p {
-  font-size: var(--tamanho-paragrafo);
-  font-weight: var(--peso-paragrafo);
-  line-height: var(--altura-linha-paragrafo);
-} */
-
-/*Label */
-/* label {
-  font-size: var(--tamanho-label);
-} */
-
-/* Botões
-button {
-  background-color: var(--cor-principal);
-  color: var(--cor-branco);
-  padding: var(--espacamento-md);
-  border-radius: var(--raio-borda);
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: var(--cor-verde-destaque);
-  color: var(--cor-fundo);
-} */

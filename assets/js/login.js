@@ -93,7 +93,7 @@ const Utils = {
     elemento.textContent = texto;
     elemento.className = `mensagem-flutuante ${
       tipo === "sucesso" ? "mensagem-sucesso" : "mensagem-erro"
-    }`; //essas sao as classes que vc deve fazer a estilizacao.
+    }`; 
     elemento.style.display = "block";
 
     setTimeout(
@@ -108,7 +108,7 @@ const Utils = {
     if (isLoading) {
       elemento.dataset.originalText = elemento.textContent;
       elemento.innerHTML =
-        '<span class="loader-spinner"><span class="spinner-inner"></span></span>'; //loader-spinner e spinner-inner sao classes que vc deve estilizar também (no momento ele nem aparece na tela)
+        '<span class="loader-spinner"><span class="spinner-inner"></span></span>'; 
       elemento.disabled = true;
     } else {
       elemento.textContent = elemento.dataset.originalText || "Entrar";

@@ -1,349 +1,338 @@
-    @import url(global.css);
+@import url(global.css);
 
-    body {
-        background-image: url(../img/cadastro-login/Símbolo.png), url(../img/cadastro-login/Símbolo.png);
-        background-repeat: no-repeat, no-repeat;
-        background-position: left -60px, right 330px;
-        background-attachment: fixed;
-        background-size: 307px 387px, 307px 387px;
-        background-color: var(--cor-fundo);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0px;
-        font-family: var(--fonte-principal);
-    }
+body {
+  background-image: url(../img/cadastro-login/Símbolo.png),
+    url(../img/cadastro-login/Símbolo.png);
+  background-repeat: no-repeat, no-repeat;
+  background-position: left -60px, right 330px;
+  background-attachment: fixed;
+  background-size: 307px 387px, 307px 387px;
+  background-color: var(--cor-fundo);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0px;
+  font-family: var(--fonte-principal);
+}
 
-    main {
-        background-color: var(--cor-cinza-escuro);
-        width: 650px;
-        height: 540px;
-        padding: 20px;
-        margin: 0px 20px;
-        border-radius: 22px;
-    }
+main {
+  background-color: var(--cor-cinza-escuro);
+  width: 650px;
+  height: 540px;
+  padding: 20px;
+  margin: 0px 20px;
+  border-radius: 22px;
+}
 
-    .content-container {
-        display: flex;
-        width: 100%;
-        height: 100%;
-        gap: 24px;
-        margin: 30px 50px 30px 20px;
-    }
+.content-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  gap: 24px;
+  margin: 30px 50px 30px 20px;
+}
 
-    .img-main {
-        width: 240x;
-        height: 434px;
-        object-fit: cover;
-    }
+.img-main {
+  width: 240x;
+  height: 434px;
+  object-fit: cover;
+}
 
-    .container-form {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        padding: 22px;
-        margin-top: -25px;
-        /* para o container do forms subir um pouco: */
-    }
+.container-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  margin-top: -25px;
+}
 
-    form {
-        width: 240px;
-        height: 200px;
-    }
+form {
+  width: 240px;
+  height: 200px;
+}
 
-    #titulo-cadastro {
-        margin-bottom: 20px;
-        color: var(--cor-texto);
-        font-size: var(--tamanho-titulo);
-        font-weight: var(--peso-titulo);
-    }
+#titulo-cadastro {
+  margin-bottom: 20px;
+  color: var(--cor-texto);
+  font-size: var(--tamanho-titulo);
+  font-weight: var(--peso-titulo);
+}
 
-    h2 {
-        font-size: var(--tamanho-subtitulo);
-        font-weight: var(--peso-subtitulo);
-        margin-bottom: 25px;
-        color: var(--cor-texto);
-    }
+h2 {
+  font-size: var(--tamanho-subtitulo);
+  font-weight: var(--peso-subtitulo);
+  margin-bottom: 25px;
+  color: var(--cor-texto);
+}
 
-    form div label {
-        font-size: 12px;
-        font-weight: var(--peso-subtitulo);
-        display: block;
-        margin-bottom: 4px;
-        color: var(--cor-texto);
-    }
+form div label {
+  font-size: 12px;
+  font-weight: var(--peso-subtitulo);
+  display: block;
+  margin-bottom: 4px;
+  color: var(--cor-texto);
+}
 
-    form div input {
-        width: 100%;
-        padding: 7px 14px;
-        background-color: var(--cor-input);
-        border: none;
-        border-radius: 4px;
-        line-height: 22px;
-        height: 25px;
-        margin-bottom: 15px;
-    }
+form div input {
+  width: 100%;
+  padding: 7px 14px;
+  background-color: var(--cor-input);
+  border: none;
+  border-radius: 4px;
+  line-height: 22px;
+  height: 25px;
+  margin-bottom: 15px;
+}
 
-    .campo-senha {
-        position: relative;
-        /* Container pai para posicionamento absoluto */
-        width: 100%;
-        /* Mesma largura que o input */
-        margin-bottom: 20px;
-        /* Manter margem inferior */
-    }
+.campo-senha {
+  position: relative;
 
-    .campo-senha input {
-        width: 100%;
-        /* Agora ocupa 100% do container */
-        padding-right: 40px;
-        /* Espaço para o botão dentro */
-        box-sizing: border-box;
-        /* Garante que o padding não aumente a largura */
-    }
+  width: 100%;
 
-    .btn-toggle {
-        position: absolute;
-        right: 10px;
-        top: 60%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 5px;
-        cursor: pointer;
-    }
+  margin-bottom: 20px;
+}
 
-    #btn-cadastro {
-        background-color: var(--cor-verde-destaque);
-        color: var(--cor-fundo);
-        border: none;
-        width: 100%;
-        height: 30px;
-        border-radius: 4px;
-        font-size: 16px;
-        font-weight: var(--peso-subtitulo);
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
+.campo-senha input {
+  width: 100%;
 
-    .container-link-login {
-        margin-top: 80px;
-        /* Adiciona espaço acima do container */
-        margin-right: 40px;
-        display: flex;
-        align-items: center;
-        /* Alinha os itens verticalmente */
-        gap: 8px;
-        /* Espaço entre o texto e o link */
-        border-top: 2px solid var(--cor-texto);
-        padding-top: 20px;
-    }
+  padding-right: 40px;
 
-    .already-account {
-        margin-left: 20px;
-        /* Remove margens padrão do parágrafo */
-        color: var(--cor-texto);
-        font-size: 12px;
-        /* Use sua variável de fonte */
-    }
+  box-sizing: border-box;
+}
 
-    .link-login {
-        color: var(--cor-verde-destaque);
-        text-decoration: none;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        font-size: 12px;
-        gap: 10px;
-    }
+.btn-toggle {
+  position: absolute;
+  right: 10px;
+  top: 60%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  cursor: pointer;
+}
 
-    .img-login {
-        width: 14px;
-        height: 14px;
-    }
+#btn-cadastro {
+  background-color: var(--cor-verde-destaque);
+  color: var(--cor-fundo);
+  border: none;
+  width: 100%;
+  height: 30px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: var(--peso-subtitulo);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
-    /* Escondendo todas as versões das imagens */
-    .img-desktop,
-    .img-tablet,
-    .img-mobile {
-        display: none;
-    }
+.container-link-login {
+  margin-top: 80px;
 
-    /* Mostrando a versão desktop por padrão */
-    .img-desktop {
-        display: block;
-    }
+  margin-right: 40px;
+  display: flex;
+  align-items: center;
 
-    /*Estilização para o js*/
-    output {
-        display: none;
-        padding: 5px;
-        margin: 5px 0;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: var(--peso-subtitulo);
-    }
+  gap: 8px;
 
-    output.erro {
-        background-color: var(--cor-cinza-escuro);
-        color: #d32f2f;
-        border: 1px solid #ef9a9a;
-    }
+  border-top: 2px solid var(--cor-texto);
+  padding-top: 20px;
+}
 
-    output.sucesso {
-        background-color: var(--cor-cinza-escuro);
-        color: #2e7d32;
-        border: 1px solid #a5d6a7;
-    }
+.already-account {
+  margin-left: 20px;
 
-    .loader {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border: 3px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top-color: var(--cor-fundo);
-        animation: spin 1s ease-in-out infinite;
-    }
+  color: var(--cor-texto);
+  font-size: 12px;
+}
 
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
+.link-login {
+  color: var(--cor-verde-destaque);
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  gap: 10px;
+}
 
-    #btn-cadastro {
-        position: relative;
-    }
+.img-login {
+  width: 14px;
+  height: 14px;
+}
 
-    #btn-cadastro .loader {
-        margin: 0 auto;
-    }
+.img-desktop,
+.img-tablet,
+.img-mobile {
+  display: none;
+}
 
-    #contador-senha {
-        display: block;
-        text-align: right;
-        font-size: 12px;
-        color: var(--cor-texto);
-        margin-top: -10px;
-        margin-bottom: 15px;
-    }
+.img-desktop {
+  display: block;
+}
 
+output {
+  display: none;
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: var(--peso-subtitulo);
+}
 
-    /* 📱 Tablet - Telas entre 768px e 1023px */
-    @media (max-width: 1023px) {
-        body {
-            background-position: left -30px, right 390px;
-            background-size: 220px 280px, 220px 280px;
-            background-attachment: fixed;
-            height: 150vh;
-        }
+output.erro {
+  background-color: var(--cor-cinza-escuro);
+  color: #d32f2f;
+  border: 1px solid #ef9a9a;
+}
 
-        main {
-            width: 500px;
-            height: auto;
-            padding: 30px 20px;
-            margin: 30px auto;
-        }
+output.sucesso {
+  background-color: var(--cor-cinza-escuro);
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
 
-        .content-container {
-            flex-direction: column;
-            gap: 25px;
-            margin: 0;
-            align-items: center;
-        }
+.loader {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--cor-fundo);
+  animation: spin 1s ease-in-out infinite;
+}
 
-        /*ocultando a imagem desktop */
-        .img-desktop {
-            display: none;
-        }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-        .img-tablet {
-            display: block;
-            width: 400px;
-            height: 320px;
-            object-fit: cover;
-        }
+#btn-cadastro {
+  position: relative;
+}
 
-        .container-form {
-            width: 100%;
-            max-width: 400px;
-            padding: 0;
-            margin-top: 0;
-        }
+#btn-cadastro .loader {
+  margin: 0 auto;
+}
 
-        form {
-            width: 100%;
-            height: auto;
-        }
+#contador-senha {
+  display: block;
+  text-align: right;
+  font-size: 12px;
+  color: var(--cor-texto);
+  margin-top: -10px;
+  margin-bottom: 15px;
+}
 
-        .container-link-login {
-            margin-top: 40px;
-            margin-right: 0;
-            justify-content: center;
-        }
-    }
+@media (max-width: 1023px) {
+  body {
+    background-position: left -30px, right 390px;
+    background-size: 220px 280px, 220px 280px;
+    background-attachment: fixed;
+    height: 150vh;
+  }
 
-    /* 📱 Celular - Telas menores que 767px */
-    @media (max-width: 767px) {
-        body {
-            background-position: left 10px, right 430px;
-            background-size: 140px 200px, 140px 200px;
-            background-attachment: fixed;
-            align-items: flex-start;
-            padding-top: 30px;
-            height: auto;
-            min-height: 100vh;
-        }
+  main {
+    width: 500px;
+    height: auto;
+    padding: 30px 20px;
+    margin: 30px auto;
+  }
 
-        main {
-            width: 300px;
-            padding: 20px 15px;
-            border-radius: 15px;
-        }
+  .content-container {
+    flex-direction: column;
+    gap: 25px;
+    margin: 0;
+    align-items: center;
+  }
 
-        /*Ocutando imagem do tablet*/
-        .img-tablet {
-            display: none;
-        }
+  .img-desktop {
+    display: none;
+  }
 
-        .img-mobile {
-            display: block;
-            width: 280px;
-            height: 290px;
-            margin-bottom: 10px;
-            object-fit: cover;
-        }
+  .img-tablet {
+    display: block;
+    width: 400px;
+    height: 320px;
+    object-fit: cover;
+  }
 
-        #titulo-cadastro {
-            font-size: calc(var(--tamanho-titulo) * 0.8);
-            margin-bottom: 15px;
-        }
+  .container-form {
+    width: 100%;
+    max-width: 400px;
+    padding: 0;
+    margin-top: 0;
+  }
 
-        h2 {
-            font-size: calc(var(--tamanho-subtitulo) * 0.8);
-            margin-bottom: 20px;
-        }
+  form {
+    width: 100%;
+    height: auto;
+  }
 
-        form div input {
-            height: 35px;
-            margin-bottom: 12px;
-        }
+  .container-link-login {
+    margin-top: 40px;
+    margin-right: 0;
+    justify-content: center;
+  }
+}
 
-        #btn-cadastro {
-            height: 35px;
-        }
+@media (max-width: 767px) {
+  body {
+    background-position: left 10px, right 430px;
+    background-size: 140px 200px, 140px 200px;
+    background-attachment: fixed;
+    align-items: flex-start;
+    padding-top: 30px;
+    height: auto;
+    min-height: 100vh;
+  }
 
-        .container-link-login {
-            margin-top: 30px;
-            padding-top: 15px;
-            flex-direction: column;
-            gap: 5px;
-        }
+  main {
+    width: 300px;
+    padding: 20px 15px;
+    border-radius: 15px;
+  }
 
-        .already-account {
-            margin-left: 0;
-        }
-    }
+  .img-tablet {
+    display: none;
+  }
+
+  .img-mobile {
+    display: block;
+    width: 280px;
+    height: 290px;
+    margin-bottom: 10px;
+    object-fit: cover;
+  }
+
+  #titulo-cadastro {
+    font-size: calc(var(--tamanho-titulo) * 0.8);
+    margin-bottom: 15px;
+  }
+
+  h2 {
+    font-size: calc(var(--tamanho-subtitulo) * 0.8);
+    margin-bottom: 20px;
+  }
+
+  form div input {
+    height: 35px;
+    margin-bottom: 12px;
+  }
+
+  #btn-cadastro {
+    height: 35px;
+  }
+
+  .container-link-login {
+    margin-top: 30px;
+    padding-top: 15px;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .already-account {
+    margin-left: 0;
+  }
+}

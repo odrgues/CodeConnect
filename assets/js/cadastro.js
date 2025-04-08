@@ -130,7 +130,7 @@ const Utils = {
 
   exibirMensagem: (elemento, texto, tipo = "erro") => {
     elemento.textContent = texto;
-    elemento.className = tipo; //css pro caso de sucesso e erro
+    elemento.className = tipo; 
     elemento.style.display = "block";
 
     setTimeout(
@@ -144,7 +144,7 @@ const Utils = {
   toggleLoader: (elemento, isLoading) => {
     if (isLoading) {
       elemento.dataset.originalText = elemento.textContent;
-      elemento.innerHTML = '<span class="loader"></span>'; //css pra clase loader
+      elemento.innerHTML = '<span class="loader"></span>'; 
       elemento.disabled = true;
     } else {
       elemento.textContent = elemento.dataset.originalText || "Cadastrar";
