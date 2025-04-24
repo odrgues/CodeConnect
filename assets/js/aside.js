@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const asideStyles = document.createElement("link");
+  asideStyles.rel = "stylesheet";
+  asideStyles.href = "../assets/css/aside.css";
+  document.head.appendChild(asideStyles);
   const asideMenu = `
+    <style src = "../assets/css/aside.css"></style>
       <aside>
         <img src="../assets/img/aside/Frame 2106.png" alt="logo do codeconnect" />
         <nav>
@@ -8,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
               <a href="#" class="link-destaque">Publicar</a>
             </li>
             <li>
-              <a href="#" class="menu-link">
+              <a href="/pages/feed.html" class="menu-link">
                 <img src="../assets/img/aside/Frame 2.png" />
               </a>
             </li>
@@ -40,15 +45,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function highlightCurrentPage() {
     const links = document.querySelectorAll(".menu-link");
-    // 2. Obtém o nome do arquivo da página atual (ex: "index.html")
-    const currentPage =
-      window.location.pathname.split("/").pop() || "index.html";
 
-    // 3. Percorre cada link do menu
+    const currentPage =
+      window.location.pathname.split("/").pop() || "/pages/feed.html";
+
     links.forEach((link) => {
-      // 4. Se o link corresponder à página atual, adiciona a classe 'active'
       if (link.getAttribute("href") === currentPage) {
-        link.classList.add("active");
+        link.classList.add("active"); //css
       }
     });
   }
