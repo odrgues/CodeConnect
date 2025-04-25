@@ -1,60 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/css/publicar.css">
-
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/css/publicar.css" />
     <title>CodeConnect</title>
-</head>
+  </head>
+  <body>
+    <main class="main-container">
+      <div id="aside-container"></div>
 
-<body>
-    <div id="aside-container"></div>
-
-    <!-- <script>
-        fetch('../components/aside.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('aside-container').innerHTML = data;
-            });
-    </script> -->
-    <main>
+      <section class="container-publicacao">
         <div class="container-upload-imagem">
-            <div class="container-imagem">
-                <img src="../assets/img/publicar/imagem1.png" alt="" class="main-imagem">
-            </div>
-            <button id="upload-btn">Carregar imagem</button>
-            <input type="file" id="image-upload" accept="image/" style="display: none" />
-            <div class="container-imagem-nome">
-                <p>image_projeto.png</p>
-                <img src="../assets/img/publicar/close.svg">
-            </div>
+          <div class="container-imagem">
+            <img
+              src="../assets/img/publicacao/imagem1.png"
+              alt="Pré-visualização da imagem do projeto"
+              class="main-imagem"
+              id="image-preview"
+            />
+          </div>
+          <button id="upload-btn" type="button">Carregar imagem</button>
+          <input
+            type="file"
+            id="image-upload"
+            accept="image/*"
+            style="display: none"
+            required
+          />
+          <div
+            class="container-imagem-nome"
+            id="image-name-container"
+            style="display: none"
+          >
+            <p id="image-name">image_projeto.png</p>
+            <button type="button">
+              <img
+                src="../assets/img/publicacao/close.svg"
+                alt="Remover imagem"
+              />
+            </button>
+          </div>
         </div>
-        <div class="container-descricao">
-            <h2>Novo projeto</h2>
-            <form>
-                <div>
-                    <label for="nome">Nome do projeto</label>
-                    <input type="text" id="nome" name="nome" />
-                </div>
-                <div>
-                    <label for="descricao">Descricao</label>
-                    <textarea id="descricao" name="descricao"></textarea>
-                </div>
-                <div>
-                    <label for="categoria">Tags</label>
-                    <input type="text" id="input-tag" name="categoria" />
-                </div>
-                <ul class="lista-tags" id="lista-tags">
-                </ul>
-                <div class="container-botoes">
-                    <button class="botao-descartar">Descartar</button>
-                    <button class="botao-publicar">Publicar</button>
-                </div>
-            </form>
-        </div>
-    </main>
-</body>
 
+        <div class="container-descricao">
+          <h2>Novo projeto</h2>
+          <form id="project-form">
+            <div class="form-group">
+              <label for="nome">Nome do projeto</label>
+              <input
+                type="text"
+                id="nome"
+                name="nome"
+                placeholder="Digite o nome do projeto"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="descricao">Descrição</label>
+              <textarea
+                id="descricao"
+                name="descricao"
+                placeholder="Descreva seu projeto..."
+                rows="5"
+                required
+              ></textarea>
+            </div>
+
+            <!-- <div class="form-group">
+              <label for="input-tag">Tags</label>
+              <input
+                type="text"
+                id="input-tag"
+                name="tags"
+                placeholder="Ex: HTML, CSS, JavaScript"
+              />
+              <ul class="lista-tags" id="lista-tags"></ul>
+            </div> -->
+
+            <div class="container-botoes">
+              <button type="reset" class="botao-descartar">Descartar</button>
+              <button type="submit" class="botao-publicar">Publicar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+    <script src="../assets/js/aside.js"></script>
+    <script src="../assets/js/publicar.js"></script>
+  </body>
 </html>

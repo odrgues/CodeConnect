@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
     links: [
       {
         href: "/pages/publicar.html",
-        icon: "/assets/img/aside/desktop/Frame 2.png",
         text: "Publicar",
         class: "btn-publicar",
       },
@@ -56,29 +55,29 @@ document.addEventListener("DOMContentLoaded", function () {
     const linksHTML = config.links
       .map(
         (link) => `
-      <li>
-        <a href="${link.href}" class="${link.class || "menu-link"}">
-          ${
-            link.icon
-              ? `<img src="${link.icon}" class="desktop-icon" alt="${link.text}" />`
-              : link.text
-          }
-        </a>
-      </li>
-    `
+        <li>
+          <a href="${link.href}" class="${link.class || "menu-link"}">
+            ${
+              link.icon
+                ? `<img src="${link.icon}" class="desktop-icon" alt="${link.text}" />`
+                : link.text
+            }
+          </a>
+        </li>
+      `
       )
       .join("");
 
     return `
-      <aside>
-        <img src="${config.logoPath}" alt="logo do codeconnect" class="logo-desktop" />
-        <nav class="menu">
-          <ul class="lista-links">
-            ${linksHTML}
-          </ul>
-        </nav>
-      </aside>
-    `;
+        <aside>
+          <img src="${config.logoPath}" alt="logo do codeconnect" class="logo-desktop" />
+          <nav class="menu">
+            <ul class="lista-links">
+              ${linksHTML}
+            </ul>
+          </nav>
+        </aside>
+      `;
   }
 
   function highlightCurrentPage() {

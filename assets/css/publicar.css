@@ -1,5 +1,72 @@
 @import url(global.css);
 
+:root {
+  --background-color: #00090e;
+  --text-color: #e1e1e1;
+  --primary-color: #81fe88;
+  --secondary-color: #888888;
+  --tag-color: #171d1f;
+  --font-family: "Prompt", sans-serif;
+  --itens-background: #171d1f;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+
+  display: flex;
+  justify-content: center;
+  align-items: start;
+
+  height: 100vh;
+  gap: 27px;
+  padding: 56px 0;
+}
+
+aside {
+  background-color: var(--itens-background);
+  border-radius: 10px;
+  height: 100%;
+  padding: 40px 16px;
+  text-align: center;
+}
+
+.lista-links {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 80px;
+  align-items: center;
+  list-style-type: none;
+}
+
+.lista-links li a {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  text-decoration: none;
+  color: var(--secondary-color);
+  font-size: 22px;
+}
+
+.lista-links li:first-of-type a {
+  color: var(--primary-color);
+}
+
+.link-destaque {
+  border: 1px solid var(--primary-color);
+  padding: 12px 30px;
+  border-radius: 8px;
+}
+
 main {
   background-color: var(--itens-background);
   border-radius: 10px;
@@ -84,7 +151,7 @@ texarea {
 
 .botao-descartar::after {
   content: "";
-  background-image: url("../img/publicar/trash.svg");
+  background-image: url("./img/trash.svg");
   background-size: contain;
   background-repeat: no-repeat;
   width: 15px;
@@ -105,7 +172,7 @@ texarea {
 
 .botao-publicar::after {
   content: "";
-  background-image: url("../img/publicar/arrow_forward2.svg");
+  background-image: url("../img/arrow_forward2.svg");
   background-size: contain;
   background-repeat: no-repeat;
   width: 15px;
@@ -151,7 +218,7 @@ texarea {
 
 .container-upload-imagem button::after {
   content: "";
-  background-image: url("../img/publicar/upload.svg");
+  background-image: url("./img/upload.svg");
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
