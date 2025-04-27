@@ -12,6 +12,11 @@
     <div id="aside-container"></div>
 
     <main>
+      <img
+        src="../assets/img/publicacao/Frame 2106.png"
+        alt="logo ConnectCode"
+        class="imagem-logo"
+      />
       <div class="container-upload-imagem">
         <div class="container-imagem">
           <img
@@ -24,13 +29,12 @@
         <input
           type="file"
           id="image-upload"
-          accept="image/"
+          accept=".png, .jpg, .jpeg"
           style="display: none"
-          required
         />
         <div class="container-imagem-nome">
           <p>image_projeto.png</p>
-          <img src="../assets/img/publicar/close.svg" />
+          <!-- <img src="../assets/img/publicar/close.svg" /> -->
         </div>
       </div>
       <div class="container-descricao">
@@ -41,20 +45,27 @@
             <input type="text" id="nome" name="nome" required />
           </div>
           <div>
-            <label for="descricao">Descricao</label>
-            <textarea id="descricao" name="descricao" required></textarea>
+            <label for="descricao">Descrição</label>
+            <textarea
+              id="descricao"
+              name="descricao"
+              maxlength="300"
+              required
+            ></textarea>
           </div>
 
           <output
-            id="mensagem-publicar"
+            id="mensagem-erro-sucesso"
             role="status"
             aria-live="polite"
           ></output>
           <div class="container-botoes">
-            <button class="botao-descartar" id="btn-descartar">
+            <button class="botao-descartar" id="btn-descartar" type="submit">
               Descartar
             </button>
-            <button class="botao-publicar" id="btn-publicar">Publicar</button>
+            <button class="botao-publicar" id="btn-publicar" type="reset">
+              Publicar
+            </button>
           </div>
         </form>
       </div>

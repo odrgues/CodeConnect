@@ -1,16 +1,30 @@
 {
-    "usuarios": [
-      {
-        "id": 1,
-        "email": "admin@exemplo.com",
-        "password": "123456"
-      }
-    ],
-    "posts": [
-      {
-        "id": 1,
-        "conteudo": "Primeiro post!",
-        "usuarioId": 1
-      }
-    ]
-  }
+  "usuarios": [
+    {
+      "id": "486d",
+      "username": "jyujyujtu",
+      "email": "jessica@email.com",
+      "senha": "erferferfeqf"
+    },
+    {
+      "id": "82b9",
+      "username": "a",
+      "email": "jessica@email.com",
+      "password": "12345678"
+    },
+    {
+      "id": "566e",
+      "username": "b",
+      "email": "henriquebueno96@hotmail.com",
+      "password": "12345678"
+    }
+  ],
+  "publicacoes": [
+    {
+      "id": 1,
+      "nomeProjeto": "Projeto Teste",
+      "descricao": "Descrição do projeto teste.",
+      "data": "2025-04-27T00:00:00Z"
+    }
+  ]
+}

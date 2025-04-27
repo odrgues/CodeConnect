@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Configurações
   const config = {
     cssPath: "/assets/css/aside.css",
     logoPath: "/assets/img/aside/desktop/Frame 2106.png",
@@ -10,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
         class: "btn-publicar",
       },
       {
-        href: "/pages/feed.html",
+        href: "",
         icon: "/assets/img/aside/desktop/Frame 2.png",
         text: "Feed",
       },
@@ -27,19 +26,15 @@ document.addEventListener("DOMContentLoaded", function () {
     ],
   };
 
-  // Carrega CSS
   loadCSS(config.cssPath);
 
-  // Cria o aside
   const asideHTML = createAside(config);
 
-  // Insere no container
   const container = document.getElementById("aside-container");
   if (container) {
     container.innerHTML = asideHTML;
   }
 
-  // Funções auxiliares
   function loadCSS(path) {
     if (!document.querySelector(`link[href="${path}"]`)) {
       const link = document.createElement("link");
@@ -52,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function createAside(config) {
     const linksHTML = config.links
       .map((link) => {
-        // Item "Publicar" - mostra apenas texto
         if (link.class === "btn-publicar") {
           return `
             <li>
@@ -61,9 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
               </a>
             </li>
           `;
-        }
-        // Demais itens - mostram apenas ícone
-        else {
+        } else {
           return `
             <li>
               <a href="${link.href}" class="menu-link">

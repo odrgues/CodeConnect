@@ -15,6 +15,7 @@ aside {
   top: 0;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   padding: clamp(1rem, 3vh, 2rem) 0;
   gap: var(--gap-items);
@@ -68,16 +69,16 @@ aside img[alt="logo do codeconnect"]:hover {
 
 .btn-publicar {
   background-color: var(--cor-cinza-escuro);
-  color: var(--cor-principal);
+  color: var(--cor-verde-destaque);
   padding: clamp(0.5rem, 1.5vh, 0.75rem) clamp(0.75rem, 2vw, 1rem);
   border-radius: 8px;
   border: var(--cor-verde-destaque) solid 2px;
   font-family: var(--fonte-principal);
-  font-size: clamp(0.7rem, 1vh, 0.8rem);
+  font-size: clamp(0.8rem, 2vh, 0.9rem);
   text-decoration: none;
   text-align: center;
   display: block;
-  width: 80%;
+  width: 100%;
   margin: 1rem auto 0;
   transition: all 0.3s ease;
 }
@@ -112,31 +113,28 @@ aside img[alt="logo do codeconnect"]:hover {
   height: var(--icon-size);
 }
 
-/* ===== TABLET (768px - 991px) ===== */
-@media (max-width: 991px) and (min-width: 769px) {
+@media (max-width: 1023px) {
   aside {
     width: 100%;
-    height: 4rem;
-    min-height: 4rem;
+    height: 5.5rem;
     position: fixed;
     bottom: 0;
     top: auto;
     flex-direction: row;
-    padding: 0.5rem 0;
-    gap: 0;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 5rem 0.5rem 3rem;
+    column-gap: 6px;
     background-color: var(--cor-cinza-escuro);
-    border-top: 2px solid var(--cor-verde-destaque);
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
   }
 
-  /* Oculta logo e botão publicar */
   aside img[alt="logo do codeconnect"],
   .btn-publicar {
     display: none !important;
   }
 
-  /* Ajusta a lista de links */
   .lista-links {
     display: flex;
     flex-direction: row;
@@ -144,12 +142,10 @@ aside img[alt="logo do codeconnect"]:hover {
     align-items: center;
     width: 100%;
     height: 100%;
-    padding: 0 1rem;
     margin: 0;
-    gap: 0;
+    gap: 40px;
   }
 
-  /* Container dos ícones - versão otimizada */
   .menu-link {
     width: 3.5rem;
     height: 3.5rem;
@@ -161,59 +157,18 @@ aside img[alt="logo do codeconnect"]:hover {
     transition: all 0.3s ease;
   }
 
-  /* Estilo das imagens - solução definitiva */
   .menu-link img {
-    width: auto !important;
-    height: auto !important;
-    max-width: 1.8rem;
-    max-height: 1.8rem;
-    object-fit: contain;
+    width: 52px;
+    height: 92px;
     transition: all 0.3s ease;
   }
 
-  /* Efeito hover melhorado */
   .menu-link:hover {
-    background-color: rgba(129, 254, 136, 0.15);
+    transform: scale(0.9);
   }
 
   .menu-link:hover img {
     transform: scale(1.25);
     filter: brightness(1.2);
-  }
-}
-/* ===== TABLET (768px - 991px) ===== */
-@media (max-width: 991px) and (min-width: 769px) {
-  aside {
-    width: 100%;
-    height: auto;
-    position: fixed;
-    bottom: 0;
-    top: auto;
-    flex-direction: row;
-    padding: 0.75rem 0;
-    gap: 0;
-  }
-
-  aside img[alt="logo do codeconnect"],
-  .btn-publicar {
-    display: none;
-  }
-
-  .lista-links {
-    flex-direction: row;
-    justify-content: space-around;
-    width: 100%;
-    padding: 0 1rem;
-    gap: 0;
-  }
-
-  .menu-link {
-    width: 3.5rem;
-    height: 3.5rem;
-  }
-
-  .menu-link img {
-    width: 1.75rem;
-    height: 1.75rem;
   }
 }

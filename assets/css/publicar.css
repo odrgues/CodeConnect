@@ -30,6 +30,10 @@ body {
   padding: 56px 0;
 }
 
+.imagem-logo {
+  display: none;
+}
+
 main {
   background-color: var(--itens-background);
   border-radius: 10px;
@@ -41,7 +45,7 @@ main {
 h2 {
   font-size: 26px;
   margin-bottom: 40px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 form {
@@ -72,11 +76,13 @@ form div input {
   height: 39px;
 }
 
-texarea {
-  height: 161px;
+textarea {
+  resize: none;
+  overflow-y: hidden;
+  max-height: 300px;
 }
 
-.lista-tags li {
+/* .lista-tags li {
   display: flex;
   background-color: var(--secondary-color);
   color: var(--background-color);
@@ -87,7 +93,7 @@ texarea {
 
 .lista-tags {
   display: flex;
-}
+} */
 
 .container-botoes {
   display: flex;
@@ -110,6 +116,7 @@ texarea {
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
   position: relative;
+  cursor: pointer;
 }
 
 .botao-descartar::after {
@@ -131,6 +138,7 @@ texarea {
   color: var(--background-color);
   border: none;
   position: relative;
+  cursor: pointer;
 }
 
 .botao-publicar::after {
@@ -177,6 +185,7 @@ texarea {
   font-weight: 600;
   font-size: 18px;
   position: relative;
+  cursor: pointer;
 }
 
 .container-upload-imagem button::after {
@@ -193,9 +202,94 @@ texarea {
   margin-left: 8px;
 }
 
-.container-imagem-nome {
-  display: flex;
-  gap: 8px;
-  color: var(--secondary-color);
-  font-size: 15px;
+/* .loader{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--cor-fundo);
+  animation: spin 1s ease-in-out infinite;}
+
+  .tipo {
+    padding: 16px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .tipo.sucesso {
+    background-color: #4caf50;
+    color: white;
+    border: 2px solid #388e3c;
+  }
+  .tipo.erro {
+    background-color: #f44336;
+    color: white;
+    border: 2px solid #d32f2f;
+  }
+  
+  .tipo.sucesso, .tipo.erro {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+  } */
+
+@media (max-width: 1023px) {
+  .imagem-logo {
+    display: block;
+    object-fit: contain;
+    width: 9.25rem;
+    align-self: center;
+    margin-bottom: 1rem;
+  }
+
+  main {
+    background-color: transparent;
+    flex-direction: column;
+    width: auto;
+    margin: 70px;
+  }
+
+  .container-botoes {
+    width: 30rem;
+  }
+
+  .botao-descartar,
+  .botao-publicar {
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  form {
+    width: 30rem;
+  }
+
+  h2 {
+    justify-self: center;
+  }
+
+  .container-imagem-nome {
+    padding-bottom: 50px;
+    border-bottom: solid 2px var(--primary-color);
+    font-size: small;
+  }
+
+  #upload-btn {
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 767px) {
+  }
 }

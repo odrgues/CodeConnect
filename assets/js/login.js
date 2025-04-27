@@ -1,5 +1,6 @@
 const CONFIG = {
-  API_URL: "http://localhost:8080/api/v1/usuarios",
+  // API_URL: "http://localhost:8080/api/v1/usuarios",
+  API_URL: "http://localhost:3000/usuarios",
   MIN_LOADER_TIME: 1500,
   MESSAGE_DISPLAY_TIME: 2000,
   PUBLICAR_PAGE: "../pages/publicar.html",
@@ -162,7 +163,7 @@ const Handlers = {
     };
 
     try {
-      if (!dados.email || !dados.senha) {
+      if (!dados.email || !dados.password) {
         throw new Error(MESSAGES.errors.requiredFields);
       }
 
@@ -182,9 +183,10 @@ const Handlers = {
         throw new Error(data.message || MESSAGES.errors.invalidCredentials);
       }
 
-      // localStorage.setItem("userId", data.id);
-      // Utils.exibirMensagem(DOM.mensagem, MESSAGES.success.login, "sucesso");
-      // setTimeout(() => (window.location.href = CONFIG.PUBLICAR_PAGE), 1500);
+      localStorage.setItem("userId", data.id);
+      Utils.exibirMensagem(DOM.mensagem, MESSAGES.success.login, "sucesso");
+
+      setTimeout(() => (window.location.href = CONFIG.PUBLICAR_PAGE), 1500);
     } catch (error) {
       let mensagemErro; //aqui, eu criei uma variável para armazenar a mensagem de erro
 

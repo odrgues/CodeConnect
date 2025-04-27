@@ -1,4 +1,3 @@
-// Configurações
 const CONFIG = {
   API_PUBLICACAO_URL: "",
   LOGIN_PAGE: "../pages/login.html",
@@ -23,7 +22,7 @@ const DOM = {
   form: document.querySelector("form"),
   nomeProjeto: document.getElementById("nome"),
   descricao: document.getElementById("descricao"),
-  mensagem: document.getElementById("mensagem-publicar"),
+  mensagem: document.getElementById("mensagem-erro-sucesso"),
   btnPublicar: document.getElementById("btn-publicar"),
   btnDescartar: document.getElementById("btn-descartar"),
   uploadBtn: document.getElementById("upload-btn"),
@@ -43,22 +42,42 @@ const Utils = {
     );
   },
 
-  toggleLoader: (elemento, isLoading) => {
-    if (isLoading) {
-      elemento.dataset.originalText = elemento.textContent;
-      elemento.innerHTML = '<span class="loader"></span>';
-      elemento.disabled = true;
-    } else {
-      elemento.textContent = elemento.dataset.originalText || "Publicar";
-      elemento.disabled = false;
-    }
-  },
+  // toggleLoader: (elemento, isLoading) => {
+  //   if (isLoading) {
+  //     elemento.dataset.originalText = elemento.textContent;
+  //     elemento.innerHTML = '<span class="loader"></span>';
+  //     elemento.disabled = true;
+  //   } else {
+  //     elemento.textContent = elemento.dataset.originalText || "Publicar";
+  //     elemento.disabled = false;
+  //   }
+  // },
 
   validarFormulario: () => {
-    if (!DOM.nomeProjeto.value.trim()) return false;
-    if (!DOM.descricao.value.trim()) return false;
-    if (!DOM.imagemPrincipal.src.includes("data:image")) return false;
-    return true;
+    let valido = true;
+
+    if (!DOM.nomeProjeto.value.trim()) {
+      DOM.nomeProjeto.classList.add("campo-invalido");
+      valido = false;
+    } else {
+      DOM.nomeProjeto.classList.remove("campo-invalido");
+    }
+
+    if (!DOM.descricao.value.trim()) {
+      DOM.descricao.classList.add("campo-invalido");
+      valido = false;
+    } else {
+      DOM.descricao.classList.remove("campo-invalido");
+    }
+
+    if (!DOM.imagemPrincipal.src.includes("data:image")) {
+      DOM.inputUpload.classList.add("campo-invalido");
+      valido = false;
+    } else {
+      DOM.inputUpload.classList.remove("campo-invalido");
+    }
+
+    return valido;
   },
 
   lerArquivo: (arquivo) => {
@@ -73,10 +92,12 @@ const Utils = {
   limparFormulario: () => {
     DOM.nomeProjeto.value = "";
     DOM.descricao.value = "";
-    DOM.imagemPrincipal.src = "../assets/img/publicar/imagem1.png";
+    DOM.imagemPrincipal.src = "/assets/img/publicacao/imagem1.png";
     DOM.nomeImagem.textContent = "image_projeto.png";
   },
 };
+
+DOM.imagemPrincipal.src = "/assets/img/publicacao/imagem1.png";
 
 const Handlers = {
   handleUpload: async (event) => {
@@ -149,13 +170,21 @@ const Handlers = {
   },
 };
 
+const textarea = document.getElementById("descricao");
+
+textarea.addEventListener("input", function () {
+  this.style.height = "auto";
+  this.style.height = this.scrollHeight + "px";
+});
+
 const init = () => {
   // Verifica login
-  // if (!Handlers.verificarAutenticacao()) return;
+  if (!Handlers.verificarAutenticacao()) return;
 
   DOM.uploadBtn.addEventListener("click", () => DOM.inputUpload.click());
   DOM.inputUpload.addEventListener("change", Handlers.handleUpload);
   DOM.btnDescartar.addEventListener("click", Handlers.handleDescartar);
+
   DOM.form.addEventListener("submit", Handlers.handleSubmit);
 };
 
