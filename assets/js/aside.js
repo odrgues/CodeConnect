@@ -1,4 +1,3 @@
-// aside.js
 document.addEventListener("DOMContentLoaded", function () {
   // Configurações
   const config = {
@@ -7,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
     links: [
       {
         href: "/pages/publicar.html",
-        icon: "/assets/img/aside/desktop/Frame 2.png",
         text: "Publicar",
         class: "btn-publicar",
       },
@@ -39,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("aside-container");
   if (container) {
     container.innerHTML = asideHTML;
-    highlightCurrentPage();
   }
 
   // Funções auxiliares
@@ -54,19 +51,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function createAside(config) {
     const linksHTML = config.links
-      .map(
-        (link) => `
-      <li>
-        <a href="${link.href}" class="${link.class || "menu-link"}">
-          ${
-            link.icon
-              ? `<img src="${link.icon}" class="desktop-icon" alt="${link.text}" />`
-              : link.text
-          }
-        </a>
-      </li>
-    `
-      )
+      .map((link) => {
+        // Item "Publicar" - mostra apenas texto
+        if (link.class === "btn-publicar") {
+          return `
+            <li>
+              <a href="${link.href}" class="${link.class}">
+                ${link.text}
+              </a>
+            </li>
+          `;
+        }
+        // Demais itens - mostram apenas ícone
+        else {
+          return `
+            <li>
+              <a href="${link.href}" class="menu-link">
+                <img src="${link.icon}" class="desktop-icon" alt="${link.text}" />
+              </a>
+            </li>
+          `;
+        }
+      })
       .join("");
 
     return `
@@ -79,26 +85,5 @@ document.addEventListener("DOMContentLoaded", function () {
         </nav>
       </aside>
     `;
-  }
-
-  function highlightCurrentPage() {
-    const links = document.querySelectorAll(".menu-link, .btn-publicar");
-    const currentPath = window.location.pathname.toLowerCase();
-
-    links.forEach((link) => {
-      const linkPath = link.getAttribute("href").toLowerCase();
-
-      // Remove classe ativa de todos os links primeiro
-      link.classList.remove("active");
-
-      // Verifica se o link corresponde à página atual
-      if (
-        currentPath === linkPath ||
-        (currentPath.endsWith("/") && linkPath === "/pages/feed.html") ||
-        (currentPath.includes(linkPath) && linkPath !== "/")
-      ) {
-        link.classList.add("active");
-      }
-    });
   }
 });

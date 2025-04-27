@@ -2,7 +2,7 @@ const CONFIG = {
   API_URL: "http://localhost:8080/api/v1/usuarios",
   MIN_LOADER_TIME: 1500,
   MESSAGE_DISPLAY_TIME: 2000,
-  FEED_PAGE: "../pages/feed.html",
+  PUBLICAR_PAGE: "../pages/publicar.html",
 };
 
 const MESSAGES = {
@@ -93,7 +93,7 @@ const Utils = {
     elemento.textContent = texto;
     elemento.className = `mensagem-flutuante ${
       tipo === "sucesso" ? "mensagem-sucesso" : "mensagem-erro"
-    }`; 
+    }`;
     elemento.style.display = "block";
 
     setTimeout(
@@ -108,7 +108,7 @@ const Utils = {
     if (isLoading) {
       elemento.dataset.originalText = elemento.textContent;
       elemento.innerHTML =
-        '<span class="loader-spinner"><span class="spinner-inner"></span></span>'; 
+        '<span class="loader-spinner"><span class="spinner-inner"></span></span>';
       elemento.disabled = true;
     } else {
       elemento.textContent = elemento.dataset.originalText || "Entrar";
@@ -154,8 +154,6 @@ const Handlers = {
 
   handleSubmit: async (event) => {
     event.preventDefault();
-    const startTime = Date.now();
-
     Utils.toggleLoader(DOM.btnLogin, true);
 
     const dados = {
@@ -164,7 +162,7 @@ const Handlers = {
     };
 
     try {
-      if (!dados.email || !dados.password) {
+      if (!dados.email || !dados.senha) {
         throw new Error(MESSAGES.errors.requiredFields);
       }
 
@@ -172,56 +170,34 @@ const Handlers = {
         throw new Error(MESSAGES.errors.invalidEmail);
       }
 
-      await Promise.all([
-        API.loginUsuario(dados),
-        new Promise((resolve) => setTimeout(resolve, CONFIG.MIN_LOADER_TIME)),
-      ]);
+      const response = await fetch(CONFIG.API_LOGIN_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados),
+      });
 
-      Utils.exibirMensagem(DOM.mensagem, MESSAGES.success.login, "sucesso");
+      const data = await response.json();
 
-      const elapsed = Date.now() - startTime;
-      const remainingTime = Math.max(
-        CONFIG.MESSAGE_DISPLAY_TIME - elapsed,
-        1000
-      );
+      if (!response.ok) {
+        throw new Error(data.message || MESSAGES.errors.invalidCredentials);
+      }
 
-      setTimeout(() => {
-        window.location.href = CONFIG.FEED_PAGE;
-      }, remainingTime);
+      // localStorage.setItem("userId", data.id);
+      // Utils.exibirMensagem(DOM.mensagem, MESSAGES.success.login, "sucesso");
+      // setTimeout(() => (window.location.href = CONFIG.PUBLICAR_PAGE), 1500);
     } catch (error) {
-      let mensagemErro = error.message;
+      let mensagemErro; //aqui, eu criei uma variável para armazenar a mensagem de erro
 
-      if (error.status === 401) {
-        mensagemErro = MESSAGES.errors.invalidCredentials;
-      } else if (error.name === "TypeError") {
+      if (error.name === "TypeError") {
         mensagemErro = MESSAGES.errors.networkError;
+      } else {
+        mensagemErro = error.message;
       }
 
       Utils.exibirMensagem(DOM.mensagem, mensagemErro, "erro");
     } finally {
-      const elapsed = Date.now() - startTime;
-      const remainingLoaderTime = Math.max(0, CONFIG.MIN_LOADER_TIME - elapsed);
-
-      setTimeout(() => {
-        Utils.toggleLoader(DOM.btnLogin, false);
-      }, remainingLoaderTime);
+      Utils.toggleLoader(DOM.btnLogin, false);
     }
-  },
-
-  setupInputValidation: () => {
-    DOM.email.addEventListener("input", () => {
-      const isValid = Utils.validarEmail(DOM.email.value);
-      DOM.email.style.borderColor = isValid
-        ? "#4CAF50"
-        : DOM.email.value
-        ? "#f44336"
-        : "";
-    });
-
-    DOM.senha.addEventListener("input", () => {
-      const hasValue = DOM.senha.value.length > 0;
-      DOM.senha.style.borderColor = hasValue ? "#4CAF50" : "";
-    });
   },
 };
 
