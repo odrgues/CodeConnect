@@ -1,79 +1,123 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Connect</title>
+    <link rel="stylesheet" href="../assets/css/cadastro.css" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Connect - Cadastro</title>
-    <link rel="stylesheet" href="../assets/css/cadastro.css">
-</head>
-
-<body>
+  <body>
     <main>
-        <div class="content-container">
+      <div class="content-container">
+        <img
+          src="../assets/img/cadastro-login/img-2.png"
+          alt="Ilustração de cadastro"
+          class="img-main img-desktop"
+        />
 
-            <img src="../assets/img/cadastro-login/img-2.png" alt="Ilustração de cadastro" class="img-main img-desktop">
+        <img
+          src="../assets/img/cadastro-login/IMG2_Tablet.png"
+          alt="Ilustração de cadastro"
+          class="img-main img-tablet"
+        />
 
+        <img
+          src="../assets/img/cadastro-login/IMG2_Mobile.png"
+          alt="Ilustração de cadastro"
+          class="img-main img-mobile"
+        />
 
-            <img src="../assets/img/cadastro-login/IMG2_Tablet.png" alt="Ilustração de cadastro"
-                class="img-main img-tablet">
+        <div class="container-form">
+          <h1 id="titulo-cadastro">Cadastro</h1>
+          <h2>Olá! Preencha seus dados.</h2>
 
-
-            <img src="../assets/img/cadastro-login/IMG2_Mobile.png" alt="Ilustração de cadastro"
-                class="img-main img-mobile">
-
-
-            <div class="container-form">
-                <h1 id="titulo-cadastro">Cadastro</h1>
-                <h2>Olá! Preencha seus dados.</h2>
-
-                <form id="form-cadastro" aria-labelledby="titulo-cadastro">
-                    <div role="group" aria-labelledby="label-nome">
-                        <label for="nome" id="label-nome">Nome</label>
-                        <input type="text" id="nome" name="nome" required aria-required="true" autofocus />
-                    </div>
-
-                    <div role="group" aria-labelledby="label-email">
-                        <label for="email-cadastro" id="label-email">Email</label>
-                        <input type="email" id="email-cadastro" name="email" required aria-required="true" />
-                    </div>
-
-                    <div class="campo-senha" role="group" aria-labelledby="label-senha">
-                        <label for="senha" id="label-senha">Senha</label>
-                        <input type="password" id="senha" name="senha" placeholder="Digite sua senha (8-20 caracteres)"
-                            required aria-required="true" minlength="8" maxlength="20" />
-
-                        <button type="button" id="toggle-senha" class="btn-toggle" aria-label="Mostrar senha"
-                            aria-controls="senha">
-                            <img src="../assets/img/cadastro-login/visibility.png" alt="Ícone de senha"
-                                class="icone-senha-cadastro" width="20" height="20">
-                        </button>
-                    </div>
-
-
-
-                    <output id="mensagem-cadastro" role="status" aria-live="polite"></output>
-
-                    <div class="container-botao">
-                        <button type="submit" id="btn-cadastro">
-                            <span id="btn-texto">Cadastrar</span>
-                        </button>
-                    </div>
-                </form>
-
-                <div class="container-link-login">
-                    <p class="already-account">Já tem conta?</p>
-                    <a class="link-login" href="./login.html" aria-label="Ir para a página de login">
-                        Faça seu login!
-                        <img class="img-login" src="../assets/img/cadastro-login/simbolo-login.png" alt=""
-                            role="presentation">
-                    </a>
-                </div>
+          <form id="form-cadastro" aria-labelledby="titulo-cadastro">
+            <div role="group" aria-labelledby="label-nome">
+              <label for="nome" id="label-nome">Nome</label>
+              <input
+                type="text"
+                id="nome"
+                name="nome"
+                required
+                aria-required="true"
+                autofocus
+              />
             </div>
-        </div>
 
+            <div role="group" aria-labelledby="label-email">
+              <label for="email-cadastro" id="label-email">Email</label>
+              <input
+                type="email"
+                id="email-cadastro"
+                name="email"
+                required
+                aria-required="true"
+              />
+            </div>
+
+            <div class="campo-senha" role="group" aria-labelledby="label-senha">
+              <label for="senha" id="label-senha">Senha</label>
+              <input
+                type="password"
+                id="senha"
+                name="senha"
+                placeholder="Digite sua senha (8-20 caracteres)"
+                required
+                aria-required="true"
+                minlength="8"
+                maxlength="20"
+              />
+
+              <button
+                type="button"
+                id="toggle-senha"
+                class="btn-toggle"
+                aria-label="Mostrar senha"
+                aria-controls="senha"
+              >
+                <img
+                  src="../assets/img/cadastro-login/visibility.png"
+                  alt="Ícone de senha"
+                  class="icone-senha-cadastro"
+                  width="20"
+                  height="20"
+                />
+              </button>
+            </div>
+
+            <output
+              id="mensagem-cadastro"
+              role="status"
+              aria-live="polite"
+            ></output>
+
+            <div class="container-botao">
+              <button type="submit" id="btn-cadastro">
+                <span id="btn-texto">Cadastrar</span>
+              </button>
+            </div>
+          </form>
+
+          <div class="container-link-login">
+            <p class="already-account">Já tem conta?</p>
+            <a
+              class="link-login"
+              href="./login.html"
+              aria-label="Ir para a página de login"
+            >
+              Faça seu login!
+              <img
+                class="img-login"
+                src="../assets/img/cadastro-login/simbolo-login.png"
+                alt=""
+                role="presentation"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
     </main>
     <script src="../assets/js/cadastro.js" defer></script>
-</body>
-
+  </body>
 </html>

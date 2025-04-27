@@ -1,67 +1,109 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Connect</title>
+    <link rel="stylesheet" href="../assets/css/login.css" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Connect - Login</title>
-    <link rel="stylesheet" href="../assets/css/login.css">
-</head>
-
-<body>
+  <body>
     <main>
-        <div class="content-container">
-           
-            <img src="../assets/img/cadastro-login/img-1.png" alt="Ilustração de login" class="img-main img-desktop">
-            
-            
-            <img src="../assets/img/cadastro-login/IMG_1 - Tablet.png" alt="Ilustração de login" class="img-main img-tablet">
-            
-            
-            <img src="../assets/img/cadastro-login/IMG_1 - Mobile.png" alt="Ilustração de login" class="img-main img-mobile">
+      <div class="content-container">
+        <img
+          src="../assets/img/cadastro-login/img-1.png"
+          alt="Ilustração de login"
+          class="img-main img-desktop"
+        />
 
-            <div class="container-form">
-                <h1 id="titulo-login">Login</h1>
-                <h2>Boas vindas! Faça seu login.</h2>
+        <img
+          src="../assets/img/cadastro-login/IMG_1 - Tablet.png"
+          alt="Ilustração de login"
+          class="img-main img-tablet"
+        />
 
-                <form id="form-login" aria-labelledby="titulo-login">
-                    <div role="group" aria-labelledby="label-email">
-                        <label for="email-login" id="label-email">Email</label>
-                        <input type="email" id="email-login" name="email" required aria-required="true" autofocus />
-                    </div>
+        <img
+          src="../assets/img/cadastro-login/IMG_1 - Mobile.png"
+          alt="Ilustração de login"
+          class="img-main img-mobile"
+        />
 
-                    <div class="campo-senha" role="group" aria-labelledby="label-senha">
-                        <label for="senha-login" id="label-senha">Senha</label>
-                        <input type="password" id="senha-login" name="senha" placeholder="Digite sua senha" required
-                            aria-required="true" />
+        <div class="container-form">
+          <h1 id="titulo-login">Login</h1>
+          <h2>Boas vindas! Faça seu login.</h2>
 
-                        <button type="button" id="toggle-senha" class="btn-toggle" aria-label="Mostrar senha"
-                            aria-controls="senha-login">
-                            <img src="../assets/img/cadastro-login/visibility.png" alt="Ícone de senha"
-                                class="icone-senha-login" width="20" height="20">
-                        </button>
-                    </div>
-
-                    <output id="mensagem-login" role="status" aria-live="polite"></output>
-
-                    <div class="container-botao">
-                        <button type="submit" id="btn-login">
-                            <span id="btn-texto">Login</span>
-                        </button>
-                    </div>
-                </form>
-
-                <div class="container-link-cadastro">
-                    <p class="register-account">Ainda não tem conta?</p>
-                    <a class="link-cadastro" href="../pages/cadastro.html" aria-label="Ir para a página de cadastro">
-                        Crie seu Cadastro!
-                        <img class="img-cadastro" src="../assets/img/cadastro-login/assignment.png" alt=""
-                            role="presentation">
-                    </a>
-                </div>
+          <form id="form-login" aria-labelledby="titulo-login">
+            <div role="group" aria-labelledby="label-email">
+              <label for="email-login" id="label-email">Email</label>
+              <input
+                type="email"
+                id="email-login"
+                name="email"
+                aria-required="true"
+                autofocus
+              />
             </div>
+
+            <div class="campo-senha" role="group" aria-labelledby="label-senha">
+              <label for="senha-login" id="label-senha">Senha</label>
+              <input
+                type="password"
+                id="senha-login"
+                name="senha"
+                placeholder="Digite sua senha"
+                required
+                aria-required="true"
+              />
+
+              <button
+                type="button"
+                id="toggle-senha"
+                class="btn-toggle"
+                aria-label="Mostrar senha"
+                aria-controls="senha-login"
+              >
+                <img
+                  src="../assets/img/cadastro-login/visibility.png"
+                  alt="Ícone de senha"
+                  class="icone-senha-login"
+                  width="20"
+                  height="20"
+                />
+              </button>
+            </div>
+
+            <output
+              id="mensagem-login"
+              role="status"
+              aria-live="polite"
+            ></output>
+
+            <div class="container-botao">
+              <button type="submit" id="btn-login">
+                <span id="btn-texto">Login</span>
+              </button>
+            </div>
+          </form>
+
+          <div class="container-link-cadastro">
+            <p class="register-account">Ainda não tem conta?</p>
+            <a
+              class="link-cadastro"
+              href="../pages/cadastro.html"
+              aria-label="Ir para a página de cadastro"
+            >
+              Crie seu Cadastro!
+              <img
+                class="img-cadastro"
+                src="../assets/img/cadastro-login/assignment.png"
+                alt=""
+                role="presentation"
+              />
+            </a>
+          </div>
         </div>
+      </div>
     </main>
     <script src="../assets/js/login.js" defer></script>
-</body>
+  </body>
 </html>

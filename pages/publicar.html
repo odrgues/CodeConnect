@@ -1,60 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/css/publicar.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/css/publicar.css" />
 
     <title>CodeConnect</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="aside-container"></div>
 
-    <!-- <script>
-        fetch('../components/aside.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('aside-container').innerHTML = data;
-            });
-    </script> -->
     <main>
-        <div class="container-upload-imagem">
-            <div class="container-imagem">
-                <img src="../assets/img/publicar/imagem1.png" alt="" class="main-imagem">
-            </div>
-            <button id="upload-btn">Carregar imagem</button>
-            <input type="file" id="image-upload" accept="image/" style="display: none" />
-            <div class="container-imagem-nome">
-                <p>image_projeto.png</p>
-                <img src="../assets/img/publicar/close.svg">
-            </div>
+      <img
+        src="../assets/img/publicacao/Frame 2106.png"
+        alt="logo ConnectCode"
+        class="imagem-logo"
+      />
+      <div class="container-upload-imagem">
+        <div class="container-imagem">
+          <img
+            src="../assets/img/publicacao/imagem1.png"
+            alt=""
+            class="main-imagem"
+          />
         </div>
-        <div class="container-descricao">
-            <h2>Novo projeto</h2>
-            <form>
-                <div>
-                    <label for="nome">Nome do projeto</label>
-                    <input type="text" id="nome" name="nome" />
-                </div>
-                <div>
-                    <label for="descricao">Descricao</label>
-                    <textarea id="descricao" name="descricao"></textarea>
-                </div>
-                <div>
-                    <label for="categoria">Tags</label>
-                    <input type="text" id="input-tag" name="categoria" />
-                </div>
-                <ul class="lista-tags" id="lista-tags">
-                </ul>
-                <div class="container-botoes">
-                    <button class="botao-descartar">Descartar</button>
-                    <button class="botao-publicar">Publicar</button>
-                </div>
-            </form>
+        <button id="upload-btn">Carregar imagem</button>
+        <input
+          type="file"
+          id="image-upload"
+          accept=".png, .jpg, .jpeg"
+          style="display: none"
+        />
+        <div class="container-imagem-nome">
+          <p>image_projeto.png</p>
+          <!-- <img src="../assets/img/publicar/close.svg" /> -->
         </div>
-    </main>
-</body>
+      </div>
+      <div class="container-descricao">
+        <h2>Novo projeto</h2>
+        <form>
+          <div>
+            <label for="nome">Nome do projeto</label>
+            <input type="text" id="nome" name="nome" required />
+          </div>
+          <div>
+            <label for="descricao">Descrição</label>
+            <textarea
+              id="descricao"
+              name="descricao"
+              maxlength="300"
+              required
+            ></textarea>
+          </div>
 
+          <output
+            id="mensagem-erro-sucesso"
+            role="status"
+            aria-live="polite"
+          ></output>
+          <div class="container-botoes">
+            <button class="botao-descartar" id="btn-descartar" type="submit">
+              Descartar
+            </button>
+            <button class="botao-publicar" id="btn-publicar" type="reset">
+              Publicar
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+    <script src="../assets/js/publicar.js" defer></script>
+    <script src="../assets/js/aside.js" defer></script>
+  </body>
 </html>

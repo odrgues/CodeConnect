@@ -1,0 +1,5 @@
+@import url(../css/global.css);
+
+.body-feed {
+  background-color: var(--cor-fundo);
+}

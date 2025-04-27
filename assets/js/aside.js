@@ -1,58 +1,81 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const asideStyles = document.createElement("link");
-  asideStyles.rel = "stylesheet";
-  asideStyles.href = "../assets/css/aside.css";
-  document.head.appendChild(asideStyles);
-  const asideMenu = `
-    <style src = "../assets/css/aside.css"></style>
-      <aside>
-        <img src="../assets/img/aside/Frame 2106.png" alt="logo do codeconnect" />
-        <nav>
-          <ul class="lista-links">
-            <li>
-              <a href="#" class="link-destaque">Publicar</a>
-            </li>
-            <li>
-              <a href="/pages/feed.html" class="menu-link">
-                <img src="../assets/img/aside/Frame 2.png" />
-              </a>
-            </li>
-            <li>
-              <a href="#" class="menu-link">
-                <img src="../assets/img/aside/Frame 3.png" />
-              </a>
-            </li>
-            <li>
-              <a href="#" class="menu-link">
-                <img src="../assets/img/aside/Frame 5.png" />
-              </a>
-            </li>
-            <li>
-              <a href="#" class="menu-link">
-                <img src="../assets/img/aside/Frame 4.png" />
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-      `;
+  const config = {
+    cssPath: "/assets/css/aside.css",
+    logoPath: "/assets/img/aside/desktop/Frame 2106.png",
+    links: [
+      {
+        href: "/pages/publicar.html",
+        text: "Publicar",
+        class: "btn-publicar",
+      },
+      {
+        href: "",
+        icon: "/assets/img/aside/desktop/Frame 2.png",
+        text: "Feed",
+      },
+      {
+        href: "#",
+        icon: "/assets/img/aside/desktop/Frame 3.png",
+        text: "Projetos",
+      },
+      {
+        href: "/pages/login.html",
+        icon: "/assets/img/aside/desktop/Frame 4.png",
+        text: "Login",
+      },
+    ],
+  };
+
+  loadCSS(config.cssPath);
+
+  const asideHTML = createAside(config);
 
   const container = document.getElementById("aside-container");
   if (container) {
-    container.innerHTML = asideMenu;
-    highlightCurrentPage();
+    container.innerHTML = asideHTML;
   }
 
-  function highlightCurrentPage() {
-    const links = document.querySelectorAll(".menu-link");
+  function loadCSS(path) {
+    if (!document.querySelector(`link[href="${path}"]`)) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = path;
+      document.head.appendChild(link);
+    }
+  }
 
-    const currentPage =
-      window.location.pathname.split("/").pop() || "/pages/feed.html";
+  function createAside(config) {
+    const linksHTML = config.links
+      .map((link) => {
+        if (link.class === "btn-publicar") {
+          return `
+            <li>
+              <a href="${link.href}" class="${link.class}">
+                ${link.text}
+              </a>
+            </li>
+          `;
+        } else {
+          return `
+            <li>
+              <a href="${link.href}" class="menu-link">
+                <img src="${link.icon}" class="desktop-icon" alt="${link.text}" />
+              </a>
+            </li>
+          `;
+        }
+      })
+      .join("");
 
-    links.forEach((link) => {
-      if (link.getAttribute("href") === currentPage) {
-        link.classList.add("active"); //css
-      }
-    });
+    return `
+      <aside>
+        <img src="${config.logoPath}" alt="logo do codeconnect" class="logo-desktop" />
+        <nav class="menu">
+          <ul class="lista-links">
+            ${linksHTML}
+          </ul>
+        </nav>
+      </aside>
+    `;
   }
 });
