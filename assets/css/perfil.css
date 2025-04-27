@@ -1,0 +1,61 @@
+@import url(global.css);
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  #perfil-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .perfil-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .projetos-container {
+    margin-top: 30px;
+  }
+  
+  .projeto-card {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .projeto-imagem-container {
+    width: 100%;
+    max-height: 300px;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+  
+  .projeto-imagem {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .projeto-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .projeto-descricao {
+    color: #495057;
+    line-height: 1.5;
+  }
+  
+  .projeto-data {
+    color: #6c757d;
+    font-size: 0.9em;
+  }
