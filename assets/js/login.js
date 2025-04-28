@@ -1,6 +1,6 @@
 const CONFIG = {
-  // API_URL: "http://localhost:8080/api/v1/usuarios",
-  API_URL: "http://localhost:3000/usuarios",
+  API_URL: "http://localhost:8080/api/v1/usuarios",
+  //API_URL: "http://localhost:3000/usuarios",
   MIN_LOADER_TIME: 1500,
   MESSAGE_DISPLAY_TIME: 2000,
   PUBLICAR_PAGE: "../pages/publicar.html",
@@ -156,53 +156,42 @@ const Handlers = {
   handleSubmit: async (event) => {
     event.preventDefault();
     Utils.toggleLoader(DOM.btnLogin, true);
-
+  
     const dados = {
       email: DOM.email.value.trim(),
       password: DOM.senha.value.trim(),
     };
-
+  
     try {
       if (!dados.email || !dados.password) {
         throw new Error(MESSAGES.errors.requiredFields);
       }
-
+  
       if (!Utils.validarEmail(dados.email)) {
         throw new Error(MESSAGES.errors.invalidEmail);
       }
-
-      const response = await fetch(CONFIG.API_LOGIN_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || MESSAGES.errors.invalidCredentials);
-      }
-
+  
+      const data = await API.loginUsuario(dados); // <-- Usar a função que chama /login
+  
       localStorage.setItem("userId", data.id);
       Utils.exibirMensagem(DOM.mensagem, MESSAGES.success.login, "sucesso");
-
+  
       setTimeout(() => (window.location.href = CONFIG.PUBLICAR_PAGE), 1500);
     } catch (error) {
-      let mensagemErro; //aqui, eu criei uma variável para armazenar a mensagem de erro
-
+      let mensagemErro;
+  
       if (error.name === "TypeError") {
         mensagemErro = MESSAGES.errors.networkError;
       } else {
         mensagemErro = error.message;
       }
-
+  
       Utils.exibirMensagem(DOM.mensagem, mensagemErro, "erro");
     } finally {
       Utils.toggleLoader(DOM.btnLogin, false);
     }
   },
-};
-
+};  
 const init = () => {
   DOM.email.setAttribute("aria-label", "Insira seu e-mail");
   DOM.senha.setAttribute("aria-label", "Insira sua senha");

@@ -132,7 +132,7 @@ const Handlers = {
         descricao: DOM.descricao.value.trim(),
         imagem: DOM.imagemPrincipal.src,
         // tags: Tags.obterTagsSelecionadas(),
-        // usuarioId: localStorage.getItem("userId"),
+        usuarioId: localStorage.getItem("userId"),
         data: new Date().toISOString(),
       };
 
