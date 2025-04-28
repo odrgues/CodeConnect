@@ -1,7 +1,6 @@
 const CONFIG = {
-  API_PUBLICACAO_URL: "",
+  API_PUBLICACAO_URL: "--",
   LOGIN_PAGE: "../pages/login.html",
-  MIN_LOADER_TIME: 1500,
   MESSAGE_DISPLAY_TIME: 3000,
 };
 
@@ -19,16 +18,105 @@ const MESSAGES = {
 };
 
 const DOM = {
-  form: document.querySelector("form"),
-  nomeProjeto: document.getElementById("nome"),
-  descricao: document.getElementById("descricao"),
-  mensagem: document.getElementById("mensagem-erro-sucesso"),
-  btnPublicar: document.getElementById("btn-publicar"),
-  btnDescartar: document.getElementById("btn-descartar"),
-  uploadBtn: document.getElementById("upload-btn"),
-  inputUpload: document.getElementById("image-upload"),
-  imagemPrincipal: document.querySelector(".main-imagem"),
-  nomeImagem: document.querySelector(".container-imagem-nome p"),
+  get form() {
+    return (
+      this.document.getElementById("form") || {
+        addEventListener: () => {},
+        reset: () => {},
+        requestSubmit: () => {},
+      }
+    );
+  },
+
+  get nomeProjeto() {
+    return (
+      document.getElementById("nome") || {
+        value: "",
+        addEventListener: () => {},
+        focus: () => {},
+      }
+    );
+  },
+
+  get descricao() {
+    return (
+      document.getElementById("descricao") || {
+        value: "",
+        addEventListener: () => {},
+        focus: () => {},
+      }
+    );
+  },
+
+  get mensagem() {
+    return (
+      document.getElementById("mensagem-erro-sucesso") || {
+        textContent: "",
+        className: "",
+        style: { display: "none" },
+      }
+    );
+  },
+
+  get btnPublicar() {
+    return (
+      document.getElementById("btn-publicar") || {
+        disabled: false,
+        addEventListener: () => {},
+        textContent: "",
+      }
+    );
+  },
+
+  get btnDescartar() {
+    return (
+      document.getElementById("btn-descartar") || {
+        disabled: false,
+        addEventListener: () => {},
+        textContent: "",
+      }
+    );
+  },
+
+  get btnUpload() {
+    return (
+      document.getElementById("upload-btn") || {
+        addEventListener: () => {},
+        textContent: "",
+      }
+    );
+  },
+
+  get inputUpload() {
+    return (
+      document.getElementById("image-upload") || {
+        addEventListener: () => {},
+        files: [],
+        value: "",
+      }
+    );
+  },
+
+  get imagemPrincipal() {
+    return (
+      document.querySelector(".main-imagem") || {
+        src: "",
+        style: {},
+        classList: {
+          add: () => {},
+          remove: () => {},
+        },
+      }
+    );
+  },
+  get nomeImagem() {
+    return (
+      document.querySelector(".container-imagem-nome p") || {
+        textContent: "",
+        style: {},
+      }
+    );
+  },
 };
 
 const Utils = {
@@ -42,47 +130,17 @@ const Utils = {
     );
   },
 
-  // toggleLoader: (elemento, isLoading) => {
-  //   if (isLoading) {
-  //     elemento.dataset.originalText = elemento.textContent;
-  //     elemento.innerHTML = '<span class="loader"></span>';
-  //     elemento.disabled = true;
-  //   } else {
-  //     elemento.textContent = elemento.dataset.originalText || "Publicar";
-  //     elemento.disabled = false;
-  //   }
-  // },
-
   validarFormulario: () => {
-    let valido = true;
-
-    if (!DOM.nomeProjeto.value.trim()) {
-      DOM.nomeProjeto.classList.add("campo-invalido");
-      valido = false;
-    } else {
-      DOM.nomeProjeto.classList.remove("campo-invalido");
+    const form = DOM.form;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return false;
     }
-
-    if (!DOM.descricao.value.trim()) {
-      DOM.descricao.classList.add("campo-invalido");
-      valido = false;
-    } else {
-      DOM.descricao.classList.remove("campo-invalido");
-    }
-
-    if (!DOM.imagemPrincipal.src.includes("data:image")) {
-      DOM.inputUpload.classList.add("campo-invalido");
-      valido = false;
-    } else {
-      DOM.inputUpload.classList.remove("campo-invalido");
-    }
-
-    return valido;
+    return true;
   },
 
   lerArquivo: (arquivo) => {
     return new Promise((resolve, reject) => {
-      // Verifica tipo do arquivo
       const tiposPermitidos = ["image/png", "image/jpeg", "image/jpg"];
       if (!tiposPermitidos.includes(arquivo.type)) {
         return reject("Apenas imagens PNG, JPG e JPEG são permitidas");
@@ -94,21 +152,17 @@ const Utils = {
       leitor.readAsDataURL(arquivo);
     });
   },
+
   limparFormulario: () => {
-    DOM.nomeProjeto.value = "";
-    DOM.descricao.value = "";
+    DOM.form.reset();
     DOM.imagemPrincipal.src = "/assets/img/publicacao/imagem1.png";
     DOM.nomeImagem.textContent = "image_projeto.png";
   },
 };
-
-DOM.imagemPrincipal.src = "/assets/img/publicacao/imagem1.png";
-
 const Handlers = {
   handleUpload: async (event) => {
     const arquivo = event.target.files[0];
     if (!arquivo) return;
-
     try {
       const conteudo = await Utils.lerArquivo(arquivo);
       DOM.imagemPrincipal.src = conteudo.url;
@@ -117,6 +171,7 @@ const Handlers = {
       Utils.exibirMensagem(DOM.mensagem, erro, "erro");
     }
   },
+
   verificarAutenticacao: () => {
     const userId = localStorage.getItem("userId");
     if (!userId) {
@@ -128,15 +183,23 @@ const Handlers = {
     }
     return true;
   },
+
   handleDescartar: () => {
     Utils.limparFormulario();
   },
 
+  ajustarTextarea: () => {
+    const textarea = document.getElementById("descricao");
+    if (textarea) {
+      textarea.addEventListener("input", function () {
+        this.style.height = "auto";
+        this.style.height = this.scrollHeight + "px";
+      });
+    }
+  },
+
   handleSubmit: async (event) => {
     event.preventDefault();
-    const startTime = Date.now();
-    Utils.toggleLoader(DOM.btnPublicar, true);
-
     try {
       if (!Utils.validarFormulario()) {
         throw new Error(MESSAGES.errors.requiredFields);
@@ -150,11 +213,18 @@ const Handlers = {
         data: new Date().toISOString(),
       };
 
+      const timeout = 8000;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
+
       const response = await fetch(CONFIG.API_PUBLICACAO_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dados),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -168,36 +238,29 @@ const Handlers = {
       );
       setTimeout(() => Utils.limparFormulario(), 1500);
     } catch (error) {
-      Utils.exibirMensagem(
-        DOM.mensagem,
-        error.message || MESSAGES.errors.serverError,
-        "erro"
-      );
-    } finally {
-      const elapsed = Date.now() - startTime;
-      const remainingTime = Math.max(0, CONFIG.MIN_LOADER_TIME - elapsed);
-      setTimeout(
-        () => Utils.toggleLoader(DOM.btnPublicar, false),
-        remainingTime
-      );
+      if (error.name === "AbortError") {
+        Utils.exibirMensagem(
+          DOM.mensagem,
+          "A requisição demorou muito tempo. Tente novamente.",
+          "erro"
+        );
+      } else {
+        Utils.exibirMensagem(
+          DOM.mensagem,
+          error.message || MESSAGES.errors.serverError,
+          "erro"
+        );
+      }
     }
   },
 };
 
-const textarea = document.getElementById("descricao");
-
-textarea.addEventListener("input", function () {
-  this.style.height = "auto";
-  this.style.height = this.scrollHeight + "px";
-});
-
 const init = () => {
-  // Inicializa o upload independentemente do login
-  DOM.uploadBtn.addEventListener("click", () => DOM.inputUpload.click());
+  Handlers.ajustarTextarea();
+  DOM.btnUpload.addEventListener("click", () => DOM.inputUpload.click());
   DOM.inputUpload.addEventListener("change", Handlers.handleUpload);
   DOM.btnDescartar.addEventListener("click", Handlers.handleDescartar);
 
-  // Só permite submit se estiver logado
   DOM.form.addEventListener("submit", (e) => {
     if (!Handlers.verificarAutenticacao()) {
       e.preventDefault();
