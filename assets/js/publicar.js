@@ -82,13 +82,18 @@ const Utils = {
 
   lerArquivo: (arquivo) => {
     return new Promise((resolve, reject) => {
+      // Verifica tipo do arquivo
+      const tiposPermitidos = ["image/png", "image/jpeg", "image/jpg"];
+      if (!tiposPermitidos.includes(arquivo.type)) {
+        return reject("Apenas imagens PNG, JPG e JPEG são permitidas");
+      }
+
       const leitor = new FileReader();
       leitor.onload = () => resolve({ url: leitor.result, nome: arquivo.name });
       leitor.onerror = () => reject(MESSAGES.errors.invalidImage);
       leitor.readAsDataURL(arquivo);
     });
   },
-
   limparFormulario: () => {
     DOM.nomeProjeto.value = "";
     DOM.descricao.value = "";
@@ -112,7 +117,17 @@ const Handlers = {
       Utils.exibirMensagem(DOM.mensagem, erro, "erro");
     }
   },
-
+  verificarAutenticacao: () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      Utils.exibirMensagem(DOM.mensagem, MESSAGES.errors.notLoggedIn, "erro");
+      setTimeout(() => {
+        window.location.href = CONFIG.LOGIN_PAGE;
+      }, 2000);
+      return false;
+    }
+    return true;
+  },
   handleDescartar: () => {
     Utils.limparFormulario();
   },
@@ -131,7 +146,6 @@ const Handlers = {
         nome: DOM.nomeProjeto.value.trim(),
         descricao: DOM.descricao.value.trim(),
         imagem: DOM.imagemPrincipal.src,
-        // tags: Tags.obterTagsSelecionadas(),
         usuarioId: localStorage.getItem("userId"),
         data: new Date().toISOString(),
       };
@@ -178,14 +192,18 @@ textarea.addEventListener("input", function () {
 });
 
 const init = () => {
-  // Verifica login
-  if (!Handlers.verificarAutenticacao()) return;
-
+  // Inicializa o upload independentemente do login
   DOM.uploadBtn.addEventListener("click", () => DOM.inputUpload.click());
   DOM.inputUpload.addEventListener("change", Handlers.handleUpload);
   DOM.btnDescartar.addEventListener("click", Handlers.handleDescartar);
 
-  DOM.form.addEventListener("submit", Handlers.handleSubmit);
+  // Só permite submit se estiver logado
+  DOM.form.addEventListener("submit", (e) => {
+    if (!Handlers.verificarAutenticacao()) {
+      e.preventDefault();
+    } else {
+      Handlers.handleSubmit(e);
+    }
+  });
 };
-
 document.addEventListener("DOMContentLoaded", init);
