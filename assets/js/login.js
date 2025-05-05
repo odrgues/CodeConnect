@@ -1,20 +1,8 @@
 const CONFIG = {
   API_URL: "http://localhost:8080/api/v1/usuarios",
   MIN_LOADER_TIME: 1500,
-  MESSAGE_DISPLAY_TIME: 2000,
-  PUBLICAR_PAGE: "../pages/publicar.html",
-};
-
-const MESSAGES = {
-  errors: {
-    invalidEmail: "Por favor, insira um e-mail válido.",
-    invalidCredentials: "E-mail ou senha incorretos.",
-    networkError: "Problema de conexão. Tente novamente.",
-    requiredFields: "Todos os campos são obrigatórios.",
-  },
-  success: {
-    login: "Login realizado com sucesso!",
-  },
+  MESSAGE_DISPLAY_TIME: 3000,
+  FEED_PAGE: "/pages/feed.html",
 };
 
 const DOM = {
@@ -69,12 +57,7 @@ const DOM = {
     );
   },
   get mensagem() {
-    return (
-      document.getElementById("mensagem-login") || {
-        textContent: "",
-        className: "",
-      }
-    );
+    return document.getElementById("mensagem-login");
   },
 };
 
@@ -90,10 +73,10 @@ const Utils = {
   },
 
   exibirMensagem: (elemento, texto, tipo = "erro") => {
+    if (!elemento) return;
+
     elemento.textContent = texto;
-    elemento.className = `mensagem-flutuante ${
-      tipo === "sucesso" ? "mensagem-sucesso" : "mensagem-erro"
-    }`;
+    elemento.className = `mensagem-${tipo}`;
     elemento.style.display = "block";
 
     setTimeout(
@@ -107,8 +90,7 @@ const Utils = {
   toggleLoader: (elemento, isLoading) => {
     if (isLoading) {
       elemento.dataset.originalText = elemento.textContent;
-      elemento.innerHTML =
-        '<span class="loader-spinner"><span class="spinner-inner"></span></span>';
+      elemento.innerHTML = '<span class="loader"></span>';
       elemento.disabled = true;
     } else {
       elemento.textContent = elemento.dataset.originalText || "Entrar";
@@ -132,14 +114,16 @@ const API = {
       const data = await response.json();
 
       if (!response.ok) {
-        const error = new Error(data.message || MESSAGES.errors.networkError);
+        const error = new Error(
+          data.message || "Erro ao processar a solicitação."
+        );
         error.status = response.status;
         throw error;
       }
 
       return data;
     } catch (error) {
-      console.error("Erro no login:", error);
+      console.error("Erro na API:", error);
       throw error;
     }
   },
@@ -154,51 +138,71 @@ const Handlers = {
 
   handleSubmit: async (event) => {
     event.preventDefault();
-    Utils.toggleLoader(DOM.btnLogin, true);
+    const startTime = Date.now();
 
+    Utils.toggleLoader(DOM.btnLogin, true);
     const dados = {
       email: DOM.email.value.trim(),
-      password: DOM.senha.value.trim(),
+      password: DOM.senha.value,
     };
 
-    try {
-      if (!dados.email || !dados.password) {
-        throw new Error(MESSAGES.errors.requiredFields);
-      }
-
-      if (!Utils.validarEmail(dados.email)) {
-        throw new Error(MESSAGES.errors.invalidEmail);
-      }
-
-      const data = await API.loginUsuario(dados);
-
-      localStorage.setItem("userId", data.id);
-      Utils.exibirMensagem(DOM.mensagem, MESSAGES.success.login, "sucesso");
-
-      setTimeout(() => (window.location.href = CONFIG.PUBLICAR_PAGE), 1500);
-    } catch (error) {
-      let mensagemErro;
-
-      if (error.name === "TypeError") {
-        mensagemErro = MESSAGES.errors.networkError;
-      } else {
-        mensagemErro = error.message;
-      }
-
-      Utils.exibirMensagem(DOM.mensagem, mensagemErro, "erro");
-    } finally {
+    if (!dados.email || !dados.password) {
+      Utils.exibirMensagem(DOM.mensagem, "Preencha todos os campos", "erro");
       Utils.toggleLoader(DOM.btnLogin, false);
+      return;
+    }
+
+    if (!Utils.validarEmail(dados.email)) {
+      Utils.exibirMensagem(DOM.mensagem, "E-mail inválido", "erro");
+      Utils.toggleLoader(DOM.btnLogin, false);
+      return;
+    }
+
+    try {
+      const resposta = await API.loginUsuario(dados);
+
+      localStorage.setItem("userId", resposta.id);
+      Utils.exibirMensagem(
+        DOM.mensagem,
+        resposta.message || "Login realizado!",
+        "sucesso"
+      );
+
+      const elapsed = Date.now() - startTime;
+      const remainingTime = Math.max(
+        CONFIG.MESSAGE_DISPLAY_TIME - elapsed,
+        1000
+      );
+
+      setTimeout(() => {
+        window.location.href = CONFIG.FEED_PAGE;
+      }, remainingTime);
+    } catch (error) {
+      Utils.exibirMensagem(
+        DOM.mensagem,
+        error.message || "Erro desconhecido",
+        "erro"
+      );
+    } finally {
+      const elapsed = Date.now() - startTime;
+      const remainingLoaderTime = Math.max(0, CONFIG.MIN_LOADER_TIME - elapsed);
+
+      if (remainingLoaderTime > 0) {
+        setTimeout(() => {
+          Utils.toggleLoader(DOM.btnLogin, false);
+        }, remainingLoaderTime);
+      } else {
+        Utils.toggleLoader(DOM.btnLogin, false);
+      }
     }
   },
 };
 const init = () => {
   DOM.email.setAttribute("aria-label", "Insira seu e-mail");
   DOM.senha.setAttribute("aria-label", "Insira sua senha");
-  DOM.mensagem.setAttribute("role", "alert");
-
   DOM.toggleSenha.addEventListener("click", Handlers.toggleVisibilidadeSenha);
   DOM.form.addEventListener("submit", Handlers.handleSubmit);
-  Handlers.setupInputValidation();
+  // Handlers.setupInputValidation();
 
   DOM.email.addEventListener("keydown", (e) => {
     if (e.key === "Enter") DOM.senha.focus();

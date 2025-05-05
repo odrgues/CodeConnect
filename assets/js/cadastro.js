@@ -58,13 +58,7 @@ const DOM = {
     );
   },
   get mensagem() {
-    return (
-      document.getElementById("mensagem-cadastro") || {
-        textContent: "",
-        style: {},
-        className: "",
-      }
-    );
+    return document.getElementById("mensagem-cadastro");
   },
   get btnCadastro() {
     return (
@@ -101,17 +95,17 @@ const API = {
         body: JSON.stringify(dados),
       });
 
-      const data = await response.json();
+      const resposta = await response.json();
 
       if (!response.ok) {
         const error = new Error(
-          data.message || "Erro ao processar a solicitação."
+          resposta.message || "Erro ao processar a solicitação."
         );
         error.status = response.status;
         throw error;
       }
 
-      return data;
+      return resposta;
     } catch (error) {
       console.error("Erro na API:", error);
       throw error;
@@ -130,8 +124,10 @@ const Utils = {
   },
 
   exibirMensagem: (elemento, texto, tipo = "erro") => {
+    if (!elemento) return;
+
     elemento.textContent = texto;
-    elemento.className = tipo;
+    elemento.className = `mensagem-${tipo}`;
     elemento.style.display = "block";
 
     setTimeout(
@@ -141,7 +137,6 @@ const Utils = {
       tipo === "sucesso" ? CONFIG.MESSAGE_DISPLAY_TIME : 5000
     );
   },
-
   toggleLoader: (elemento, isLoading) => {
     if (isLoading) {
       elemento.dataset.originalText = elemento.textContent;
@@ -170,6 +165,7 @@ const Handlers = {
     event.preventDefault();
     const startTime = Date.now();
 
+    // Ativa loader imediatamente
     Utils.toggleLoader(DOM.btnCadastro, true);
 
     const dados = {
@@ -178,25 +174,35 @@ const Handlers = {
       password: DOM.senha.value.trim(),
     };
 
-    try {
-      if (!dados.username) throw new Error("O nome é obrigatório");
-      if (!dados.email) throw new Error("O e-mail é obrigatório");
-      if (!dados.password) throw new Error("A senha é obrigatória");
-      if (!Utils.validarEmail(dados.email)) {
-        throw new Error("Por favor, insira um e-mail válido");
-      }
-      if (!Utils.validarSenha(dados.password)) {
-        throw new Error("A senha deve ter entre 8 e 20 caracteres");
-      }
+    // Validações
+    if (!dados.username || !dados.email || !dados.password) {
+      Utils.exibirMensagem(DOM.mensagem, "Preencha todos os campos", "erro");
+      Utils.toggleLoader(DOM.btnCadastro, false);
+      return;
+    }
 
-      await Promise.all([
-        API.cadastrarUsuario(dados),
-        new Promise((resolve) => setTimeout(resolve, CONFIG.MIN_LOADER_TIME)),
-      ]);
+    if (!Utils.validarEmail(dados.email)) {
+      Utils.exibirMensagem(DOM.mensagem, "E-mail inválido", "erro");
+      Utils.toggleLoader(DOM.btnCadastro, false);
+      return;
+    }
+
+    if (!Utils.validarSenha(dados.password)) {
+      Utils.exibirMensagem(
+        DOM.mensagem,
+        "Senha deve ter 8-20 caracteres",
+        "erro"
+      );
+      Utils.toggleLoader(DOM.btnCadastro, false);
+      return;
+    }
+
+    try {
+      const resposta = await API.cadastrarUsuario(dados);
 
       Utils.exibirMensagem(
         DOM.mensagem,
-        "Cadastro realizado com sucesso!",
+        resposta.message || "Cadastro realizado com sucesso!",
         "sucesso"
       );
 
@@ -210,26 +216,27 @@ const Handlers = {
         window.location.href = CONFIG.LOGIN_PAGE;
       }, remainingTime);
     } catch (error) {
-      let mensagemErro = error.message;
-
-      if (error.status === 500) {
-        //mudar com backend
-        mensagemErro =
-          "Este e-mail já está cadastrado. Por favor, use outro e-mail ou faça login.";
-      }
-
-      Utils.exibirMensagem(DOM.mensagem, mensagemErro, "erro");
+      Utils.exibirMensagem(
+        DOM.mensagem,
+        error.message || "Erro ao cadastrar",
+        "erro"
+      );
     } finally {
       const elapsed = Date.now() - startTime;
       const remainingLoaderTime = Math.max(0, CONFIG.MIN_LOADER_TIME - elapsed);
 
-      setTimeout(() => {
+      if (remainingLoaderTime > 0) {
+        setTimeout(() => {
+          Utils.toggleLoader(DOM.btnCadastro, false);
+        }, remainingLoaderTime);
+      } else {
         Utils.toggleLoader(DOM.btnCadastro, false);
-      }, remainingLoaderTime);
+      }
+
+      DOM.senha.value = "";
     }
   },
 };
-
 const init = () => {
   if (!DOM.form) return;
 

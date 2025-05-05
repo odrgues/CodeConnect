@@ -9,19 +9,25 @@ document.addEventListener("DOMContentLoaded", function () {
         class: "btn-publicar",
       },
       {
-        href: "",
+        href: "/pages/feed.html",
         icon: "/assets/img/aside/desktop/Frame 2.png",
         text: "Feed",
       },
       {
-        href: "#",
+        href: "/pages/perfil.html",
         icon: "/assets/img/aside/desktop/Frame 3.png",
-        text: "Projetos",
+        text: "Perfil",
       },
+      {
+        href: "#",
+        icon: "/assets/img/aside/desktop/Frame 5.png",
+        text: "Sobre nós",
+      },
+
       {
         href: "/pages/login.html",
         icon: "/assets/img/aside/desktop/Frame 4.png",
-        text: "Login",
+        text: "Sair",
       },
     ],
   };

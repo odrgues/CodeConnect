@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Perfil</title>
-  <link rel="stylesheet" href="../assets/css/perfil.css">
-</head>
-<body>
-  <main>
-    <div id="perfil-container">
-      <output id="mensagem-perfil" role="status" aria-live="polite"></output>
-      
-      <div class="perfil-info">
-        <h1>Meu Perfil</h1>
-        <p><strong>Nome:</strong> <span id="nome-usuario"></span></p>
-        <p><strong>Descrição:</strong> <span id="descricao-usuario"></span></p>
-      </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meu Perfil</title>
+    <link rel="stylesheet" href="../assets/css/perfil.css" />
+  </head>
+  <body>
+    <div id="aside-container"></div>
+    <main>
+      <div id="perfil-container">
+        <output id="mensagem-perfil" role="status" aria-live="polite"></output>
 
-      <div class="projetos-container">
-        <h2>Meus Projetos</h2>
-        <div id="lista-projetos">
-          <!-- Projetos serão carregados aqui -->
+        <div class="perfil-info">
+          <h1>Meu Perfil</h1>
+          <p><strong>Nome:</strong> <span id="nome-usuario"></span></p>
+          <p>
+            <strong>Descrição:</strong> <span id="descricao-usuario"></span>
+          </p>
+        </div>
+
+        <div class="projetos-container">
+          <h2>Meus Projetos</h2>
+          <div id="lista-projetos">
+            <!-- Projetos serão carregados aqui -->
+          </div>
         </div>
       </div>
-    </div>
-  </main>
-  <script src="../assets/js/perfil.js"></script>
-</body>
+    </main>
+    <script src="../assets/js/perfil.js"></script>
+    <script src="../assets/js/aside.js"></script>
+  </body>
 </html>
