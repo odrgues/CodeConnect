@@ -69,13 +69,6 @@ const DOM = {
       }
     );
   },
-  get contadorSenha() {
-    return (
-      document.getElementById("contador-senha") || {
-        textContent: "",
-      }
-    );
-  },
 };
 
 const IMAGES = {
@@ -134,7 +127,7 @@ const Utils = {
       () => {
         elemento.style.display = "none";
       },
-      tipo === "sucesso" ? CONFIG.MESSAGE_DISPLAY_TIME : 5000
+      tipo === "sucesso" ? CONFIG.MESSAGE_DISPLAY_TIME : 3000
     );
   },
   toggleLoader: (elemento, isLoading) => {
@@ -156,16 +149,10 @@ const Handlers = {
     DOM.iconeSenha.src = isSenhaVisivel ? IMAGES.show : IMAGES.hide;
   },
 
-  atualizarValidacaoSenha: () => {
-    const senha = DOM.senha.value;
-    DOM.contadorSenha.textContent = `${senha.length}/20`;
-  },
-
   handleSubmit: async (event) => {
     event.preventDefault();
     const startTime = Date.now();
 
-    // Ativa loader imediatamente
     Utils.toggleLoader(DOM.btnCadastro, true);
 
     const dados = {
@@ -174,7 +161,6 @@ const Handlers = {
       password: DOM.senha.value.trim(),
     };
 
-    // Validações
     if (!dados.username || !dados.email || !dados.password) {
       Utils.exibirMensagem(DOM.mensagem, "Preencha todos os campos", "erro");
       Utils.toggleLoader(DOM.btnCadastro, false);
@@ -255,8 +241,6 @@ const init = () => {
   DOM.senha.addEventListener("keydown", (e) => {
     if (e.key === "Enter") DOM.form.requestSubmit();
   });
-
-  DOM.contadorSenha.textContent = "0/20";
 };
 
 document.addEventListener("DOMContentLoaded", init);

@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
         text: "Perfil",
       },
       {
-        href: "#",
+        href: "/pages/sobre.html",
         icon: "/assets/img/aside/desktop/Frame 5.png",
         text: "Sobre nós",
       },

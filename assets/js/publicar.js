@@ -1,6 +1,5 @@
 const CONFIG = {
-  API_PUBLICACAO_URL: "--",
-  LOGIN_PAGE: "../pages/login.html",
+  API_PUBLICACAO_URL: "http://localhost:8080/api/v1/Posts",
   MESSAGE_DISPLAY_TIME: 3000,
 };
 
@@ -20,7 +19,7 @@ const MESSAGES = {
 const DOM = {
   get form() {
     return (
-      this.document.getElementById("form") || {
+      document.querySelector("form") || {
         addEventListener: () => {},
         reset: () => {},
         requestSubmit: () => {},
@@ -50,7 +49,7 @@ const DOM = {
 
   get mensagem() {
     return (
-      document.getElementById("mensagem-erro-sucesso") || {
+      document.getElementById("mensagem-publicar") || {
         textContent: "",
         className: "",
         style: { display: "none" },
@@ -119,10 +118,38 @@ const DOM = {
   },
 };
 
+const API = {
+  criarPublicacao: async (dados, timeout = 8000) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+    try {
+      const response = await fetch(CONFIG.API_PUBLICACAO_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || MESSAGES.errors.serverError);
+      }
+
+      return await response.json();
+    } catch (error) {
+      clearTimeout(timeoutId);
+      throw error;
+    }
+  },
+};
+
 const Utils = {
   exibirMensagem: (elemento, texto, tipo = "erro") => {
     elemento.textContent = texto;
-    elemento.className = tipo;
+    elemento.className = `mensagem-${tipo}`;
     elemento.style.display = "block";
     setTimeout(
       () => (elemento.style.display = "none"),
@@ -132,10 +159,34 @@ const Utils = {
 
   validarFormulario: () => {
     const form = DOM.form;
+    const nomeProjeto = DOM.nomeProjeto.value.trim();
+    const descricao = DOM.descricao.value.trim();
+
     if (!form.checkValidity()) {
       form.reportValidity();
       return false;
     }
+
+    if (nomeProjeto.length < 3) {
+      Utils.exibirMensagem(
+        DOM.mensagem,
+        "O nome do projeto deve ter pelo menos 3 caracteres.",
+        "erro"
+      );
+      DOM.nomeProjeto.focus();
+      return false;
+    }
+
+    if (descricao.length < 10) {
+      Utils.exibirMensagem(
+        DOM.mensagem,
+        "A descrição deve ter pelo menos 10 caracteres.",
+        "erro"
+      );
+      DOM.descricao.focus();
+      return false;
+    }
+
     return true;
   },
 
@@ -144,6 +195,12 @@ const Utils = {
       const tiposPermitidos = ["image/png", "image/jpeg", "image/jpg"];
       if (!tiposPermitidos.includes(arquivo.type)) {
         return reject("Apenas imagens PNG, JPG e JPEG são permitidas");
+      }
+
+      const tamanhoMaximoMB = 5;
+      const tamanhoMaximoBytes = tamanhoMaximoMB * 1024 * 1024;
+      if (arquivo.size > tamanhoMaximoBytes) {
+        return reject(`A imagem deve ter menos de ${tamanhoMaximoMB}MB`);
       }
 
       const leitor = new FileReader();
@@ -205,31 +262,20 @@ const Handlers = {
         throw new Error(MESSAGES.errors.requiredFields);
       }
 
+      let imagem = null;
+      if (DOM.inputUpload.files[0]) {
+        const conteudo = await Utils.lerArquivo(DOM.inputUpload.files[0]);
+        imagem = conteudo.url.split(",")[1];
+      }
+
       const dados = {
-        nome: DOM.nomeProjeto.value.trim(),
-        descricao: DOM.descricao.value.trim(),
-        imagem: DOM.imagemPrincipal.src,
+        title: DOM.nomeProjeto.value.trim(),
+        descricaoPost: DOM.descricao.value.trim(),
         usuarioId: localStorage.getItem("userId"),
-        data: new Date().toISOString(),
+        imagem: imagem,
       };
 
-      const timeout = 8000;
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-      const response = await fetch(CONFIG.API_PUBLICACAO_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados),
-        signal: controller.signal,
-      });
-
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || MESSAGES.errors.serverError);
-      }
+      await API.criarPublicacao(dados);
 
       Utils.exibirMensagem(
         DOM.mensagem,
@@ -257,16 +303,13 @@ const Handlers = {
 
 const init = () => {
   Handlers.ajustarTextarea();
+
+  if (!Handlers.verificarAutenticacao()) return;
+  DOM.form.addEventListener("submit", Handlers.handleSubmit);
   DOM.btnUpload.addEventListener("click", () => DOM.inputUpload.click());
+
   DOM.inputUpload.addEventListener("change", Handlers.handleUpload);
   DOM.btnDescartar.addEventListener("click", Handlers.handleDescartar);
-
-  DOM.form.addEventListener("submit", (e) => {
-    if (!Handlers.verificarAutenticacao()) {
-      e.preventDefault();
-    } else {
-      Handlers.handleSubmit(e);
-    }
-  });
 };
+
 document.addEventListener("DOMContentLoaded", init);

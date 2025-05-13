@@ -1,5 +1,5 @@
 const CONFIG = {
-  API_URL: "http://localhost:8080/api/v1/usuarios",
+  API_URL: "http://localhost:8080/api/v1/usuarios/login",
   MIN_LOADER_TIME: 1500,
   MESSAGE_DISPLAY_TIME: 3000,
   FEED_PAGE: "/pages/feed.html",
@@ -65,6 +65,35 @@ const IMAGES = {
   show: "../assets/img/cadastro-login/visibility.png",
   hide: "../assets/img/cadastro-login/visibility_off.png",
 };
+const API = {
+  loginUsuario: async (dados) => {
+    try {
+      const response = await fetch(CONFIG.API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(dados),
+      });
+
+      const resposta = await response.json();
+
+      if (!response.ok) {
+        const error = new Error(
+          resposta.message || "Erro ao processar a solicitação."
+        );
+        error.status = response.status;
+        throw error;
+      }
+
+      return resposta;
+    } catch (error) {
+      console.error("Erro na API:", error);
+      throw error;
+    }
+  },
+};
 
 const Utils = {
   validarEmail: (email) => {
@@ -83,7 +112,7 @@ const Utils = {
       () => {
         elemento.style.display = "none";
       },
-      tipo === "sucesso" ? CONFIG.MESSAGE_DISPLAY_TIME : 5000
+      tipo === "sucesso" ? CONFIG.MESSAGE_DISPLAY_TIME : 3000
     );
   },
 
@@ -95,36 +124,6 @@ const Utils = {
     } else {
       elemento.textContent = elemento.dataset.originalText || "Entrar";
       elemento.disabled = false;
-    }
-  },
-};
-
-const API = {
-  loginUsuario: async (dados) => {
-    try {
-      const response = await fetch(`${CONFIG.API_URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(dados),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        const error = new Error(
-          data.message || "Erro ao processar a solicitação."
-        );
-        error.status = response.status;
-        throw error;
-      }
-
-      return data;
-    } catch (error) {
-      console.error("Erro na API:", error);
-      throw error;
     }
   },
 };

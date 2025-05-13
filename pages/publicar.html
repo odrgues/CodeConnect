@@ -42,35 +42,37 @@
         <form>
           <div>
             <label for="nome">Nome do projeto</label>
-            <input type="text" id="nome" name="nome" minlength="3" required />
+            <input
+              type="text"
+              id="nome"
+              name="nome"
+              minlength="3"
+              autofocus
+              required
+            />
           </div>
           <div>
             <label for="descricao">Descrição</label>
-            <textarea
-              id="descricao"
-              name="descricao"
-              maxlength="300"
-              required
-            ></textarea>
+            <textarea id="descricao" name="descricao" minlength="10"></textarea>
           </div>
 
           <output
-            id="mensagem-erro-sucesso"
+            id="mensagem-publicar"
             role="status"
             aria-live="polite"
           ></output>
           <div class="container-botoes">
-            <button class="botao-descartar" id="btn-descartar" type="submit">
+            <button class="botao-descartar" id="btn-descartar" type="reset">
               Descartar
             </button>
-            <button class="botao-publicar" id="btn-publicar" type="reset">
+            <button class="botao-publicar" id="btn-publicar" type="submit">
               Publicar
             </button>
           </div>
         </form>
       </div>
     </main>
-    <script src="../assets/js/publicar.js" defer></script>
     <script src="../assets/js/aside.js" defer></script>
+    <script src="../assets/js/publicar.js" defer></script>
   </body>
 </html>
