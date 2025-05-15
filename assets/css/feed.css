@@ -1,5 +1,151 @@
-@import url(../css/global.css);
+@import url(./global.css);
 
-.body-feed {
+body {
   background-color: var(--cor-fundo);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
+.search-bar {
+  display: flex;
+  padding: 20px;
+  background-color: var(--cor-fundo);
+  align-items: center;
+  gap: 10px;
+}
+
+.search-input {
+  flex-grow: 1;
+  padding: 10px;
+  background-color: var(--cor-input);
+  border-radius: 5px;
+  font-size: 1em;
+  border: none;
+  width: 100%;
+  color: wheat;
+}
+
+.search-btn {
+  background-color: #28a745; /* Cor de fundo verde */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+  background-color: #1e7e34; /* Cor de fundo verde mais escura no hover */
+}
+
+/* Estilos para a seção de filtros */
+.filters {
+  padding: 15px 20px;
+  display: flex; /* Alinha os elementos em linha */
+  align-items: center; /* Alinha verticalmente os itens */
+  gap: 10px; /* Espaçamento entre o label e o select */
+  background-color: #f8f9fa; /* Cor de fundo levemente cinza */
+  border-bottom: 1px solid #ced4da; /* Borda inferior sutil */
+}
+
+.filters label {
+  font-weight: bold;
+  color: #495057;
+}
+
+.sort-list {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 1em;
+  appearance: none; /* Remove a aparência padrão do select */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23343a40" viewBox="0 0 4 5"><path fill-rule="evenodd" d="M2 0L0 2h4L2 0z"/></svg>'); /* Ícone de dropdown */
+  background-repeat: no-repeat;
+  background-position-x: calc(100% - 10px);
+  background-position-y: center;
+  padding-right: 25px; /* Espaço para o ícone */
+  cursor: pointer;
+}
+
+.sort-list:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Estilos básicos para o container da lista de projetos */
+.project-list {
+  display: flex;
+  flex-direction: column; /* Organiza os posts verticalmente */
+  gap: 15px; /* Espaçamento entre os posts */
+  padding: 20px; /* Espaçamento interno ao redor da lista */
+}
+
+/* Estilos básicos para cada card de projeto */
+.project-card {
+  background-color: #f8f9fa; /* Cor de fundo levemente cinza */
+  border: 1px solid #dee2e6; /* Borda sutil */
+  border-radius: 8px; /* Bordas arredondadas */
+  padding: 20px; /* Espaçamento interno dentro do card */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilos para o título do projeto */
+.project-card h3 {
+  margin-top: 0; /* Remove a margem superior padrão do h3 */
+  margin-bottom: 10px; /* Espaçamento abaixo do título */
+  color: #343a40; /* Cor do texto escura */
+}
+
+/* Estilos para as informações do usuário e data */
+.project-card p {
+  margin-bottom: 8px; /* Espaçamento abaixo dos parágrafos */
+  color: #6c757d; /* Cor do texto cinza */
+  font-size: 0.9em; /* Tamanho da fonte um pouco menor */
+}
+
+/* Estilos para o botão "Ver Detalhes" */
+.project-card button {
+  background-color: #007bff; /* Cor de fundo azul */
+  color: white; /* Cor do texto branca */
+  border: none; /* Remove a borda padrão do botão */
+  padding: 10px 15px; /* Espaçamento interno do botão */
+  border-radius: 5px; /* Bordas arredondadas do botão */
+  cursor: pointer; /* Mãozinha ao passar o mouse */
+  font-size: 1em; /* Tamanho da fonte padrão */
+  transition: background-color 0.3s ease; /* Transição suave para o hover */
+}
+
+.project-card button:hover {
+  background-color: #0056b3; /* Cor de fundo mais escura no hover */
+}
+
+/* Estilos para a mensagem de "Nenhum projeto encontrado" */
+.no-projects {
+  padding: 20px;
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Estilos para a mensagem de erro */
+.error {
+  padding: 20px;
+  text-align: center;
+  color: #dc3545; /* Cor vermelha para erro */
+  font-weight: bold;
+}
+
+/* Estilos básicos para cada card de projeto */
+.project-card {
+  /* ... outros estilos ... */
+  cursor: pointer; /* Indica que o elemento é clicável */
+}
+
+/* Se você tinha estilos específicos para o botão, você pode removê-los */
+/* .project-card button { ... } */
+/* .project-card button:hover { ... } */

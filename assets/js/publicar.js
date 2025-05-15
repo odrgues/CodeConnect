@@ -1,6 +1,7 @@
 const CONFIG = {
   API_PUBLICACAO_URL: "http://localhost:8080/api/v1/Posts",
   MESSAGE_DISPLAY_TIME: 3000,
+  PERFIL_PAGE: "/pages/perfil.html",
 };
 
 const MESSAGES = {
@@ -257,6 +258,7 @@ const Handlers = {
 
   handleSubmit: async (event) => {
     event.preventDefault();
+    const startTime = Date.now();
     try {
       if (!Utils.validarFormulario()) {
         throw new Error(MESSAGES.errors.requiredFields);
@@ -282,7 +284,18 @@ const Handlers = {
         MESSAGES.success.postCreated,
         "sucesso"
       );
-      setTimeout(() => Utils.limparFormulario(), 1500);
+
+      const elapsed = Date.now() - startTime;
+      const remainingTime = Math.max(
+        CONFIG.MESSAGE_DISPLAY_TIME - elapsed,
+        1000
+      );
+
+      setTimeout(() => {
+        Utils.limparFormulario(),
+          1500,
+          (window.location.href = CONFIG.PERFIL_PAGE);
+      }, remainingTime);
     } catch (error) {
       if (error.name === "AbortError") {
         Utils.exibirMensagem(
@@ -296,6 +309,17 @@ const Handlers = {
           error.message || MESSAGES.errors.serverError,
           "erro"
         );
+      }
+    } finally {
+      const elapsed = Date.now() - startTime;
+      const remainingLoaderTime = Math.max(0, CONFIG.MIN_LOADER_TIME - elapsed);
+
+      if (remainingLoaderTime > 0) {
+        setTimeout(() => {
+          Utils.toggleLoader(DOM.btnPublicar, false);
+        }, remainingLoaderTime);
+      } else {
+        Utils.toggleLoader(DOM.btnPublicar, false);
       }
     }
   },

@@ -34,11 +34,14 @@
 
           <form id="form-cadastro" aria-labelledby="titulo-cadastro">
             <div role="group" aria-labelledby="label-nome">
-              <label for="nome" id="label-nome">Nome</label>
+              <label for="nome" id="label-nome">Usuário</label>
               <input
                 type="text"
                 id="nome"
                 name="nome"
+                placeholder="@"
+                pattern="^@.*"
+                title="O nome de usuário deve começar com @"
                 required
                 aria-required="true"
                 autofocus

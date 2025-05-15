@@ -1,15 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <link rel="stylesheet" href="../assets/css/feed.css" />
     <title>CodeConnect</title>
   </head>
-  <body class="body-feed">
-    <h1>oi</h1>
+
+  <body>
     <div id="aside-container"></div>
+
+    <section class="search-bar">
+      <input
+        class="search-input"
+        type="text"
+        id="search-input"
+        placeholder="Digite o que você procura"
+      />
+      <button type="button" onclick="pesquisarProjetos()" class="search-btn">
+        Pesquisar
+      </button>
+    </section>
+    <div id="aside-container"></div>
+    <section class="filters">
+      <label for="sort-by">Filtrar por:</label>
+      <select id="sort-by" class="sort-list" onchange="filtrarProjetos()">
+        <option value="relevancia">Mais Curtidos</option>
+        <option value="recentes">Mais Recentes</option>
+        <option value="antigos">Mais Antigos</option>
+      </select>
+    </section>
+
+    <section class="project-list" id="project-list">
+      <div class="container-projects">Projetos</div>
+    </section>
+
     <script src="../assets/js/aside.js" defer></script>
+    <script src="../assets/js/feed.js" defer></script>
   </body>
 </html>
