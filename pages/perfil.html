@@ -3,31 +3,56 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meu Perfil</title>
     <link rel="stylesheet" href="../assets/css/perfil.css" />
+    <title>CodeConnect</title>
   </head>
   <body>
     <div id="aside-container"></div>
     <main>
-      <div id="perfil-container">
-        <output id="mensagem-perfil" role="status" aria-live="polite"></output>
 
-        <div class="perfil-info">
-          <h1>Meu Perfil</h1>
-          <p><strong>Nome:</strong> <span id="nome-usuario"></span></p>
-          <p>
-            <strong>Descrição:</strong> <span id="descricao-usuario"></span>
-          </p>
-        </div>
-
-        <div class="projetos-container">
-          <h2>Meus Projetos</h2>
-          <div id="lista-projetos">
-            <!-- Projetos serão carregados aqui -->
-          </div>
-        </div>
+      <div class="container">
+        
+       
+        <section id="detalhes-usuario" class="detalhes-usuario">
+          <img id="foto-perfil" src="../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif" alt="Foto de Perfil" class="foto-perfil">
+          <h1 id="nome-usuario">Nome</h1>
+          <p id="descricao-usuario">Descrição</p>
+        </section>
       </div>
+    
+         <section id="lista-de-projetos">
+          <h2 class="section-title">Projetos</h2>
+          <div id="project-list"></div>
+        </section>
+      
+      <div class="filtros">
+            <label for="sort-by">Filtrar por:</label>
+            <select id="sort-by" onchange="filtrarProjetos()">
+              <option value="recentes">Mais recentes</option>
+              <option value="antigos">Mais antigos</option>
+              <option value="relevancia">Mais relevantes</option>
+            </select>
+          </div>
+        </section>
+
+        <section id="lista-de-projetos">
+          <div id="project-list"></div>
+        </section>
+      </main>
+    </div>
+
+    
     </main>
+    <div id="detalhes-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2 id="detalhe-titulo"></h2>
+        <p id="detalhe-usuario"></p>
+
+        <p id="detalhe-descricao"></p>
+        <p id="detalhe-data"></p>
+      </div>
+    </div>
     <script src="../assets/js/perfil.js"></script>
     <script src="../assets/js/aside.js"></script>
   </body>

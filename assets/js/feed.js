@@ -1,16 +1,14 @@
 const CONFIG = {
   API_FEED_POSTS: "http://localhost:8080/api/v1/Posts",
   API_BUSCA: "http://localhost:8080/api/v1/Posts/titulo",
-  MESSAGE_DISPLAY_TIME: 3000,
 };
 
 let listaDeProjetos = [];
+
 async function buscarProjetos() {
   try {
     const response = await fetch(CONFIG.API_FEED_POSTS);
-    if (!response.ok) {
-      throw new Error(`Erro na requisição: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`Erro: ${response.status}`);
     const data = await response.json();
     listaDeProjetos = data;
     exibirProjetos(data);
@@ -27,29 +25,20 @@ async function pesquisarProjetos() {
     .value.toLowerCase();
 
   try {
-    const searchURL = `${CONFIG.API_BUSCA}`;
-    const response = await fetch(searchURL, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title: searchTerm }),
-    });
-
+    const searchURL = `${CONFIG.API_BUSCA}?title=${encodeURIComponent(
+      searchTerm
+    )}`;
+    const response = await fetch(searchURL);
     if (!response.ok) {
       const errorData = await response.json();
-      throw (
-        new Error(errorData.message) ||
-        "O usuário ou projeto não foi encontrado."
-      );
+      throw new Error(errorData.message || "Erro na busca.");
     }
     const data = await response.json();
-    console.log("Dados da pesquisa:", data);
     exibirProjetos(data);
   } catch (error) {
-    console.log("Erro ao pesquisar projetos: ", error);
+    console.error("Erro ao pesquisar projetos:", error);
     document.getElementById("project-list").innerHTML =
-      '<div class = "error">Erro ao realizar a pesquisa.</div>';
+      '<div class="error">Erro ao realizar a pesquisa.</div>';
   }
 }
 
@@ -71,6 +60,7 @@ function filtrarProjetos() {
 
   exibirProjetos(listaOrdenada);
 }
+
 function exibirProjetos(projetos) {
   const projectListElement = document.getElementById("project-list");
   projectListElement.innerHTML = "";
@@ -86,14 +76,15 @@ function exibirProjetos(projetos) {
       });
 
       projectCard.innerHTML = `
-         <h3>${projeto.title}</h3>
-                <p>${projeto.nomeUsuario}</p>
-                <p>${
-                  projeto.descricao
-                    ? projeto.descricao.substring(0, 100) + ""
-                    : "Sem descrição"
-                }</p>
-                <p>${projeto.dataFormatada}</p>
+        <h3>${projeto.title}</h3>
+        <p>${projeto.nomeUsuario}</p>
+        <p>${
+          projeto.descricao
+            ? projeto.descricao.substring(0, 100)
+            : "Sem descrição"
+        }</p>
+        <p>${projeto.dataCriacaoPosts}</p>
+        
       `;
 
       projectListElement.appendChild(projectCard);
@@ -104,10 +95,65 @@ function exibirProjetos(projetos) {
   }
 }
 
-function verDetalhesProjeto(projetos) {
-  const projectListElement = document.getElementById("project-list");
-  projectListElement.innerHTML = "";
-  // Aqui você pode redirecionar para a página de detalhes do projeto
+async function verDetalhesProjeto(idDoProjeto) {
+  const modal = document.getElementById("detalhes-modal");
+  const detalheTitulo = document.getElementById("detalhe-titulo");
+  const detalheUsuario = document.getElementById("detalhe-usuario");
+  const detalheDescricao = document.getElementById("detalhe-descricao");
+  const detalheData = document.getElementById("detalhe-data");
+
+  if (!modal) {
+    console.error("Modal não encontrado!");
+    return;
+  }
+
+  modal.style.display = "flex";
+  detalheTitulo.textContent = "Carregando...";
+  detalheUsuario.textContent = "";
+  detalheDescricao.textContent = "";
+  detalheData.textContent = "";
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/v1/Posts/${idDoProjeto}`
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Erro ao buscar detalhes");
+    }
+
+    const projeto = await response.json();
+    detalheTitulo.textContent = projeto.title;
+    detalheTitulo.style.color = "black";
+    detalheUsuario.textContent = projeto.nomeUsuario;
+
+    detalheDescricao.textContent = projeto.descricao;
+    detalheData.textContent = projeto.dataCriacaoPosts;
+  } catch (error) {
+    console.error("Erro ao carregar detalhes:", error);
+    detalheTitulo.textContent = `Erro: ${error.message}`;
+    detalheTitulo.style.color = "black";
+  }
 }
 
-window.onload = buscarProjetos;
+function inicializarModal() {
+  const modal = document.getElementById("detalhes-modal");
+  const closeButtonX = document.querySelector(".close-button");
+
+  if (closeButtonX) {
+    closeButtonX.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+  }
+
+  window.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+}
+
+window.onload = function () {
+  buscarProjetos();
+  inicializarModal();
+};
