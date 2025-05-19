@@ -1,78 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../assets/css/publicar.css" />
 
-    <title>CodeConnect</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/css/publicar.css" />
 
-  <body>
-    <div id="aside-container"></div>
+  <title>CodeConnect</title>
+</head>
 
-    <main>
-      <img
-        src="../assets/img/publicacao/Frame 2106.png"
-        alt="logo ConnectCode"
-        class="imagem-logo"
-      />
-      <div class="container-upload-imagem">
-        <div class="container-imagem">
-          <img
-            src="../assets/img/publicacao/imagem1.png"
-            alt=""
-            class="main-imagem"
-          />
-        </div>
-        <button id="upload-btn">Carregar imagem</button>
-        <input
-          type="file"
-          id="image-upload"
-          accept=".png, .jpg, .jpeg"
-          style="display: none"
-          required
-        />
-        <div class="container-imagem-nome">
-          <p>image_projeto.png</p>
-        </div>
+<body>
+  <div id="aside-container"></div>
+
+  <main>
+    <img src="../assets/img/publicacao/Frame 2106.png" alt="logo ConnectCode" class="imagem-logo" />
+    <div class="container-upload-imagem">
+      <div class="container-imagem">
+        <img src="../assets/img/publicacao/imagem1.png" alt="" class="main-imagem" />
       </div>
-      <div class="container-descricao">
-        <h2>Novo projeto</h2>
-        <form>
-          <div>
-            <label for="nome">Nome do projeto</label>
-            <input
-              type="text"
-              id="nome"
-              name="nome"
-              minlength="3"
-              autofocus
-              required
-            />
-          </div>
-          <div>
-            <label for="descricao">Descrição</label>
-            <textarea id="descricao" name="descricao" minlength="10"></textarea>
-          </div>
-
-          <output
-            id="mensagem-publicar"
-            role="status"
-            aria-live="polite"
-          ></output>
-          <div class="container-botoes">
-            <button class="botao-descartar" id="btn-descartar" type="reset">
-              Descartar
-            </button>
-            <button class="botao-publicar" id="btn-publicar" type="submit">
-              Publicar
-            </button>
-          </div>
-        </form>
+      <button id="upload-btn">Carregar imagem</button>
+      <input type="file" id="image-upload" accept=".png, .jpg, .jpeg" style="display: none" required />
+      <div class="container-imagem-nome">
+        <p>image_projeto.png</p>
       </div>
-    </main>
-    <script src="../assets/js/aside.js" defer></script>
-    <script src="../assets/js/publicar.js" defer></script>
-  </body>
+    </div>
+    <div class="container-descricao">
+      <h2>Novo projeto</h2>
+      <form>
+        <div>
+          <label for="nome">Nome do projeto</label>
+          <input type="text" id="nome" name="nome" minlength="3" autofocus required />
+        </div>
+        <div>
+          <label for="descricao">Descrição</label>
+          <textarea id="descricao" name="descricao" minlength="10"></textarea>
+        </div>
+
+        <output id="mensagem-publicar" role="status" aria-live="polite"></output>
+        <div class="container-botoes">
+          <button class="botao-descartar" id="btn-descartar" type="reset">
+            Descartar
+          </button>
+          <button class="botao-publicar" id="btn-publicar" type="submit">
+            Publicar
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+  <script src="../assets/js/aside.js" defer></script>
+  <script src="../assets/js/publicar.js" defer></script>
+</body>
+
 </html>

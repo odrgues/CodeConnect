@@ -274,7 +274,6 @@ const Handlers = {
         title: DOM.nomeProjeto.value.trim(),
         descricaoPost: DOM.descricao.value.trim(),
         usuarioId: localStorage.getItem("userId"),
-        imagem: imagem,
       };
 
       await API.criarPublicacao(dados);

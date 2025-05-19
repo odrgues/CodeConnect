@@ -1,59 +1,96 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../assets/css/perfil.css" />
-    <title>CodeConnect</title>
-  </head>
-  <body>
-    <div id="aside-container"></div>
-    <main>
 
-      <div class="container">
-        
-       
-        <section id="detalhes-usuario" class="detalhes-usuario">
-          <img id="foto-perfil" src="../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif" alt="Foto de Perfil" class="foto-perfil">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/css/perfil.css" />
+  <title>CodeConnect</title>
+</head>
+
+<body>
+  <div id="aside-container"></div>
+  <main>
+
+    <div class="container">
+
+
+      <section id="detalhes-usuario" class="container-upload-imagem">
+        <img id="foto-perfil-padrao" src="../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif"
+          alt="Foto de Perfil" class="foto-perfil">
+        <div class="detalhes-usuario">
           <h1 id="nome-usuario">Nome</h1>
           <p id="descricao-usuario">Descrição</p>
-        </section>
-      </div>
-    
-         <section id="lista-de-projetos">
-          <h2 class="section-title">Projetos</h2>
-          <div id="project-list"></div>
-        </section>
-      
-      <div class="filtros">
-            <label for="sort-by">Filtrar por:</label>
-            <select id="sort-by" onchange="filtrarProjetos()">
-              <option value="recentes">Mais recentes</option>
-              <option value="antigos">Mais antigos</option>
-              <option value="relevancia">Mais relevantes</option>
-            </select>
-          </div>
-        </section>
-
-        <section id="lista-de-projetos">
-          <div id="project-list"></div>
-        </section>
-      </main>
+        </div>
+      </section>
     </div>
 
-    
-    </main>
-    <div id="detalhes-modal" class="modal">
+    <div id="detalhes-modal" class="modal-usuario">
       <div class="modal-content">
         <span class="close-button">&times;</span>
-        <h2 id="detalhe-titulo"></h2>
-        <p id="detalhe-usuario"></p>
+        <form id="form-editar-descricao">
+          <p id="imagem-perfil"></p>
+          <div class="container-upload-imagem">
+            <div class="container-imagem">
+              <!-- injetar imagem -->
+            </div>
+            <div class="container-botao">
+              <!-- injetar botao -->
+            </div>
+            <input type="file" id="image-upload" accept=".png, .jpg, .jpeg" style="display: none" />
+            <p id="nome-usuario"></p>
+            <p id="descricao"></p>
+          </div>
+        </form>
 
-        <p id="detalhe-descricao"></p>
-        <p id="detalhe-data"></p>
       </div>
+
+      <section id="lista-de-projetos">
+        <h2 class="section-title">Projetos</h2>
+        <div id="project-list"></div>
+      </section>
+
+
+      <div id="detalhes-modal" class="modal-projeto">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2 id="detalhe-titulo"></h2>
+          <p id="detalhe-usuario"></p>
+          <p id="detalhe-descricao"></p>
+        </div>
+      </div>
+
+
+      <div class="filtros">
+        <label for="sort-by">Filtrar por:</label>
+        <select id="sort-by" onchange="filtrarProjetos()">
+          <option value="recentes">Mais recentes</option>
+          <option value="antigos">Mais antigos</option>
+          <option value="relevancia">Mais relevantes</option>
+        </select>
+      </div>
+      </section>
+
+      <section id="lista-de-projetos">
+        <div id="project-list"></div>
+      </section>
+  </main>
+  </div>
+
+
+  </main>
+  <div id="detalhes-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h2 id="detalhe-titulo"></h2>
+      <p id="detalhe-usuario"></p>
+
+      <p id="detalhe-descricao"></p>
+      <p id="detalhe-data"></p>
     </div>
-    <script src="../assets/js/perfil.js"></script>
-    <script src="../assets/js/aside.js"></script>
-  </body>
+  </div>
+  <script src="../assets/js/perfil.js"></script>
+  <script src="../assets/js/aside.js"></script>
+</body>
+
 </html>
