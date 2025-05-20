@@ -6,90 +6,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../assets/css/perfil.css" />
   <title>CodeConnect</title>
+  <style>
+    .modal-conteudo {
+      display: none;
+    }
+
+    .modal-detalhes-post {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
   <div id="aside-container"></div>
   <main>
-
     <div class="container">
 
 
-      <section id="detalhes-usuario" class="container-upload-imagem">
+      <!-- <section id="detalhes-usuario" class="container-upload-imagem"> -->
+      <div class="detalhes-usuario">
         <img id="foto-perfil-padrao" src="../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif"
           alt="Foto de Perfil" class="foto-perfil">
-        <div class="detalhes-usuario">
-          <h1 id="nome-usuario">Nome</h1>
-          <p id="descricao-usuario">Descrição</p>
-        </div>
-      </section>
+        <h1 id="nome-usuario">Nome</h1>
+        <p id="descricao-usuario">Descrição</p>
+        <button id="editar-perfil-btn">Editar Perfil</button>
+      </div>
+      <!-- </section> -->
     </div>
 
-    <div id="detalhes-modal" class="modal-usuario">
-      <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <form id="form-editar-descricao">
-          <p id="imagem-perfil"></p>
-          <div class="container-upload-imagem">
-            <div class="container-imagem">
-              <!-- injetar imagem -->
-            </div>
-            <div class="container-botao">
-              <!-- injetar botao -->
-            </div>
-            <input type="file" id="image-upload" accept=".png, .jpg, .jpeg" style="display: none" />
-            <p id="nome-usuario"></p>
-            <p id="descricao"></p>
-          </div>
+    <div id="modal-editar-perfil" class="modal">
+      <div class="modal-conteudo">
+        <span class="fechar-modal">&times;</span>
+        <h2>Editar Perfil</h2>
+        <form id="form-editar-perfil">
+          <label for="nome-modal">Nome:</label>
+          <input type="text" id="nome-modal" name="nome">
+          <label for="descricao-modal">Descrição:</label>
+          <textarea id="descricao-modal" name="descricao"></textarea>
+          <label for="foto-perfil-modal" class="label-foto-perfil">Alterar Foto de Perfil:</label>
+          <input type="file" id="foto-perfil-modal" class="input-foto-perfil" accept=".png, .jpg, .jpeg">
+          <img id="preview-foto-perfil" src="#" alt="Pré-visualização da Foto" class="foto-perfil">
+          <button type="submit">Salvar</button>
         </form>
-
       </div>
-
-      <section id="lista-de-projetos">
-        <h2 class="section-title">Projetos</h2>
-        <div id="project-list"></div>
-      </section>
-
-
-      <div id="detalhes-modal" class="modal-projeto">
-        <div class="modal-content">
-          <span class="close-button">&times;</span>
-          <h2 id="detalhe-titulo"></h2>
-          <p id="detalhe-usuario"></p>
-          <p id="detalhe-descricao"></p>
-        </div>
-      </div>
-
-
-      <div class="filtros">
-        <label for="sort-by">Filtrar por:</label>
-        <select id="sort-by" onchange="filtrarProjetos()">
-          <option value="recentes">Mais recentes</option>
-          <option value="antigos">Mais antigos</option>
-          <option value="relevancia">Mais relevantes</option>
-        </select>
-      </div>
-      </section>
-
-      <section id="lista-de-projetos">
-        <div id="project-list"></div>
-      </section>
-  </main>
-  </div>
-
-
-  </main>
-  <div id="detalhes-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-button">&times;</span>
-      <h2 id="detalhe-titulo"></h2>
-      <p id="detalhe-usuario"></p>
-
-      <p id="detalhe-descricao"></p>
-      <p id="detalhe-data"></p>
     </div>
-  </div>
+
+    <section id="lista-de-posts">
+      <h2 class="section-title">Projetos</h2>
+      <div id="posts-list"></div>
+    </section>
+
+
+    <output id="mensagem-perfil" role="status" aria-live="polite"></output>
+
+
+    <div id="modal-detalhes-projeto" class="modal">
+      <div class="modal-conteudo">
+        <span class="fechar-modal">&times;</span>
+        <h2 id="titulo-projeto-modal">Título do Projeto</h2>
+        <p id="descricao-projeto-modal">Descrição do Projeto</p>
+      </div>
+    </div>
+
+
+    <!-- <div class="filtros">
+      <label for="sort-by">Filtrar por:</label>
+      <select id="sort-by" onchange="filtrarProjetos()">
+        <option value="recentes">Mais recentes</option>
+        <option value="antigos">Mais antigos</option>
+        <option value="relevancia">Mais relevantes</option>
+      </select>
+    </div> -->
+
+
+    <!-- <section id="lista-de-posts">
+      <div id="posts-list"></div>
+    </section>
+  </main>
+  </div> -->
+
+
+  </main>
   <script src="../assets/js/perfil.js"></script>
+
   <script src="../assets/js/aside.js"></script>
 </body>
 
