@@ -1,53 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../assets/css/feed.css" />
-    <title>CodeConnect</title>
-  </head>
-  <body>
-      <div id="aside-container"></div>
-      <main>
-        <section id="busca-e-filtros">
-          <div class="search-bar">
-            <input
-              id="search-input"
-              type="text"
-              placeholder="Digite o que você busca"
-            />
-            <button onclick="pesquisarProjetos()">Buscar</button>
-          </div>
 
-          <div class="filtros">
-            <label for="sort-by">Filtrar por:</label>
-            <select id="sort-by" onchange="filtrarProjetos()">
-              <option value="recentes">Mais recentes</option>
-              <option value="antigos">Mais antigos</option>
-              <option value="relevancia">Mais relevantes</option>
-            </select>
-          </div>
-        </section>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/css/feed.css" />
+  <title>CodeConnect</title>
+</head>
 
-        <section id="lista-de-projetos">
-          <h2 class="section-title">Projetos</h2>
-          <div id="project-list"></div>
-        </section>
-      </main>
-    </div>
-
-    <div id="detalhes-modal" class="modal">
-      <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h2 id="detalhe-titulo"></h2>
-        <p id="detalhe-usuario"></p>
-
-        <p id="detalhe-descricao"></p>
-        <p id="detalhe-data"></p>
+<body>
+  <div id="aside-container"></div>
+  <main>
+    <section id="busca-e-filtros">
+      <div class="search-bar">
+        <input id="search-input" type="text" placeholder="Digite o que você busca" />
+        <button onclick="pesquisarProjetos()">Buscar</button>
       </div>
-    </div>
 
-    <script src="../assets/js/feed.js"></script>
-    <script src="../assets/js/aside.js"></script>
-  </body>
+      <div class="filtros">
+        <label for="sort-by">Filtrar por:</label>
+        <select id="sort-by" onchange="filtrarProjetos()">
+          <option value="recentes">Mais recentes</option>
+          <option value="antigos">Mais antigos</option>
+          <option value="relevancia">Mais relevantes</option>
+        </select>
+      </div>
+    </section>
+
+    <section id="lista-de-projetos">
+      <h2 class="section-title">Projetos</h2>
+      <div id="project-list"></div>
+    </section>
+  </main>
+  </div>
+
+  <div id="detalhes-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h2 id="detalhe-titulo"></h2>
+      <p id="detalhe-usuario"></p>
+
+      <p id="detalhe-descricao"></p>
+      <p id="detalhe-data"></p>
+    </div>
+  </div>
+
+  <script src="../assets/js/feed.js"></script>
+  <script src="../assets/js/aside.js"></script>
+</body>
+
 </html>

@@ -7,23 +7,24 @@
   <link rel="stylesheet" href="../assets/css/perfil.css" />
   <title>CodeConnect</title>
   <style>
-    .modal-conteudo {
+    #modal-editar-perfil {
       display: none;
     }
 
-    .modal-detalhes-post {
+    #preview-foto-perfil {
       display: none;
+      max-width: 150px;
+      margin-top: 10px;
     }
   </style>
 </head>
 
 <body>
   <div id="aside-container"></div>
+
   <main>
     <div class="container">
 
-
-      <!-- <section id="detalhes-usuario" class="container-upload-imagem"> -->
       <div class="detalhes-usuario">
         <img id="foto-perfil-padrao" src="../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif"
           alt="Foto de Perfil" class="foto-perfil">
@@ -31,64 +32,46 @@
         <p id="descricao-usuario">Descrição</p>
         <button id="editar-perfil-btn">Editar Perfil</button>
       </div>
-      <!-- </section> -->
-    </div>
 
-    <div id="modal-editar-perfil" class="modal">
-      <div class="modal-conteudo">
-        <span class="fechar-modal">&times;</span>
-        <h2>Editar Perfil</h2>
-        <form id="form-editar-perfil">
-          <label for="nome-modal">Nome:</label>
-          <input type="text" id="nome-modal" name="nome">
-          <label for="descricao-modal">Descrição:</label>
-          <textarea id="descricao-modal" name="descricao"></textarea>
-          <label for="foto-perfil-modal" class="label-foto-perfil">Alterar Foto de Perfil:</label>
-          <input type="file" id="foto-perfil-modal" class="input-foto-perfil" accept=".png, .jpg, .jpeg">
-          <img id="preview-foto-perfil" src="#" alt="Pré-visualização da Foto" class="foto-perfil">
-          <button type="submit">Salvar</button>
-        </form>
+      <div id="modal-editar-perfil" class="modal">
+        <div class="modal-conteudo">
+          <span class="fechar-modal" aria-label="Fechar Modal">&times;</span>
+          <h2>Editar Perfil</h2>
+          <form id="form-editar-perfil">
+            <label for="nome-modal">Nome:</label>
+            <input type="text" id="nome-modal" name="nome">
+
+            <label for="descricao-modal">Descrição:</label>
+            <textarea id="descricao-modal" name="descricao"></textarea>
+
+            <label for="foto-perfil-modal" class="label-foto-perfil">Alterar Foto de Perfil:</label>
+            <input type="file" id="foto-perfil-modal" class="input-foto-perfil" accept=".png, .jpg, .jpeg">
+            <img id="preview-foto-perfil" src="" alt="Pré-visualização da Foto" class="foto-perfil">
+
+            <button type="submit">Salvar</button>
+          </form>
+        </div>
       </div>
+
     </div>
 
     <section id="lista-de-posts">
       <h2 class="section-title">Projetos</h2>
       <div id="posts-list"></div>
     </section>
+  </main>
 
-
-    <output id="mensagem-perfil" role="status" aria-live="polite"></output>
-
-
-    <div id="modal-detalhes-projeto" class="modal">
-      <div class="modal-conteudo">
-        <span class="fechar-modal">&times;</span>
-        <h2 id="titulo-projeto-modal">Título do Projeto</h2>
-        <p id="descricao-projeto-modal">Descrição do Projeto</p>
-      </div>
+  <div id="detalhes-modal-post" class="modal">
+    <div class="modal-content">
+      <span class="close-button" aria-label="Fechar Modal">&times;</span>
+      <h2 id="detalhe-titulo-post"></h2>
+      <p id="detalhe-usuario-post"></p>
+      <p id="detalhe-descricao-post"></p>
+      <p id="detalhe-data"></p>
     </div>
+  </div>
 
-
-    <!-- <div class="filtros">
-      <label for="sort-by">Filtrar por:</label>
-      <select id="sort-by" onchange="filtrarProjetos()">
-        <option value="recentes">Mais recentes</option>
-        <option value="antigos">Mais antigos</option>
-        <option value="relevancia">Mais relevantes</option>
-      </select>
-    </div> -->
-
-
-    <!-- <section id="lista-de-posts">
-      <div id="posts-list"></div>
-    </section>
-  </main>
-  </div> -->
-
-
-  </main>
   <script src="../assets/js/perfil.js"></script>
-
   <script src="../assets/js/aside.js"></script>
 </body>
 

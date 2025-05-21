@@ -14,3 +14,65 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.posts-list {
+  display: flex;
+  flex-direction: column; /* Organiza os posts verticalmente */
+  gap: 15px; /* Espaçamento entre os posts */
+  padding: 20px; /* Espaçamento interno ao redor da lista */
+}
+
+/* Estilos básicos para cada card de projeto */
+.post-card {
+  background-color: #f8f9fa; /* Cor de fundo levemente cinza */
+  border: 1px solid #dee2e6; /* Borda sutil */
+  border-radius: 8px; /* Bordas arredondadas */
+  padding: 20px; /* Espaçamento interno dentro do card */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilos para o título do projeto */
+.post-card h3 {
+  margin-top: 0; /* Remove a margem superior padrão do h3 */
+  margin-bottom: 10px; /* Espaçamento abaixo do título */
+  color: #343a40; /* Cor do texto escura */
+}
+
+/* Estilos para as informações do usuário e data */
+.post-card p {
+  margin-bottom: 8px; /* Espaçamento abaixo dos parágrafos */
+  color: #6c757d; /* Cor do texto cinza */
+  font-size: 0.9em; /* Tamanho da fonte um pouco menor */
+}
+
+.modal {
+  display: none; /* Modal escondido por padrão */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  font-size: 24px;
+  cursor: pointer;
+}
