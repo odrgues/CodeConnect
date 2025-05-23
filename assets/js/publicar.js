@@ -264,15 +264,15 @@ const Handlers = {
         throw new Error(MESSAGES.errors.requiredFields);
       }
 
-      let imagem = null;
-      if (DOM.inputUpload.files[0]) {
-        const conteudo = await Utils.lerArquivo(DOM.inputUpload.files[0]);
-        imagem = conteudo.url.split(",")[1];
-      }
+      // let imagem = null;
+      // if (DOM.inputUpload.files[0]) {
+      //   const conteudo = await Utils.lerArquivo(DOM.inputUpload.files[0]);
+      //   imagem = conteudo.url.split(",")[1];
+      // }
 
       const dados = {
         title: DOM.nomeProjeto.value.trim(),
-        descricaoPost: DOM.descricao.value.trim(),
+        descricao: DOM.descricao.value.trim(),
         usuarioId: localStorage.getItem("userId"),
       };
 
@@ -313,13 +313,13 @@ const Handlers = {
       const elapsed = Date.now() - startTime;
       const remainingLoaderTime = Math.max(0, CONFIG.MIN_LOADER_TIME - elapsed);
 
-      if (remainingLoaderTime > 0) {
-        setTimeout(() => {
-          Utils.toggleLoader(DOM.btnPublicar, false);
-        }, remainingLoaderTime);
-      } else {
-        Utils.toggleLoader(DOM.btnPublicar, false);
-      }
+      // if (remainingLoaderTime > 0) {
+      //   setTimeout(() => {
+      //     Utils.toggleLoader(DOM.btnPublicar, false);
+      //   }, remainingLoaderTime);
+      // } else {
+      //   Utils.toggleLoader(DOM.btnPublicar, false);
+      // }
     }
   },
 };

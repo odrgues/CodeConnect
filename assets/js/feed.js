@@ -46,14 +46,25 @@ function filtrarProjetos() {
   const sortBy = document.getElementById("sort-by").value;
   let listaOrdenada = [...listaDeProjetos];
 
-  if (sortBy === "recentes") {
-    listaOrdenada.sort(
-      (a, b) => new Date(b.dataCriacaoPosts) - new Date(a.dataCriacaoPosts)
-    );
-  } else if (sortBy === "antigos") {
-    listaOrdenada.sort(
-      (a, b) => new Date(a.dataCriacaoPosts) - new Date(b.dataCriacaoPosts)
-    );
+  if (sortBy === "recentes" || sortBy === "antigos") {
+    listaOrdenada = listaOrdenada.map((projeto) => {
+      // Extrai apenas a parte da data (assumindo formato "DD/MM/AAAA HH:MM")
+      const [data, hora] = projeto.dataCriacaoPosts.split(" ");
+      return {
+        ...projeto,
+        _dataOrdenacao: new Date(data.split("/").reverse().join("-")), // Converte para "AAAA-MM-DD"
+      };
+    });
+
+    // Ordena pela data (sem hora)
+    if (sortBy === "recentes") {
+      listaOrdenada.sort((a, b) => b._dataOrdenacao - a._dataOrdenacao);
+    } else {
+      listaOrdenada.sort((a, b) => a._dataOrdenacao - b._dataOrdenacao);
+    }
+
+    // Remove o campo temporário (opcional)
+    listaOrdenada = listaOrdenada.map(({ _dataOrdenacao, ...resto }) => resto);
   } else if (sortBy === "relevancia") {
     listaOrdenada.sort((a, b) => b.likes - a.likes);
   }
@@ -77,13 +88,13 @@ function exibirProjetos(projetos) {
 
       projectCard.innerHTML = `
         <h3>${projeto.title}</h3>
-        <p>${projeto.nomeUsuario}</p>
+        <p>${projeto.name}</p>
         <p>${
           projeto.descricao
             ? projeto.descricao.substring(0, 100)
             : "Sem descrição"
         }</p>
-        <p>${projeto.dataCriacaoPosts}</p>
+        
         
       `;
 
@@ -100,7 +111,6 @@ async function verDetalhesProjeto(idDoProjeto) {
   const detalheTitulo = document.getElementById("detalhe-titulo");
   const detalheUsuario = document.getElementById("detalhe-usuario");
   const detalheDescricao = document.getElementById("detalhe-descricao");
-  const detalheData = document.getElementById("detalhe-data");
 
   if (!modal) {
     console.error("Modal não encontrado!");
@@ -111,7 +121,6 @@ async function verDetalhesProjeto(idDoProjeto) {
   detalheTitulo.textContent = "Carregando...";
   detalheUsuario.textContent = "";
   detalheDescricao.textContent = "";
-  detalheData.textContent = "";
 
   try {
     const response = await fetch(
@@ -125,10 +134,9 @@ async function verDetalhesProjeto(idDoProjeto) {
     const projeto = await response.json();
     detalheTitulo.textContent = projeto.title;
     detalheTitulo.style.color = "black";
-    detalheUsuario.textContent = projeto.nomeUsuario;
+    detalheUsuario.textContent = projeto.name;
 
     detalheDescricao.textContent = projeto.descricao;
-    detalheData.textContent = projeto.dataCriacaoPosts;
   } catch (error) {
     console.error("Erro ao carregar detalhes:", error);
     detalheTitulo.textContent = `Erro: ${error.message}`;
@@ -152,7 +160,6 @@ function inicializarModal() {
     }
   });
 }
-
 window.onload = function () {
   buscarProjetos();
   inicializarModal();

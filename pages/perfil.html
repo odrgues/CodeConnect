@@ -45,7 +45,7 @@
             <textarea id="descricao-modal" name="descricao"></textarea>
 
             <label for="foto-perfil-modal" class="label-foto-perfil">Alterar Foto de Perfil:</label>
-            <input type="file" id="foto-perfil-modal" class="input-foto-perfil" accept=".png, .jpg, .jpeg">
+            <input type="file" id="foto-perfil-modal" class="input-foto-perfil">
             <img id="preview-foto-perfil" src="" alt="Pré-visualização da Foto" class="foto-perfil">
 
             <button type="submit">Salvar</button>
@@ -54,6 +54,8 @@
       </div>
 
     </div>
+
+    <output id="mensagem-perfil"></output>
 
     <section id="lista-de-posts">
       <h2 class="section-title">Projetos</h2>
@@ -65,9 +67,10 @@
     <div class="modal-content">
       <span class="close-button" aria-label="Fechar Modal">&times;</span>
       <h2 id="detalhe-titulo-post"></h2>
-      <p id="detalhe-usuario-post"></p>
+      <p id="detalhe-usuario-post">
+      </p>
       <p id="detalhe-descricao-post"></p>
-      <p id="detalhe-data"></p>
+
     </div>
   </div>
 

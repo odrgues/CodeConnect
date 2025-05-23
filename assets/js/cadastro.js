@@ -1,5 +1,5 @@
 const CONFIG = {
-  API_URL: "http://localhost:8080/api/v1/usuarios",
+  API_URL: "http://localhost:8080/api/v1/usuarios ",
 
   MIN_LOADER_TIME: 1500,
   MESSAGE_DISPLAY_TIME: 3000,
@@ -155,13 +155,14 @@ const Handlers = {
 
     Utils.toggleLoader(DOM.btnCadastro, true);
 
+    //alterar aqui
     const dados = {
-      username: DOM.nome.value.trim(),
+      name: DOM.nome.value.trim(),
       email: DOM.email.value.trim().toLowerCase(),
       password: DOM.senha.value.trim(),
     };
 
-    if (!dados.username || !dados.email || !dados.password) {
+    if (!dados.name || !dados.email || !dados.password) {
       Utils.exibirMensagem(DOM.mensagem, "Preencha todos os campos", "erro");
       Utils.toggleLoader(DOM.btnCadastro, false);
       return;
