@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const config = {
     cssPath: "/assets/css/aside.css",
     logoPath: "/assets/img/aside/desktop/Frame 2106.png",
+
     links: [
       {
         href: "/pages/publicar.html",
@@ -39,6 +40,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("aside-container");
   if (container) {
     container.innerHTML = asideHTML;
+  }
+
+  const currentPage = window.location.pathname;
+
+  if (currentPage.includes("/pages/publicar.html")) {
+    container.querySelector("aside").classList.add("pagina-publicar");
   }
 
   function loadCSS(path) {

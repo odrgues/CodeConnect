@@ -65,37 +65,46 @@ function filtrarProjetos() {
 
     // Remove o campo temporário (opcional)
     listaOrdenada = listaOrdenada.map(({ _dataOrdenacao, ...resto }) => resto);
-  } else if (sortBy === "relevancia") {
-    listaOrdenada.sort((a, b) => b.likes - a.likes);
   }
 
   exibirProjetos(listaOrdenada);
 }
-
 function exibirProjetos(projetos) {
   const projectListElement = document.getElementById("project-list");
   projectListElement.innerHTML = "";
-
   if (projetos && projetos.length > 0) {
     projetos.forEach((projeto) => {
       const projectCard = document.createElement("div");
-      projectCard.classList.add("project-card");
+      projectCard.classList.add("cartao-projeto");
       projectCard.style.cursor = "pointer";
-
       projectCard.addEventListener("click", () => {
         verDetalhesProjeto(projeto.id);
       });
 
       projectCard.innerHTML = `
         <h3>${projeto.title}</h3>
-        <p>${projeto.name}</p>
+        
         <p>${
           projeto.descricao
-            ? projeto.descricao.substring(0, 100)
+            ? projeto.descricao.substring(0, 100) +
+              (projeto.descricao.length > 100 ? "..." : "")
             : "Sem descrição"
         }</p>
         
+        ${
+          projeto.imageUrl
+            ? `<img src="${projeto.imageUrl}" alt="Imagem do Projeto ${projeto.title}" />`
+            : ""
+        }
         
+        <div class="detalhes-projeto">
+          <span>${
+            projeto.dataCriacaoPosts
+              ? projeto.dataCriacaoPosts.split(" ")[0]
+              : "N/A"
+          }</span>
+          <p>${projeto.name}</p>
+        </div>
       `;
 
       projectListElement.appendChild(projectCard);
@@ -105,7 +114,6 @@ function exibirProjetos(projetos) {
       '<div class="no-projects">Nenhum projeto encontrado.</div>';
   }
 }
-
 async function verDetalhesProjeto(idDoProjeto) {
   const modal = document.getElementById("detalhes-modal");
   const detalheTitulo = document.getElementById("detalhe-titulo");

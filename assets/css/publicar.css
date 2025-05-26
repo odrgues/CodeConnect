@@ -76,6 +76,16 @@ form div input {
   height: 39px;
 }
 
+textarea:focus {
+  outline: none;
+  border: var(--cor-verde-destaque) 1px solid;
+}
+
+input:focus {
+  outline: none;
+  border: var(--cor-verde-destaque) 1px solid;
+}
+
 textarea {
   resize: none;
   overflow-y: hidden;

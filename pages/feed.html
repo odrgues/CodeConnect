@@ -13,22 +13,25 @@
   <main>
     <section id="busca-e-filtros">
       <div class="search-bar">
+        <img src="../assets/img/feed/search.png" alt="ícone de busca" class="input-icon">
         <input id="search-input" type="text" placeholder="Digite o que você busca" />
-        <button onclick="pesquisarProjetos()">Buscar</button>
-      </div>
+        <!-- <button onclick="pesquisarProjetos()"><img src="../assets/img/feed/search.png" alt=""></button> -->
+        <div class="filtros">
+          <label for="sort-by" style="color: aliceblue;">Filtrar por:</label>
+          <select id="sort-by" onchange="filtrarProjetos()">
+            <option value="recentes">Mais recentes</option>
+            <option value="antigos">Mais antigos</option>
+          </select>
+        </div>
 
-      <div class="filtros">
-        <label for="sort-by" style="color: aliceblue;">Filtrar por:</label>
-        <select id="sort-by" onchange="filtrarProjetos()">
-          <option value="recentes">Mais recentes</option>
-          <option value="antigos">Mais antigos</option>
-        </select>
-      </div>
     </section>
+
+
+
 
     <section id="lista-de-projetos">
       <h2 class="section-title">Projetos</h2>
-      <div id="project-list"></div>
+      <div id="project-list" class="container-projetos"></div>
     </section>
   </main>
   </div>
@@ -48,3 +51,38 @@
 </body>
 
 </html>
+
+
+
+<!-- <body>
+  <div class="busca-e-filtros">
+    <div class="search-bar">
+      <img src="caminho/para/search-icon.png" alt="Ícone de Busca" class="input-icon" />
+      <input type="text" id="search-input" placeholder="Buscar projetos..." />
+      <div class="filtro-dropdown" tabindex="0">
+        <button class="filtro-btn">
+          <img src="../assets/img/feed/list.png" alt="Ícone filtro" />
+        </button>
+        <div class="filtro-opcoes" id="sort-by">
+          <div class="opcao-filtro" data-value="recentes" onclick="filtrarProjetos(this)">
+            Mais recentes
+          </div>
+          <div class="opcao-filtro" data-value="antigos" onclick="filtrarProjetos(this)">
+            Mais antigos
+          </div>
+          <div class="opcao-filtro" data-value="relevancia" onclick="filtrarProjetos(this)">
+            Mais relevantes
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section id="lista-de-projetos">
+      <h2 class="section-title">Projetos</h2>
+      <div id="project-list" class="container-projetos">
+        </div>
+    </section>
+  </main>
+  </body> -->
