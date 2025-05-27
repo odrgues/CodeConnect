@@ -56,90 +56,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function carregarPerfilUsuario() {
     try {
-      console.log("[DEBUG] Iniciando carregamento do perfil...");
       const response = await fetch(`${CONFIG.API_BUSCAR_USUARIO}/${userId}`);
-
-      console.log("[DEBUG] Resposta bruta da API:", response);
-
-      if (!response.ok) {
-        console.error(
-          "[DEBUG] Erro na resposta:",
-          response.status,
-          response.statusText
-        );
+      if (!response.ok)
         throw new Error(`Erro ${response.status}: ${response.statusText}`);
-      }
-
       const usuario = await response.json();
-      console.log(
-        "[DEBUG] Dados do usuário recebidos:",
-        JSON.stringify(usuario, null, 2)
-      );
-
-      if (!usuario) {
-        console.warn("[DEBUG] Objeto usuário vazio recebido");
-        throw new Error("Dados do usuário não encontrados");
-      }
-
+      if (!usuario) throw new Error("Dados do usuário não encontrados");
       await atualizarInterfacePerfil(usuario);
     } catch (error) {
-      console.error("[DEBUG] Erro no carregamento:", error);
       mostrarMensagem("Falha ao carregar perfil. Tente novamente", "erro");
     }
   }
 
   async function atualizarInterfacePerfil(usuario) {
-    console.log(
-      "[DEBUG] Atualizando interface com:",
-      JSON.stringify(usuario, null, 2)
-    );
-
     const fotoPerfil = document.getElementById("foto-perfil-padrao");
-    console.log("[DEBUG] Elemento da foto:", fotoPerfil);
-
-    // Verifica se o campo se chama fotoUrl em vez de fotoPerfil
-    const urlImagem = usuario.fotoUrl || usuario.fotoPerfil;
-    console.log("[DEBUG] URL da imagem encontrada:", urlImagem);
+    const urlImagem = usuario.fotoUrl;
 
     if (urlImagem && urlImagem !== "null" && urlImagem !== "undefined") {
-      console.log("[DEBUG] Tentando carregar imagem:", urlImagem);
       fotoPerfil.src = urlImagem;
-
-      // Verificação se a imagem carregou
       const imgLoaded = await new Promise((resolve) => {
         fotoPerfil.onload = () => resolve(true);
         fotoPerfil.onerror = () => resolve(false);
-        setTimeout(() => resolve(false), 5000); // Timeout de 5 segundos
+        setTimeout(() => resolve(false), 5000);
       });
-
-      console.log("[DEBUG] Imagem carregada?", imgLoaded);
       if (!imgLoaded) {
-        console.warn("[DEBUG] Carregando imagem padrão devido a falha");
         fotoPerfil.src =
           "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
       }
     } else {
-      console.log(
-        "[DEBUG] Usando imagem padrão - nenhuma URL válida encontrada"
-      );
       fotoPerfil.src =
         "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
     }
 
-    // Atualizando outros campos
-    console.log(
-      "[DEBUG] Atualizando nome de usuário:",
-      usuario.username || usuario.name
-    );
-    if (DOM.username) {
-      DOM.username.textContent = usuario.username || usuario.name || "Usuário";
-    }
-
-    console.log("[DEBUG] Atualizando descrição:", usuario.descricao);
-    if (DOM.descricaoUsuario) {
-      DOM.descricaoUsuario.textContent =
-        usuario.descricao || "Nenhuma descrição";
-    }
+    DOM.username.textContent = usuario.username || usuario.name || "Usuário";
+    DOM.descricaoUsuario.textContent = usuario.descricao || "Nenhuma descrição";
   }
 
   async function uploadCloudinary(file) {
@@ -159,9 +108,74 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function configurarEdicaoPerfil() {
-    if (!DOM.modalEditarPerfil || !DOM.formEditarPerfil) return;
+  function exibirPost(posts) {
+    if (!DOM.listaDePosts) return;
+    DOM.listaDePosts.innerHTML = "";
+    if (posts && posts.length > 0) {
+      posts.forEach((post) => {
+        const postDiv = document.createElement("div");
+        postDiv.classList.add("post-card");
+        postDiv.dataset.postID = post.id;
+        postDiv.innerHTML = `
+          <h3>${post.title}</h3>
+          <p>${post.username}</p>
+          <p>${
+            post.descricao ? post.descricao.substring(0, 100) : "Sem descrição"
+          }</p>`;
+        postDiv.addEventListener("click", () => verDetalhesPosts(post.id));
+        DOM.listaDePosts.appendChild(postDiv);
+      });
+    } else {
+      DOM.listaDePosts.innerHTML = `<p>O usuário ainda não criou nenhum post :(</p>`;
+    }
+  }
 
+  async function exibirPostUsuario() {
+    if (!userId) {
+      mostrarMensagem(MESSAGES.errors.userNotFound, "erro");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${CONFIG.API_BUSCAR_POSTS_USUARIO}/${userId}`
+      );
+      if (!response.ok)
+        throw new Error(MESSAGES.errors.projectFetchFailed(response.status));
+      const data = await response.json();
+      exibirPost(data);
+    } catch (error) {
+      mostrarMensagem(error.message || MESSAGES.errors.default, "erro");
+      if (DOM.listaDePosts) {
+        DOM.listaDePosts.innerHTML =
+          '<div class="error">Erro ao carregar os posts do usuário.</div>';
+      }
+    }
+  }
+
+  async function verDetalhesPosts(idDoPost) {
+    const modal = DOM.modalDetalhesPost;
+    const detalheTitulo = document.getElementById("detalhe-titulo-post");
+    const detalheUsuario = document.getElementById("detalhe-usuario-post");
+    const detalheDescricao = document.getElementById("detalhe-descricao-post");
+
+    if (!modal || !detalheTitulo || !detalheUsuario || !detalheDescricao)
+      return;
+
+    try {
+      const response = await fetch(`${CONFIG.API_BUSCAR_POST}/${idDoPost}`);
+      if (!response.ok) throw new Error(MESSAGES.errors.postNotFound);
+      const post = await response.json();
+      detalheTitulo.textContent = post.title;
+      detalheUsuario.textContent = post.username;
+      detalheDescricao.textContent = post.descricao || "Sem descrição";
+      modal.style.display = "flex";
+    } catch (error) {
+      mostrarMensagem(error.message || MESSAGES.errors.default, "erro");
+    }
+  }
+
+  function configurarEdicaoPerfil() {
     const editarBtn = document.getElementById("editar-perfil-btn");
     const fecharModal = document.querySelector(
       "#modal-editar-perfil .fechar-modal"
@@ -212,120 +226,35 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      const dadosAtualizacao = { username, descricao };
-      if (fotoPerfilUrl) dadosAtualizacao.fotoPerfil = fotoPerfilUrl;
-
-      console.groupCollapsed("🔍 DADOS ENVIADOS AO BACKEND");
-      console.log("📤 Endpoint:", `${CONFIG.API_EDITAR_USUARIO}${userId}`);
-      console.log("🔄 Método: PATCH");
-      console.log("📝 Dados brutos:", dadosAtualizacao);
-      console.log("📦 JSON enviado:", JSON.stringify(dadosAtualizacao));
-      console.groupEnd();
+      const dadosAtualizacao = {
+        username,
+        descricao,
+        fotoUrl: fotoPerfilUrl,
+      };
 
       try {
         const response = await fetch(`${CONFIG.API_EDITAR_USUARIO}${userId}`, {
           method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(dadosAtualizacao),
         });
-        console.log("[DEBUG] Envio de dados para o backend");
+
         if (!response.ok) throw new Error("Falha ao atualizar perfil");
 
         DOM.modalEditarPerfil.style.display = "none";
         mostrarMensagem(MESSAGES.success.profileUpdated, "sucesso");
         carregarPerfilUsuario();
       } catch (error) {
-        console.error("Erro ao editar perfil:", error);
         mostrarMensagem(error.message || MESSAGES.errors.default, "erro");
       }
     });
   }
 
-  function exibirPost(posts) {
-    if (!DOM.listaDePosts) return;
-    DOM.listaDePosts.innerHTML = "";
-    if (posts && posts.length > 0) {
-      posts.forEach((post) => {
-        const postDiv = document.createElement("div");
-        postDiv.classList.add("post-card");
-        postDiv.dataset.postID = post.id;
-        postDiv.innerHTML = `
-          <h3>${post.title}</h3>
-          <p>${post.username}</p>
-          <p>${
-            post.descricao ? post.descricao.substring(0, 100) : "Sem descrição"
-          }</p>`;
-        postDiv.addEventListener("click", () => verDetalhesPosts(post.id));
-        DOM.listaDePosts.appendChild(postDiv);
-      });
-    } else {
-      DOM.listaDePosts.innerHTML = `<p>O usuário ainda não criou nenhum post :(</p>`;
-    }
-  }
-
-  async function exibirPostUsuario() {
-    if (!userId) {
-      mostrarMensagem(MESSAGES.errors.userNotFound, "erro");
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `${CONFIG.API_BUSCAR_POSTS_USUARIO}/${userId}`
-      );
-      if (!response.ok)
-        throw new Error(MESSAGES.errors.projectFetchFailed(response.status));
-      const data = await response.json();
-      exibirPost(data);
-    } catch (error) {
-      console.error("Erro ao buscar posts:", error);
-      mostrarMensagem(error.message || MESSAGES.errors.default, "erro");
-      if (DOM.listaDePosts) {
-        DOM.listaDePosts.innerHTML =
-          '<div class="error">Erro ao carregar os posts do usuário.</div>';
-      }
-    }
-  }
-
-  async function verDetalhesPosts(idDoPost) {
-    const modal = DOM.modalDetalhesPost;
-    const detalheTitulo = document.getElementById("detalhe-titulo-post");
-    const detalheUsuario = document.getElementById("detalhe-usuario-post");
-    const detalheDescricao = document.getElementById("detalhe-descricao-post");
-
-    if (!modal || !detalheTitulo || !detalheUsuario || !detalheDescricao)
-      return;
-
-    modal.style.display = "flex";
-    detalheTitulo.textContent = "Carregando...";
-    detalheUsuario.textContent = "";
-    detalheDescricao.textContent = "";
-
-    try {
-      const response = await fetch(`${CONFIG.API_BUSCAR_POST}/${idDoPost}`);
-      if (!response.ok) throw new Error(MESSAGES.errors.postNotFound);
-      const post = await response.json();
-      detalheTitulo.textContent = post.title;
-      detalheUsuario.textContent = post.username;
-      detalheDescricao.textContent = post.descricao;
-    } catch (error) {
-      console.error("Erro ao buscar detalhes:", error);
-      detalheTitulo.textContent = `Erro: ${error.message}`;
-    }
-  }
-
-  function inicializarModais() {
-    if (DOM.modalDetalhesPost && DOM.closeModalDetalhesPost) {
-      DOM.closeModalDetalhesPost.addEventListener("click", () => {
-        DOM.modalDetalhesPost.style.display = "none";
-      });
-    }
-  }
+  DOM.closeModalDetalhesPost?.addEventListener("click", () => {
+    DOM.modalDetalhesPost.style.display = "none";
+  });
 
   carregarPerfilUsuario();
   configurarEdicaoPerfil();
   exibirPostUsuario();
-  inicializarModais();
 });
