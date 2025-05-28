@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const DOM = {
     mensagem: document.getElementById("mensagem-perfil"),
-    username: document.getElementById("nome-usuario"),
+    nomeUsuario: document.getElementById("nome-usuario"),
     descricaoUsuario: document.getElementById("descricao-usuario"),
     listaDePosts: document.getElementById("posts-list"),
     modalDetalhesPost: document.getElementById("detalhes-modal-post"),
@@ -69,7 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function atualizarInterfacePerfil(usuario) {
     const fotoPerfil = document.getElementById("foto-perfil-padrao");
-    const urlImagem = usuario.fotoUrl;
+    // Usar 'usuario.fotoUrl' ou 'usuario.fotoPerfil' dependendo do nome exato no backend
+    const urlImagem = usuario.fotoUrl || usuario.fotoPerfil;
 
     if (urlImagem && urlImagem !== "null" && urlImagem !== "undefined") {
       fotoPerfil.src = urlImagem;
@@ -87,8 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
         "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
     }
 
-    DOM.username.textContent = usuario.username || usuario.name || "Usuário";
-    DOM.descricaoUsuario.textContent = usuario.descricao || "Nenhuma descrição";
+    DOM.nomeUsuario.textContent = usuario.nomeUsuario;
+    DOM.descricaoUsuario.textContent = usuario.descricao;
   }
 
   async function uploadCloudinary(file) {
@@ -109,26 +110,54 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function exibirPost(posts) {
-    if (!DOM.listaDePosts) return;
+    if (!DOM.listaDePosts) {
+      console.error("Elemento DOM.listaDePosts não encontrado.");
+      return;
+    }
     DOM.listaDePosts.innerHTML = "";
+
     if (posts && posts.length > 0) {
       posts.forEach((post) => {
         const postDiv = document.createElement("div");
         postDiv.classList.add("post-card");
-        postDiv.dataset.postID = post.id;
+        postDiv.style.cursor = "pointer";
+        postDiv.addEventListener("click", () => {
+          verDetalhesPosts(post.id);
+        });
+
         postDiv.innerHTML = `
           <h3>${post.title}</h3>
-          <p>${post.username}</p>
+          
           <p>${
-            post.descricao ? post.descricao.substring(0, 100) : "Sem descrição"
-          }</p>`;
-        postDiv.addEventListener("click", () => verDetalhesPosts(post.id));
-        DOM.listaDePosts.appendChild(postDiv);
+            post.descricao
+              ? post.descricao.substring(0, 100) +
+                (post.descricao.length > 100 ? "..." : "")
+              : "Sem descrição"
+          }</p>
+          
+          ${
+            post.imageUrl
+              ? `<img src="${post.imageUrl}" alt="Imagem do Post ${post.title}" />`
+              : ""
+          }
+          
+
+        <div class="detalhes-post-card" style="color: black;">
+          <span>${
+            post.dataCriacaoPosts ? post.dataCriacaoPosts.split(" ")[0] : "N/A"
+          }</span>
+          <p>${post.nomeUsuario}</p>
+        </div>
+        `;
+
+        DOM.listaDePosts.appendChild(postDiv); // Adiciona ao elemento correto no DOM
       });
     } else {
-      DOM.listaDePosts.innerHTML = `<p>O usuário ainda não criou nenhum post :(</p>`;
+      DOM.listaDePosts.innerHTML =
+        '<div class="no-posts">O usuário ainda não criou nenhum post :(</div>';
     }
   }
+  // --- FIM DA CORREÇÃO NA FUNÇÃO exibirPost ---
 
   async function exibirPostUsuario() {
     if (!userId) {
@@ -154,26 +183,94 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function verDetalhesPosts(idDoPost) {
-    const modal = DOM.modalDetalhesPost;
-    const detalheTitulo = document.getElementById("detalhe-titulo-post");
-    const detalheUsuario = document.getElementById("detalhe-usuario-post");
-    const detalheDescricao = document.getElementById("detalhe-descricao-post");
-
-    if (!modal || !detalheTitulo || !detalheUsuario || !detalheDescricao)
-      return;
+    console.log("Tentando abrir modal para post ID:", idDoPost);
 
     try {
-      const response = await fetch(`${CONFIG.API_BUSCAR_POST}/${idDoPost}`);
-      if (!response.ok) throw new Error(MESSAGES.errors.postNotFound);
-      const post = await response.json();
-      detalheTitulo.textContent = post.title;
-      detalheUsuario.textContent = post.username;
-      detalheDescricao.textContent = post.descricao || "Sem descrição";
+      // 1. Verifique se o modal existe (usando DOM.modalDetalhesPost para consistência)
+      const modal = DOM.modalDetalhesPost;
+      if (!modal) {
+        throw new Error(
+          "Elemento 'detalhes-modal-post' não encontrado no DOM."
+        );
+      }
+
+      // 2. Obtenha os elementos internos com verificação
+      const elements = {
+        titulo: document.getElementById("detalhe-titulo-post"),
+        usuario: document.getElementById("detalhe-usuario-post"),
+        descricao: document.getElementById("detalhe-descricao-post"),
+        // CORREÇÃO: Usar o ID correto se for diferente no HTML
+        data: document.getElementById("detalhe-data-criacao-post"),
+      };
+
+      // 3. Mostre o modal imediatamente
       modal.style.display = "flex";
+
+      // 4. Defina conteúdo temporário (ou limpe para carregamento)
+      // Definindo "Carregando..." para o título para um feedback melhor
+      if (elements.titulo) elements.titulo.textContent = "Carregando...";
+      if (elements.usuario) elements.usuario.textContent = "";
+      if (elements.descricao) elements.descricao.textContent = "";
+      if (elements.data) elements.data.textContent = "";
+
+      // 5. Busque os dados
+      const response = await fetch(`${CONFIG.API_BUSCAR_POST}/${idDoPost}`);
+      if (!response.ok) {
+        // Se a resposta não for OK, tente ler a mensagem de erro do backend
+        const errorData = await response
+          .json()
+          .catch(() => ({ message: MESSAGES.errors.postNotFound }));
+        throw new Error(errorData.message || MESSAGES.errors.postNotFound);
+      }
+
+      const post = await response.json();
+      console.log("Dados do post recebidos:", post);
+
+      // 6. Preencha os dados (com fallbacks e formatação da data)
+      if (elements.titulo)
+        elements.titulo.textContent = post.title || "Título Indisponível";
+
+      // CORREÇÃO: Usar 'nomeUsuario' ou 'username' conforme a API
+      if (elements.usuario)
+        elements.usuario.textContent =
+          post.nomeUsuario || post.username || "Usuário Desconhecido";
+
+      // CORREÇÃO: A descrição já deve vir completa, sem substring aqui
+      if (elements.descricao)
+        elements.descricao.textContent = post.descricao || "Sem descrição.";
+
+      // CORREÇÃO: Lógica para a data, similar à verDetalhesProjeto
+      if (elements.data) {
+        const dataParaExibir = post.dataCriacaoPosts // Prioriza 'dataCriacaoPosts'
+          ? post.dataCriacaoPosts.split(" ")[0]
+          : post.dataCriacao // Fallback para 'dataCriacao'
+          ? post.dataCriacao.split(" ")[0]
+          : "N/A";
+        elements.data.textContent = dataParaExibir;
+      }
     } catch (error) {
-      mostrarMensagem(error.message || MESSAGES.errors.default, "erro");
+      console.error("Erro ao abrir modal:", error);
+
+      // Atualiza o modal com a mensagem de erro
+      const tituloElement = document.getElementById("detalhe-titulo-post");
+      if (tituloElement)
+        tituloElement.textContent = "Erro ao carregar detalhes";
+      if (tituloElement) tituloElement.style.color = "black"; // Para garantir a visibilidade do erro
+
+      const descricaoElement = document.getElementById(
+        "detalhe-descricao-post"
+      );
+      if (descricaoElement)
+        descricaoElement.textContent =
+          error.message || "Falha ao carregar os dados do post.";
+
+      // Se houver um erro, é bom fechar o modal ou dar uma opção para fechar
+      // Ou simplesmente deixar a mensagem de erro dentro do modal como está sendo feito
+      mostrarMensagem("Erro ao carregar detalhes do post.", "erro");
     }
   }
+
+  // 2. Obtenha os elementos internos com verificação
 
   function configurarEdicaoPerfil() {
     const editarBtn = document.getElementById("editar-perfil-btn");
@@ -183,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const previewFoto = document.getElementById("preview-foto-perfil");
 
     editarBtn.addEventListener("click", () => {
-      document.getElementById("nome-modal").value = DOM.username.textContent;
+      document.getElementById("nome-modal").value = DOM.nomeUsuario.textContent;
       document.getElementById("descricao-modal").value =
         DOM.descricaoUsuario.textContent;
       DOM.modalEditarPerfil.style.display = "block";
@@ -208,11 +305,11 @@ document.addEventListener("DOMContentLoaded", () => {
     DOM.formEditarPerfil.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const username = document.getElementById("nome-modal").value;
+      const nomeUsuario = document.getElementById("nome-modal").value;
       const descricao = document.getElementById("descricao-modal").value;
       const fotoFile = DOM.inputFotoPerfil.files[0];
 
-      if (username.length < 3) {
+      if (nomeUsuario.length < 3) {
         mostrarMensagem("Nome precisa ter pelo menos 3 caracteres", "erro");
         return;
       }
@@ -227,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const dadosAtualizacao = {
-        username,
+        nomeUsuario,
         descricao,
         fotoUrl: fotoPerfilUrl,
       };
@@ -250,11 +347,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  DOM.closeModalDetalhesPost?.addEventListener("click", () => {
-    DOM.modalDetalhesPost.style.display = "none";
-  });
+  function inicializarModal() {
+    const modal = document.getElementById("detalhes-modal-post");
+    const closeButtonX = document.querySelector(".close-button");
 
-  carregarPerfilUsuario();
-  configurarEdicaoPerfil();
-  exibirPostUsuario();
+    if (closeButtonX) {
+      closeButtonX.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+    }
+
+    window.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  }
+
+  window.onload = function () {
+    carregarPerfilUsuario();
+    configurarEdicaoPerfil();
+    exibirPostUsuario();
+    inicializarModal();
+  };
 });

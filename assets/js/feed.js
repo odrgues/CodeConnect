@@ -8,8 +8,10 @@ let listaDeProjetos = [];
 async function buscarProjetos() {
   try {
     const response = await fetch(CONFIG.API_FEED_POSTS);
+    console.log("Resposta bruta:", response);
     if (!response.ok) throw new Error(`Erro: ${response.status}`);
     const data = await response.json();
+    console.log("Dados recebidos:", data);
     listaDeProjetos = data;
     exibirProjetos(data);
   } catch (error) {
@@ -48,22 +50,19 @@ function filtrarProjetos() {
 
   if (sortBy === "recentes" || sortBy === "antigos") {
     listaOrdenada = listaOrdenada.map((projeto) => {
-      // Extrai apenas a parte da data (assumindo formato "DD/MM/AAAA HH:MM")
-      const [data, hora] = projeto.dataCriacaoPosts.split(" ");
+      const [data] = projeto.dataCriacaoPosts.split(" ");
       return {
         ...projeto,
-        _dataOrdenacao: new Date(data.split("/").reverse().join("-")), // Converte para "AAAA-MM-DD"
+        _dataOrdenacao: new Date(data.split("/").reverse().join("-")),
       };
     });
 
-    // Ordena pela data (sem hora)
     if (sortBy === "recentes") {
       listaOrdenada.sort((a, b) => b._dataOrdenacao - a._dataOrdenacao);
     } else {
       listaOrdenada.sort((a, b) => a._dataOrdenacao - b._dataOrdenacao);
     }
 
-    // Remove o campo temporário (opcional)
     listaOrdenada = listaOrdenada.map(({ _dataOrdenacao, ...resto }) => resto);
   }
 
@@ -103,7 +102,7 @@ function exibirProjetos(projetos) {
               ? projeto.dataCriacaoPosts.split(" ")[0]
               : "N/A"
           }</span>
-          <p>${projeto.name}</p>
+          <p>${projeto.nomeUsuario}</p>
         </div>
       `;
 
@@ -119,6 +118,7 @@ async function verDetalhesProjeto(idDoProjeto) {
   const detalheTitulo = document.getElementById("detalhe-titulo");
   const detalheUsuario = document.getElementById("detalhe-usuario");
   const detalheDescricao = document.getElementById("detalhe-descricao");
+  const detalheCriacao = document.getElementById("detalhe-data-criacao");
 
   if (!modal) {
     console.error("Modal não encontrado!");
@@ -126,9 +126,10 @@ async function verDetalhesProjeto(idDoProjeto) {
   }
 
   modal.style.display = "flex";
-  detalheTitulo.textContent = "Carregando...";
+  detalheTitulo.textContent = "";
   detalheUsuario.textContent = "";
   detalheDescricao.textContent = "";
+  detalheCriacao.textContent = "";
 
   try {
     const response = await fetch(
@@ -142,9 +143,9 @@ async function verDetalhesProjeto(idDoProjeto) {
     const projeto = await response.json();
     detalheTitulo.textContent = projeto.title;
     detalheTitulo.style.color = "black";
-    detalheUsuario.textContent = projeto.name;
-
+    detalheUsuario.textContent = projeto.nomeUsuario;
     detalheDescricao.textContent = projeto.descricao;
+    detalheCriacao.textContent = projeto.dataCriacaoPosts.split(" ")[0];
   } catch (error) {
     console.error("Erro ao carregar detalhes:", error);
     detalheTitulo.textContent = `Erro: ${error.message}`;
@@ -171,4 +172,13 @@ function inicializarModal() {
 window.onload = function () {
   buscarProjetos();
   inicializarModal();
+
+  const searchInput = document.getElementById("search-input");
+  if (searchInput) {
+    searchInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        pesquisarProjetos();
+      }
+    });
+  }
 };
