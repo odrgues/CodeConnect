@@ -1,101 +1,355 @@
-@import url(global.css);
+/* Importa uma fonte simples do Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+:root {
+  --primary-color: #007bff; /* Azul para botões e links */
+  --secondary-color: #6c757d; /* Cinza para textos secundários */
+  --background-color: #f8f9fa; /* Fundo claro da página */
+  --card-background-color: #ffffff; /* Fundo dos cards/seções */
+  --border-color: #dee2e6; /* Cor da borda */
+  --text-color: #343a40; /* Cor principal do texto */
+  --success-color: #28a745; /* Verde para mensagens de sucesso */
+  --error-color: #dc3545; /* Vermelho para mensagens de erro */
+  --info-color: #17a2b8; /* Azul claro para mensagens de informação */
+  --shadow-color: rgba(0, 0, 0, 0.1); /* Sombra leve */
+}
+
 body {
-  background-color: var(--cor-fundo);
-  color: white;
-  display: flex;
-  justify-content: center;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  display: flex; /* Para o layout com aside */
+  min-height: 100vh; /* Garante que o body ocupe a altura total */
 }
 
-.container-imagem-usuario {
-  display: flex;
+main {
+  flex-grow: 1; /* Ocupa o espaço restante */
+  padding: 20px;
+  max-width: 900px; /* Largura máxima do conteúdo principal */
+  margin: 0 auto; /* Centraliza o conteúdo principal */
 }
 
+.container {
+  background-color: var(--card-background-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px var(--shadow-color);
+  padding: 30px;
+  margin-bottom: 20px;
+  text-align: center; /* Centraliza os elementos dentro do container */
+}
+
+/* --- Detalhes do Usuário (Perfil) --- */
 .detalhes-usuario {
+  display: flex;
+  flex-direction: column; /* Organiza os itens em coluna */
+  align-items: center; /* Centraliza horizontalmente */
+  gap: 15px; /* Espaçamento entre os itens */
+}
+
+.foto-perfil {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover; /* Garante que a imagem preencha o círculo */
+  border: 3px solid var(--primary-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.detalhes-usuario h1 {
+  font-size: 2.2em;
+  margin: 10px 0 5px;
+  color: var(--primary-color);
+}
+
+.detalhes-usuario p {
+  font-size: 1.1em;
+  color: var(--secondary-color);
+  line-height: 1.5;
+  max-width: 600px; /* Limita a largura da descrição */
+}
+
+/* Estilos para os campos de input de edição */
+.detalhes-usuario input[type="text"],
+.detalhes-usuario textarea {
+  width: 100%;
+  max-width: 400px; /* Limita a largura dos inputs */
+  padding: 10px 15px;
+  margin-top: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-size: 1em;
+  color: var(--text-color);
+  box-sizing: border-box; /* Inclui padding e borda na largura total */
+}
+
+.detalhes-usuario textarea {
+  resize: vertical; /* Permite redimensionar verticalmente */
+  min-height: 80px;
+}
+
+/* Estilo para o input de arquivo (foto de perfil) */
+.detalhes-usuario input[type="file"] {
+  max-width: 400px; /* Ajusta largura */
+  padding: 8px 0;
+  margin-top: 10px;
+  font-size: 0.9em;
+  border: none; /* Remove a borda padrão do input file */
+  background: none;
+  cursor: pointer;
+}
+
+.label-foto-perfil {
+  font-size: 0.9em;
+  color: var(--secondary-color);
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+/* Estilos para os botões */
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+  margin: 5px; /* Espaçamento entre botões */
+}
+
+button:hover {
+  background-color: darken(var(--primary-color), 10%); /* Escurece no hover */
+}
+
+#cancelar-edicao-btn {
+  background-color: var(--secondary-color);
+}
+
+#cancelar-edicao-btn:hover {
+  background-color: darken(var(--secondary-color), 10%);
+}
+
+/* --- Mensagens de feedback (sucesso/erro/info) --- */
+#mensagem-perfil {
+  text-align: center;
+  padding: 10px;
+  margin: 20px auto;
+  border-radius: 5px;
+  display: none; /* Escondido por padrão, JavaScript o mostra */
+  font-weight: bold;
+  max-width: 600px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.mensagem.sucesso {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.mensagem.erro {
+  background-color: var(--error-color);
+  color: white;
+}
+
+.mensagem.informacao {
+  background-color: var(--info-color);
+  color: white;
+}
+
+/* --- Seção de Posts (Projetos) --- */
+#lista-de-posts {
+  background-color: var(--card-background-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px var(--shadow-color);
+  padding: 30px;
+  margin-top: 20px;
+}
+
+.section-title {
+  font-size: 1.8em;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#posts-list {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(280px, 1fr)
+  ); /* Layout responsivo */
+  gap: 20px;
+}
+
+.post-card {
+  background-color: var(--background-color); /* Fundo dos cards de post */
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px var(--shadow-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Para empurrar detalhes para baixo */
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.post-card h3 {
+  font-size: 1.4em;
+  color: var(--text-color);
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.post-card p {
+  font-size: 0.95em;
+  color: var(--secondary-color);
+  margin-bottom: 15px;
+  flex-grow: 1; /* Permite que a descrição ocupe espaço */
+}
+
+.post-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  display: block; /* Remove espaço extra abaixo da imagem */
+}
+
+.detalhes-post-card {
+  font-size: 0.85em;
+  color: var(--secondary-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px; /* Garante espaçamento da descrição */
+}
+
+.detalhes-post-card span {
+  font-weight: bold;
+}
+
+/* --- Modal de Detalhes do Post (Existente) --- */
+.modal {
+  display: none; /* Escondido por padrão */
+  position: fixed; /* Fica por cima de tudo */
+  z-index: 1000; /* Alto z-index para estar acima de outros elementos */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Adiciona scroll se o conteúdo for grande */
+  background-color: rgba(0, 0, 0, 0.6); /* Fundo semi-transparente */
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+}
+
+.modal-content {
+  background-color: var(--card-background-color);
+  margin: auto;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px var(--shadow-color);
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+  text-align: left;
+}
+
+.close-button {
+  color: var(--secondary-color);
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: var(--primary-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-content h2 {
+  color: var(--primary-color);
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.8em;
+}
+
+.modal-content p {
+  color: var(--text-color);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+/* Ajustes para layout com aside, se você tiver um */
+/* Se o aside for um menu lateral, você precisará de CSS para ele */
+#aside-container {
+  /* Exemplo, adapte ao seu aside.js e HTML */
+  width: 250px; /* Largura do aside */
+  background-color: var(--card-background-color);
+  box-shadow: 2px 0 5px var(--shadow-color);
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
 
-.posts-list {
-  display: flex;
-  flex-direction: column; /* Organiza os posts verticalmente */
-  gap: 15px; /* Espaçamento entre os posts */
-  padding: 20px; /* Espaçamento interno ao redor da lista */
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column; /* Stacks aside on top on smaller screens */
+  }
+
+  #aside-container {
+    width: 100%;
+    box-shadow: 0 2px 5px var(--shadow-color);
+  }
+
+  main {
+    padding: 15px;
+  }
+
+  .container,
+  #lista-de-posts {
+    padding: 20px;
+  }
+
+  .post-card {
+    padding: 15px;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
 }
 
-/* Estilos básicos para cada card de projeto */
-.post-card {
-  background-color: #f8f9fa; /* Cor de fundo levemente cinza */
-  border: 1px solid #dee2e6; /* Borda sutil */
-  border-radius: 8px; /* Bordas arredondadas */
-  padding: 20px; /* Espaçamento interno dentro do card */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
-}
+@media (max-width: 480px) {
+  .detalhes-usuario h1 {
+    font-size: 1.8em;
+  }
 
-/* Estilos para o título do projeto */
-.post-card h3 {
-  margin-top: 0; /* Remove a margem superior padrão do h3 */
-  margin-bottom: 10px; /* Espaçamento abaixo do título */
-  color: #343a40; /* Cor do texto escura */
-}
+  .detalhes-usuario p {
+    font-size: 1em;
+  }
 
-/* Estilos para as informações do usuário e data */
-.post-card p {
-  margin-bottom: 8px; /* Espaçamento abaixo dos parágrafos */
-  color: #6c757d; /* Cor do texto cinza */
-  font-size: 0.9em; /* Tamanho da fonte um pouco menor */
-}
+  button {
+    padding: 8px 15px;
+    font-size: 0.9em;
+  }
 
-.modal {
-  display: none; /* Modal escondido por padrão */
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro */
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background-color: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  max-width: 600px;
-  width: 90%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  position: relative;
-}
-
-.close-button {
-  position: absolute;
-  right: 16px;
-  top: 16px;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.posts-no-modal {
-  margin-top: 20px;
-  border-top: 1px solid #ddd;
-  padding-top: 20px;
-}
-
-#posts-list-modal {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-#posts-list-modal .post-card {
-  background-color: #f5f5f5;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.modal {
-  color: #343a40;
+  .section-title {
+    font-size: 1.5em;
+  }
 }

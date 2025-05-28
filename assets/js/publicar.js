@@ -2,6 +2,10 @@ const CONFIG = {
   API_PUBLICACAO_URL: "http://localhost:8080/api/v1/Posts",
   MESSAGE_DISPLAY_TIME: 3000,
   PERFIL_PAGE: "/pages/perfil.html",
+  CLOUDINARY: {
+    UPLOAD_URL: "https://api.cloudinary.com/v1_1/dzzk4ybjo/image/upload",
+    UPLOAD_PRESET: "codeconnect_upload",
+  },
 };
 
 const MESSAGES = {
@@ -128,7 +132,7 @@ const API = {
       const response = await fetch(CONFIG.API_PUBLICACAO_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados),
+        body: formData,
         signal: controller.signal,
       });
 
@@ -195,13 +199,7 @@ const Utils = {
     return new Promise((resolve, reject) => {
       const tiposPermitidos = ["image/png", "image/jpeg", "image/jpg"];
       if (!tiposPermitidos.includes(arquivo.type)) {
-        return reject("Apenas imagens PNG, JPG e JPEG são permitidas");
-      }
-
-      const tamanhoMaximoMB = 5;
-      const tamanhoMaximoBytes = tamanhoMaximoMB * 1024 * 1024;
-      if (arquivo.size > tamanhoMaximoBytes) {
-        return reject(`A imagem deve ter menos de ${tamanhoMaximoMB}MB`);
+        return reject(MESSAGES.errors.invalidImage); // Usa a mensagem de erro definida
       }
 
       const leitor = new FileReader();
@@ -217,6 +215,23 @@ const Utils = {
     DOM.nomeImagem.textContent = "image_projeto.png";
   },
 };
+
+async function uploadCloudinary(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CONFIG.CLOUDINARY.UPLOAD_PRESET);
+  try {
+    const response = await fetch(CONFIG.CLOUDINARY.UPLOAD_URL, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    return data.secure_url; // Retorna a URL segura da imagem
+  } catch (error) {
+    console.error("Erro no upload para Cloudinary:", error);
+    return null;
+  }
+}
 const Handlers = {
   handleUpload: async (event) => {
     const arquivo = event.target.files[0];
@@ -260,23 +275,41 @@ const Handlers = {
     event.preventDefault();
     const startTime = Date.now();
     try {
+      if (!Handlers.verificarAutenticacao()) {
+        return;
+      }
       if (!Utils.validarFormulario()) {
-        throw new Error(MESSAGES.errors.requiredFields);
+        return;
       }
 
-      // let imagem = null;
-      // if (DOM.inputUpload.files[0]) {
-      //   const conteudo = await Utils.lerArquivo(DOM.inputUpload.files[0]);
-      //   imagem = conteudo.url.split(",")[1];
-      // }
+      let imageUrl = null;
+      const imageFile = DOM.inputUpload.files[0];
 
-      const dados = {
-        title: DOM.nomeProjeto.value.trim(),
-        descricao: DOM.descricao.value.trim(),
-        usuarioId: localStorage.getItem("userId"),
-      };
+      if (imageFile) {
+        // Se um arquivo de imagem foi selecionado
+        imageUrl = await uploadCloudinary(imageFile); // Faz o upload para o Cloudinary
+        if (!imageUrl) {
+          Utils.exibirMensagem(
+            DOM.mensagem,
+            MESSAGES.errors.uploadFailed,
+            "erro"
+          );
+          return;
+        }
+      }
 
-      await API.criarPublicacao(dados);
+      // Cria um FormData para enviar os dados, incluindo a URL da imagem
+      const formData = new FormData();
+      formData.append("title", DOM.nomeProjeto.value.trim());
+      formData.append("descricao", DOM.descricao.value.trim());
+      formData.append("userId", userId); // O ID do usuário logado
+      // Adicione o nome do usuário se o backend esperar, por exemplo:
+      // formData.append('nomeUsuario', localStorage.getItem('userName') || `Usuário ${userId}`);
+      if (imageUrl) {
+        formData.append("imageUrl", imageUrl); // Adiciona a URL da imagem ao FormData
+      }
+
+      await API.criarPublicacao(formData); // Envia o FormData para a API
 
       Utils.exibirMensagem(
         DOM.mensagem,
@@ -291,9 +324,8 @@ const Handlers = {
       );
 
       setTimeout(() => {
-        Utils.limparFormulario(),
-          1500,
-          (window.location.href = CONFIG.PERFIL_PAGE);
+        Utils.limparFormulario();
+        window.location.href = CONFIG.PERFIL_PAGE; // Redireciona para o perfil após sucesso
       }, remainingTime);
     } catch (error) {
       if (error.name === "AbortError") {
@@ -313,6 +345,7 @@ const Handlers = {
       const elapsed = Date.now() - startTime;
       const remainingLoaderTime = Math.max(0, CONFIG.MIN_LOADER_TIME - elapsed);
 
+      // Lógica de loader (comentada no seu código original, mantida assim)
       // if (remainingLoaderTime > 0) {
       //   setTimeout(() => {
       //     Utils.toggleLoader(DOM.btnPublicar, false);
@@ -336,3 +369,20 @@ const init = () => {
 };
 
 document.addEventListener("DOMContentLoaded", init);
+
+async function uploadCloudinary(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CONFIG.CLOUDINARY.UPLOAD_PRESET);
+  try {
+    const response = await fetch(CONFIG.CLOUDINARY.UPLOAD_URL, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    return data.secure_url;
+  } catch (error) {
+    console.error("Erro no upload:", error);
+    return null;
+  }
+}

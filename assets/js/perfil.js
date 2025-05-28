@@ -24,9 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
     closeModalDetalhesPost: document.querySelector(
       "#detalhes-modal-post .close-button"
     ),
-    modalEditarPerfil: document.getElementById("modal-editar-perfil"),
-    formEditarPerfil: document.getElementById("form-editar-perfil"),
-    inputFotoPerfil: document.getElementById("foto-perfil-modal"),
+
+    inputNomeUsuario: document.getElementById("input-nome-usuario"),
+    inputDescricaoUsuario: document.getElementById("input-descricao-usuario"),
+    inputFotoPerfil: document.getElementById("input-foto-perfil"),
+    previewFotoPerfil: document.getElementById("preview-foto-perfil"),
+    editarPerfilBtn: document.getElementById("editar-perfil-btn"),
+    salvarPerfilBtn: document.getElementById("salvar-perfil-btn"),
+    cancelarEdicaoBtn: document.getElementById("cancelar-edicao-btn"),
   };
 
   const MESSAGES = {
@@ -37,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
       default: "Ocorreu um erro inesperado.",
       postNotFound: "Detalhes do post não encontrados.",
       uploadFailed: "Falha ao enviar imagem. Tente novamente.",
+      nameTooShort: "Nome precisa ter pelo menos 3 caracteres.",
     },
     success: {
       profileUpdated: "Perfil atualizado com sucesso!",
@@ -57,39 +63,61 @@ document.addEventListener("DOMContentLoaded", () => {
   async function carregarPerfilUsuario() {
     try {
       const response = await fetch(`${CONFIG.API_BUSCAR_USUARIO}/${userId}`);
+
       if (!response.ok)
         throw new Error(`Erro ${response.status}: ${response.statusText}`);
       const usuario = await response.json();
       if (!usuario) throw new Error("Dados do usuário não encontrados");
       await atualizarInterfacePerfil(usuario);
+      return usuario;
     } catch (error) {
+      console.error("Erro ao carregar perfil do usuário:", error);
       mostrarMensagem("Falha ao carregar perfil. Tente novamente", "erro");
+      return null;
     }
   }
 
   async function atualizarInterfacePerfil(usuario) {
     const fotoPerfil = document.getElementById("foto-perfil-padrao");
-    // Usar 'usuario.fotoUrl' ou 'usuario.fotoPerfil' dependendo do nome exato no backend
-    const urlImagem = usuario.fotoUrl || usuario.fotoPerfil;
+    const urlImagem = usuario.fotoUrl;
 
     if (urlImagem && urlImagem !== "null" && urlImagem !== "undefined") {
       fotoPerfil.src = urlImagem;
-      const imgLoaded = await new Promise((resolve) => {
+
+      await new Promise((resolve) => {
         fotoPerfil.onload = () => resolve(true);
-        fotoPerfil.onerror = () => resolve(false);
-        setTimeout(() => resolve(false), 5000);
+        fotoPerfil.onerror = () => {
+          console.warn("Erro ao carregar a foto de perfil. Usando fallback.");
+          fotoPerfil.src =
+            "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
+          resolve(false);
+        };
+
+        setTimeout(() => {
+          if (!fotoPerfil.complete) {
+            console.warn(
+              "Carregamento da foto de perfil excedeu o tempo limite. Usando fallback."
+            );
+            fotoPerfil.src =
+              "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        }, 5000);
       });
-      if (!imgLoaded) {
-        fotoPerfil.src =
-          "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
-      }
     } else {
       fotoPerfil.src =
         "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
     }
 
-    DOM.nomeUsuario.textContent = usuario.nomeUsuario;
+    DOM.nomeUsuario.textContent = usuario.username;
     DOM.descricaoUsuario.textContent = usuario.descricao;
+
+    if (DOM.inputNomeUsuario)
+      DOM.inputNomeUsuario.value = usuario.username || "";
+    if (DOM.inputDescricaoUsuario)
+      DOM.inputDescricaoUsuario.value = usuario.descricao || "";
   }
 
   async function uploadCloudinary(file) {
@@ -150,14 +178,13 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
         `;
 
-        DOM.listaDePosts.appendChild(postDiv); // Adiciona ao elemento correto no DOM
+        DOM.listaDePosts.appendChild(postDiv);
       });
     } else {
       DOM.listaDePosts.innerHTML =
         '<div class="no-posts">O usuário ainda não criou nenhum post :(</div>';
     }
   }
-  // --- FIM DA CORREÇÃO NA FUNÇÃO exibirPost ---
 
   async function exibirPostUsuario() {
     if (!userId) {
@@ -174,6 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
       exibirPost(data);
     } catch (error) {
+      console.error("Erro ao exibir posts do usuário:", error);
       mostrarMensagem(error.message || MESSAGES.errors.default, "erro");
       if (DOM.listaDePosts) {
         DOM.listaDePosts.innerHTML =
@@ -183,111 +211,105 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function verDetalhesPosts(idDoPost) {
-    console.log("Tentando abrir modal para post ID:", idDoPost);
+    const modal = document.getElementById("detalhes-modal-post");
+    const detalheTitulo = document.getElementById("detalhe-titulo-post");
+    const detalheUsuario = document.getElementById("detalhe-usuario-post");
+    const detalheDescricao = document.getElementById("detalhe-descricao-post");
+    const detalheCriacao = document.getElementById("detalhe-data-criacao");
+
+    if (!modal) {
+      console.error("Modal não encontrado!");
+      return;
+    }
+
+    modal.style.display = "flex";
+    detalheTitulo.textContent = "";
+    detalheUsuario.textContent = "";
+    detalheDescricao.textContent = "";
+    detalheCriacao.textContent = "";
 
     try {
-      // 1. Verifique se o modal existe (usando DOM.modalDetalhesPost para consistência)
-      const modal = DOM.modalDetalhesPost;
-      if (!modal) {
-        throw new Error(
-          "Elemento 'detalhes-modal-post' não encontrado no DOM."
-        );
-      }
-
-      // 2. Obtenha os elementos internos com verificação
-      const elements = {
-        titulo: document.getElementById("detalhe-titulo-post"),
-        usuario: document.getElementById("detalhe-usuario-post"),
-        descricao: document.getElementById("detalhe-descricao-post"),
-        // CORREÇÃO: Usar o ID correto se for diferente no HTML
-        data: document.getElementById("detalhe-data-criacao-post"),
-      };
-
-      // 3. Mostre o modal imediatamente
-      modal.style.display = "flex";
-
-      // 4. Defina conteúdo temporário (ou limpe para carregamento)
-      // Definindo "Carregando..." para o título para um feedback melhor
-      if (elements.titulo) elements.titulo.textContent = "Carregando...";
-      if (elements.usuario) elements.usuario.textContent = "";
-      if (elements.descricao) elements.descricao.textContent = "";
-      if (elements.data) elements.data.textContent = "";
-
-      // 5. Busque os dados
       const response = await fetch(`${CONFIG.API_BUSCAR_POST}/${idDoPost}`);
+
       if (!response.ok) {
-        // Se a resposta não for OK, tente ler a mensagem de erro do backend
-        const errorData = await response
-          .json()
-          .catch(() => ({ message: MESSAGES.errors.postNotFound }));
-        throw new Error(errorData.message || MESSAGES.errors.postNotFound);
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Erro ao buscar detalhes");
       }
 
       const post = await response.json();
-      console.log("Dados do post recebidos:", post);
 
-      // 6. Preencha os dados (com fallbacks e formatação da data)
-      if (elements.titulo)
-        elements.titulo.textContent = post.title || "Título Indisponível";
-
-      // CORREÇÃO: Usar 'nomeUsuario' ou 'username' conforme a API
-      if (elements.usuario)
-        elements.usuario.textContent =
-          post.nomeUsuario || post.username || "Usuário Desconhecido";
-
-      // CORREÇÃO: A descrição já deve vir completa, sem substring aqui
-      if (elements.descricao)
-        elements.descricao.textContent = post.descricao || "Sem descrição.";
-
-      // CORREÇÃO: Lógica para a data, similar à verDetalhesProjeto
-      if (elements.data) {
-        const dataParaExibir = post.dataCriacaoPosts // Prioriza 'dataCriacaoPosts'
-          ? post.dataCriacaoPosts.split(" ")[0]
-          : post.dataCriacao // Fallback para 'dataCriacao'
-          ? post.dataCriacao.split(" ")[0]
-          : "N/A";
-        elements.data.textContent = dataParaExibir;
-      }
+      detalheTitulo.textContent = post.title;
+      detalheTitulo.style.color = "black";
+      detalheUsuario.textContent = post.nomeUsuario;
+      detalheDescricao.textContent = post.descricao;
+      detalheCriacao.textContent = post.dataCriacaoPosts.split(" ")[0];
     } catch (error) {
-      console.error("Erro ao abrir modal:", error);
-
-      // Atualiza o modal com a mensagem de erro
-      const tituloElement = document.getElementById("detalhe-titulo-post");
-      if (tituloElement)
-        tituloElement.textContent = "Erro ao carregar detalhes";
-      if (tituloElement) tituloElement.style.color = "black"; // Para garantir a visibilidade do erro
-
-      const descricaoElement = document.getElementById(
-        "detalhe-descricao-post"
-      );
-      if (descricaoElement)
-        descricaoElement.textContent =
-          error.message || "Falha ao carregar os dados do post.";
-
-      // Se houver um erro, é bom fechar o modal ou dar uma opção para fechar
-      // Ou simplesmente deixar a mensagem de erro dentro do modal como está sendo feito
-      mostrarMensagem("Erro ao carregar detalhes do post.", "erro");
+      console.error("Erro ao carregar detalhes:", error);
+      detalheTitulo.textContent = `Erro: ${error.message}`;
+      detalheTitulo.style.color = "black";
     }
   }
 
-  // 2. Obtenha os elementos internos com verificação
+  function toggleEditMode(enable) {
+    const fotoPerfilPadrao = document.getElementById("foto-perfil-padrao");
+    const labelInputFoto = document.querySelector(
+      'label[for="input-foto-perfil"]'
+    );
+
+    if (enable) {
+      DOM.nomeUsuario.style.display = "none";
+      DOM.descricaoUsuario.style.display = "none";
+      DOM.editarPerfilBtn.style.display = "none";
+
+      DOM.inputNomeUsuario.style.display = "block";
+      DOM.inputDescricaoUsuario.style.display = "block";
+      DOM.inputFotoPerfil.style.display = "block";
+      DOM.previewFotoPerfil.style.display = "block";
+      DOM.salvarPerfilBtn.style.display = "inline-block";
+      DOM.cancelarEdicaoBtn.style.display = "inline-block";
+      if (labelInputFoto) labelInputFoto.style.display = "block";
+
+      if (fotoPerfilPadrao) fotoPerfilPadrao.style.display = "none";
+    } else {
+      DOM.nomeUsuario.style.display = "block";
+      DOM.descricaoUsuario.style.display = "block";
+      DOM.editarPerfilBtn.style.display = "inline-block";
+
+      DOM.inputNomeUsuario.style.display = "none";
+      DOM.inputDescricaoUsuario.style.display = "none";
+      DOM.inputFotoPerfil.style.display = "none";
+      DOM.previewFotoPerfil.style.display = "none";
+      DOM.salvarPerfilBtn.style.display = "none";
+      DOM.cancelarEdicaoBtn.style.display = "none";
+      if (labelInputFoto) labelInputFoto.style.display = "none";
+
+      if (fotoPerfilPadrao) fotoPerfilPadrao.style.display = "block";
+    }
+  }
 
   function configurarEdicaoPerfil() {
-    const editarBtn = document.getElementById("editar-perfil-btn");
-    const fecharModal = document.querySelector(
-      "#modal-editar-perfil .fechar-modal"
-    );
-    const previewFoto = document.getElementById("preview-foto-perfil");
+    DOM.editarPerfilBtn.addEventListener("click", async () => {
+      const currentUser = await carregarPerfilUsuario();
+      if (currentUser) {
+        DOM.inputNomeUsuario.value = currentUser.username || "";
+        DOM.inputDescricaoUsuario.value = currentUser.descricao || "";
 
-    editarBtn.addEventListener("click", () => {
-      document.getElementById("nome-modal").value = DOM.nomeUsuario.textContent;
-      document.getElementById("descricao-modal").value =
-        DOM.descricaoUsuario.textContent;
-      DOM.modalEditarPerfil.style.display = "block";
+        if (currentUser.fotoUrl) {
+          DOM.previewFotoPerfil.src = currentUser.fotoUrl;
+          DOM.previewFotoPerfil.style.display = "block";
+        } else {
+          DOM.previewFotoPerfil.src =
+            "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
+          DOM.previewFotoPerfil.style.display = "block";
+        }
+      }
+      toggleEditMode(true);
     });
 
-    fecharModal.addEventListener("click", () => {
-      DOM.modalEditarPerfil.style.display = "none";
+    DOM.cancelarEdicaoBtn.addEventListener("click", () => {
+      carregarPerfilUsuario();
+      toggleEditMode(false);
+      mostrarMensagem("Edição cancelada.", "informacao");
     });
 
     DOM.inputFotoPerfil.addEventListener("change", (e) => {
@@ -295,31 +317,44 @@ document.addEventListener("DOMContentLoaded", () => {
       if (file) {
         const reader = new FileReader();
         reader.onload = (event) => {
-          previewFoto.src = event.target.result;
-          previewFoto.style.display = "block";
+          DOM.previewFotoPerfil.src = event.target.result;
+          DOM.previewFotoPerfil.style.display = "block";
         };
         reader.readAsDataURL(file);
       }
     });
 
-    DOM.formEditarPerfil.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const nomeUsuario = document.getElementById("nome-modal").value;
-      const descricao = document.getElementById("descricao-modal").value;
+    DOM.salvarPerfilBtn.addEventListener("click", async () => {
+      const nomeUsuario = DOM.inputNomeUsuario.value.trim();
+      const descricao = DOM.inputDescricaoUsuario.value.trim();
       const fotoFile = DOM.inputFotoPerfil.files[0];
 
       if (nomeUsuario.length < 3) {
-        mostrarMensagem("Nome precisa ter pelo menos 3 caracteres", "erro");
+        mostrarMensagem(MESSAGES.errors.nameTooShort, "erro");
         return;
       }
 
       let fotoPerfilUrl = null;
+
       if (fotoFile) {
         fotoPerfilUrl = await uploadCloudinary(fotoFile);
         if (!fotoPerfilUrl) {
           mostrarMensagem(MESSAGES.errors.uploadFailed, "erro");
           return;
+        }
+      } else {
+        const fotoPadrao = document.getElementById("foto-perfil-padrao").src;
+        const urlBasePadrao =
+          "http://localhost:8080/assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
+
+        if (
+          DOM.previewFotoPerfil.src &&
+          DOM.previewFotoPerfil.src !== fotoPadrao &&
+          DOM.previewFotoPerfil.src !== urlBasePadrao
+        ) {
+          fotoPerfilUrl = DOM.previewFotoPerfil.src;
+        } else {
+          fotoPerfilUrl = null;
         }
       }
 
@@ -338,18 +373,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!response.ok) throw new Error("Falha ao atualizar perfil");
 
-        DOM.modalEditarPerfil.style.display = "none";
         mostrarMensagem(MESSAGES.success.profileUpdated, "sucesso");
-        carregarPerfilUsuario();
+        await carregarPerfilUsuario();
+        toggleEditMode(false);
       } catch (error) {
+        console.error("Erro ao salvar perfil:", error);
         mostrarMensagem(error.message || MESSAGES.errors.default, "erro");
       }
     });
   }
 
   function inicializarModal() {
-    const modal = document.getElementById("detalhes-modal-post");
-    const closeButtonX = document.querySelector(".close-button");
+    const modal = DOM.modalDetalhesPost;
+    const closeButtonX = DOM.closeModalDetalhesPost;
 
     if (closeButtonX) {
       closeButtonX.addEventListener("click", () => {
@@ -369,5 +405,6 @@ document.addEventListener("DOMContentLoaded", () => {
     configurarEdicaoPerfil();
     exibirPostUsuario();
     inicializarModal();
+    toggleEditMode(false);
   };
 });

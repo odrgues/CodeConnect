@@ -7,14 +7,22 @@
   <link rel="stylesheet" href="../assets/css/perfil.css" />
   <title>CodeConnect</title>
   <style>
-    #modal-editar-perfil {
+    #input-nome-usuario,
+    #input-descricao-usuario,
+    #input-foto-perfil,
+    #salvar-perfil-btn,
+    #cancelar-edicao-btn {
       display: none;
     }
 
     #preview-foto-perfil {
-      /* display: none; */
+      display: none;
       max-width: 150px;
       margin-top: 10px;
+    }
+
+    #detalhes-modal-post {
+      display: none;
     }
   </style>
 </head>
@@ -28,29 +36,20 @@
       <div class="detalhes-usuario">
         <img id="foto-perfil-padrao" src="../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif"
           alt="Foto de Perfil" class="foto-perfil">
+
         <h1 id="nome-usuario">Nome</h1>
         <p id="descricao-usuario">Descrição</p>
+
+        <input type="text" id="input-nome-usuario" placeholder="Seu Nome">
+        <textarea id="input-descricao-usuario" placeholder="Sua Descrição"></textarea>
+
+        <label for="input-foto-perfil" class="label-foto-perfil" style="display: none;">Alterar Foto de Perfil:</label>
+        <input type="file" id="input-foto-perfil" class="input-foto-perfil">
+        <img id="preview-foto-perfil" src="" alt="Pré-visualização da Foto" class="foto-perfil">
+
         <button id="editar-perfil-btn">Editar Perfil</button>
-      </div>
-
-      <div id="modal-editar-perfil" class="modal">
-        <div class="modal-conteudo">
-          <span class="fechar-modal" aria-label="Fechar Modal">&times;</span>
-          <h2>Editar Perfil</h2>
-          <form id="form-editar-perfil">
-            <label for="nome-modal">Nome:</label>
-            <input type="text" id="nome-modal" name="nome">
-
-            <label for="descricao-modal">Descrição:</label>
-            <textarea id="descricao-modal" name="descricao"></textarea>
-
-            <label for="foto-perfil-modal" class="label-foto-perfil">Alterar Foto de Perfil:</label>
-            <input type="file" id="foto-perfil-modal" class="input-foto-perfil">
-            <img id="preview-foto-perfil" src="" alt="Pré-visualização da Foto" class="foto-perfil">
-
-            <button type="submit">Salvar</button>
-          </form>
-        </div>
+        <button id="salvar-perfil-btn">Salvar</button>
+        <button id="cancelar-edicao-btn">Cancelar</button>
       </div>
 
     </div>
@@ -67,6 +66,7 @@
     <div class="modal-content">
       <span class="close-button" aria-label="Fechar Modal">&times;</span>
       <h2 id="detalhe-titulo-post"></h2>
+      <p id="detalhe-descricao-post"></p>
       <p id="detalhe-usuario-post">
       </p>
       <p id="detalhe-data-criacao"></p>
