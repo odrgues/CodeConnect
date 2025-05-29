@@ -2,4 +2,87 @@
 
 body {
   background-color: var(--cor-fundo);
+  font-family: var(--fonte-principal);
+  color: var(--cor-cinza-claro);
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  margin-left: 200px;
+  margin-right: 70px; 
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.container-img1 {
+  width: 100%; 
+  height: 350px; 
+  overflow: hidden; 
+  border-radius: 8px; 
+  margin: auto;  
+}
+
+.img-1 {
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  object-position: 50% 40%;
+   
+}
+h1{
+  text-align: center;
+  font-size: 42px;
+  margin: 30px 0 5px 0;
+  color: var(--cor-verde-destaque);
+  font-weight: 400;
+  text-align: center;
+}
+
+.subtitulo{
+  font-weight: 600;
+  font-size: 35px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+p{
+  font-size: 20px;
+  margin: 10px 0 20px 10px;
+}
+
+h3{
+  margin: 10px
+}
+.container-resumo {
+  width: 100%;
+  max-width: 1200px; 
+  text-align: left; 
+}
+
+.container-missao-img {
+  display: flex;
+  gap: 60px; 
+  align-items: center; 
+  margin: 30px 0;
+}
+
+/* Container do texto (missão) */
+.container-missao {
+  flex: 0.5; 
+  font-size: 25px;
+}
+
+/* Container da imagem */
+.container-img2 {
+  flex: 0.5; /* Ocupa os outros 50% */
+}
+
+/* Estilo da imagem (ajuste conforme necessário) */
+.img-2 {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
 }
