@@ -144,6 +144,10 @@ async function verDetalhesProjeto(idDoProjeto) {
     detalheTitulo.textContent = projeto.title;
     detalheTitulo.style.color = "black";
     detalheUsuario.textContent = projeto.nomeUsuario;
+    detalheUsuario.href = `/pages/perfil.html?usuario=${encodeURIComponent(
+      projeto.nomeUsuario
+    )}`;
+
     detalheDescricao.textContent = projeto.descricao;
     detalheCriacao.textContent = projeto.dataCriacaoPosts.split(" ")[0];
   } catch (error) {

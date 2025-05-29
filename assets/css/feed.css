@@ -350,3 +350,25 @@ main {
 
 /* Os outros estilos dos cartões de projeto e modais permanecem os mesmos */
 /* ... (Seus estilos para .container-projetos, .cartao-projeto, .modal, etc.) ... */
+
+/* Estilos para o link do nome do usuário no modal */
+.user-link {
+  color: #007bff; /* Uma cor típica de link */
+  cursor: pointer; /* Muda o cursor para uma mãozinha */
+  text-decoration: underline; /* Adiciona sublinhado */
+  font-weight: bold; /* Opcional: para destacar */
+}
+
+.user-link:hover {
+  color: #0056b3; /* Cor mais escura ao passar o mouse */
+  text-decoration: none; /* Opcional: remove o sublinhado ao passar o mouse */
+}
+
+/* Opcional: Ajustes básicos para o modal da imagem */
+#detalhe-imagem-post {
+  display: none; /* Esconde por padrão, só mostra se tiver URL */
+  margin-top: 15px; /* Espaçamento acima da imagem */
+  margin-bottom: 15px; /* Espaçamento abaixo da imagem */
+  border-radius: 8px; /* Cantos arredondados */
+  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+}
