@@ -67,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!response.ok)
         throw new Error(`Erro ${response.status}: ${response.statusText}`);
       const usuario = await response.json();
+      console.log("dados recebidos", usuario);
       if (!usuario) throw new Error("Dados do usuário não encontrados");
       await atualizarInterfacePerfil(usuario);
       return usuario;
@@ -114,8 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
     DOM.nomeUsuario.textContent = usuario.username;
     DOM.descricaoUsuario.textContent = usuario.descricao;
 
-    if (DOM.inputNomeUsuario)
-      DOM.inputNomeUsuario.value = usuario.username || "";
+    if (DOM.inputNomeUsuario) DOM.inputNomeUsuario.value = usuario.name || "";
     if (DOM.inputDescricaoUsuario)
       DOM.inputDescricaoUsuario.value = usuario.descricao || "";
   }
@@ -325,11 +325,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     DOM.salvarPerfilBtn.addEventListener("click", async () => {
-      const nomeUsuario = DOM.inputNomeUsuario.value.trim();
+      const username = DOM.inputNomeUsuario.value.trim();
       const descricao = DOM.inputDescricaoUsuario.value.trim();
       const fotoFile = DOM.inputFotoPerfil.files[0];
 
-      if (nomeUsuario.length < 3) {
+      if (username.length < 3) {
         mostrarMensagem(MESSAGES.errors.nameTooShort, "erro");
         return;
       }
@@ -359,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const dadosAtualizacao = {
-        nomeUsuario,
+        username,
         descricao,
         fotoUrl: fotoPerfilUrl,
       };
@@ -371,6 +371,8 @@ document.addEventListener("DOMContentLoaded", () => {
           body: JSON.stringify(dadosAtualizacao),
         });
 
+        const dados = await response.json();
+        console.log("o que estou enviando:", dados);
         if (!response.ok) throw new Error("Falha ao atualizar perfil");
 
         mostrarMensagem(MESSAGES.success.profileUpdated, "sucesso");
