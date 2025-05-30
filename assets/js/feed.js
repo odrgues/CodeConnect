@@ -76,35 +76,42 @@ function exibirProjetos(projetos) {
       const projectCard = document.createElement("div");
       projectCard.classList.add("cartao-projeto");
       projectCard.style.cursor = "pointer";
-      projectCard.addEventListener("click", () => {
-        verDetalhesProjeto(projeto.id);
+      projectCard.addEventListener("click", (event) => {
+        // Previne que o clique no link do usuário ative o modal do projeto
+        if (!event.target.closest("a")) {
+          verDetalhesProjeto(projeto.id);
+        }
       });
 
       projectCard.innerHTML = `
-        <h3>${projeto.title}</h3>
-        
-        <p>${
-          projeto.descricao
-            ? projeto.descricao.substring(0, 100) +
-              (projeto.descricao.length > 100 ? "..." : "")
-            : "Sem descrição"
-        }</p>
-        
-        ${
-          projeto.imageUrl
-            ? `<img src="${projeto.imageUrl}" alt="Imagem do Projeto ${projeto.title}" />`
-            : ""
-        }
-        
-        <div class="detalhes-projeto">
-          <span>${
-            projeto.dataCriacaoPosts
-              ? projeto.dataCriacaoPosts.split(" ")[0]
-              : "N/A"
-          }</span>
-          <p>${projeto.nomeUsuario}</p>
-        </div>
-      `;
+                <h3>${projeto.title}</h3>
+                
+                <p>${
+                  projeto.descricao
+                    ? projeto.descricao.substring(0, 100) +
+                      (projeto.descricao.length > 100 ? "..." : "")
+                    : "Sem descrição"
+                }</p>
+                
+                ${
+                  projeto.imageUrl
+                    ? `<img src="${projeto.imageUrl}" alt="Imagem do Projeto ${projeto.title}" />`
+                    : ""
+                }
+                
+                <div class="detalhes-projeto">
+                    <span>${
+                      projeto.dataCriacaoPosts
+                        ? projeto.dataCriacaoPosts.split(" ")[0]
+                        : "N/A"
+                    }</span>
+                    <p><a href="../pages/perfil.html?userId=${
+                      projeto.userId
+                    }" style="color: #007bff; text-decoration: underline;">${
+        projeto.nomeUsuario
+      }</a></p>
+                </div>
+            `;
 
       projectListElement.appendChild(projectCard);
     });
@@ -149,9 +156,7 @@ async function verDetalhesProjeto(idDoProjeto) {
     detalheTitulo.textContent = projeto.title;
     detalheTitulo.style.color = "black";
     detalheUsuario.textContent = projeto.nomeUsuario;
-    detalheUsuario.href = `/pages/perfil.html?usuario=${encodeURIComponent(
-      projeto.nomeUsuario
-    )}`;
+    detalheUsuario.href = `../pages/perfil.html?userId=${projeto.userId}`; // Use 'projeto.userId' aqui, pois o objeto é 'projeto' e não 'post'
 
     detalheDescricao.textContent = projeto.descricao;
     detalheCriacao.textContent = projeto.dataCriacaoPosts.split(" ")[0];
