@@ -155,7 +155,6 @@ const Handlers = {
 
     Utils.toggleLoader(DOM.btnCadastro, true);
 
-    //alterar aqui
     const dados = {
       name: DOM.nome.value.trim(),
       email: DOM.email.value.trim().toLowerCase(),
