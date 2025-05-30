@@ -136,15 +136,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const timeoutId = setTimeout(() => controller.abort(), timeout);
 
       try {
-        console.log(
-          "API.criarPublicacao: Enviando requisição POST para:",
-          CONFIG.API_PUBLICACAO_URL
-        );
-        console.log(
-          "API.criarPublicacao: Dados do corpo (JSON):",
-          JSON.stringify(dadosDoPost)
-        );
-
         const response = await fetch(CONFIG.API_PUBLICACAO_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -153,8 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         clearTimeout(timeoutId);
-
-        console.log("API.criarPublicacao: Resposta da API:", response);
 
         if (!response.ok) {
           const errorData = await response
@@ -168,10 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const responseData = await response.json();
-        console.log(
-          "API.criarPublicacao: Dados da resposta (JSON):",
-          responseData
-        );
         return responseData;
       } catch (error) {
         clearTimeout(timeoutId);
@@ -196,9 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const form = DOM.form;
       const nomeProjeto = DOM.nomeProjeto.value.trim();
       const descricao = DOM.descricao.value.trim();
-
-      console.log("Utils.validarFormulario: Nome do Projeto:", nomeProjeto);
-      console.log("Utils.validarFormulario: Descrição:", descricao);
 
       if (!form.checkValidity()) {
         form.reportValidity();
@@ -229,8 +211,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.warn("Utils.validarFormulario: Descrição muito curta.");
         return false;
       }
-
-      console.log("Utils.validarFormulario: Formulário validado com sucesso.");
       return true;
     },
 
@@ -242,7 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
           "image/jpg",
           "image/gif",
         ];
-        console.log("Utils.lerArquivo: Tipo do arquivo:", arquivo.type);
 
         if (!tiposPermitidos.includes(arquivo.type)) {
           console.error("Utils.lerArquivo: Tipo de imagem inválido.");
@@ -251,7 +230,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const leitor = new FileReader();
         leitor.onload = () => {
-          console.log("Utils.lerArquivo: Arquivo lido com sucesso.");
           resolve({ url: leitor.result, nome: arquivo.name });
         };
         leitor.onerror = () => {
@@ -267,7 +245,6 @@ document.addEventListener("DOMContentLoaded", () => {
       DOM.imagemPrincipal.src = "/assets/img/publicacao/imagem1.png";
       DOM.nomeImagem.textContent = "image_projeto.png";
       DOM.inputUpload.value = "";
-      console.log("Utils.limparFormulario: Formulário limpo.");
     },
   };
 
@@ -275,16 +252,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", CONFIG.CLOUDINARY.UPLOAD_PRESET);
-    console.log("uploadCloudinary: Iniciando upload para Cloudinary...");
     try {
       const response = await fetch(CONFIG.CLOUDINARY.UPLOAD_URL, {
         method: "POST",
         body: formData,
       });
       const data = await response.json();
-      console.log("uploadCloudinary: Resposta do Cloudinary:", data);
       if (data.secure_url) {
-        console.log("uploadCloudinary: URL segura obtida:", data.secure_url);
         return data.secure_url;
       } else {
         console.error(

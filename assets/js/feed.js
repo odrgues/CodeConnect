@@ -8,14 +8,12 @@ let listaDeProjetos = [];
 async function buscarProjetos() {
   try {
     const response = await fetch(CONFIG.API_FEED_POSTS);
-    console.log("Resposta bruta:", response);
+
     if (!response.ok) throw new Error(`Erro: ${response.status}`);
     const data = await response.json();
-    console.log("Dados recebidos:", data);
     listaDeProjetos = data;
     exibirProjetos(data);
   } catch (error) {
-    console.error("Erro ao buscar projetos:", error);
     document.getElementById("project-list").innerHTML =
       '<div class="error">Erro ao carregar os projetos.</div>';
   }
@@ -38,7 +36,6 @@ async function pesquisarProjetos() {
     const data = await response.json();
     exibirProjetos(data);
   } catch (error) {
-    console.error("Erro ao pesquisar projetos:", error);
     document.getElementById("project-list").innerHTML =
       '<div class="error">Erro ao realizar a pesquisa.</div>';
   }
@@ -77,7 +74,6 @@ function exibirProjetos(projetos) {
       projectCard.classList.add("cartao-projeto");
       projectCard.style.cursor = "pointer";
       projectCard.addEventListener("click", (event) => {
-        // Previne que o clique no link do usuário ative o modal do projeto
         if (!event.target.closest("a")) {
           verDetalhesProjeto(projeto.id);
         }
@@ -99,7 +95,7 @@ function exibirProjetos(projetos) {
                     : ""
                 }
                 
-                <div class="detalhes-projeto">
+                <div class="detalhes-projeto"> 
                     <span>${
                       projeto.dataCriacaoPosts
                         ? projeto.dataCriacaoPosts.split(" ")[0]
@@ -108,6 +104,7 @@ function exibirProjetos(projetos) {
                     <p><a href="../pages/perfil.html?userId=${
                       projeto.userId
                     }" style="color: #007bff; text-decoration: underline;">${
+        // TODO: CSS AQUI
         projeto.nomeUsuario
       }</a></p>
                 </div>
@@ -117,7 +114,7 @@ function exibirProjetos(projetos) {
     });
   } else {
     projectListElement.innerHTML =
-      '<div class="no-projects">Nenhum projeto encontrado.</div>';
+      '<div class="no-projects">Nenhum projeto encontrado.</div>'; //TODO: CSS AQUI
   }
 }
 async function verDetalhesProjeto(idDoProjeto) {
@@ -126,9 +123,7 @@ async function verDetalhesProjeto(idDoProjeto) {
   const detalheUsuario = document.getElementById("detalhe-usuario");
   const detalheDescricao = document.getElementById("detalhe-descricao");
   const detalheCriacao = document.getElementById("detalhe-data-criacao");
-  // Selecione o elemento da imagem no modal
-  const detalheImagemPost = document.getElementById("detalhe-imagem-post"); // <-- Adicione esta linha
-
+  const detalheImagemPost = document.getElementById("detalhe-imagem-post");
   if (!modal) {
     console.error("Modal não encontrado!");
     return;
@@ -139,8 +134,8 @@ async function verDetalhesProjeto(idDoProjeto) {
   detalheUsuario.textContent = "";
   detalheDescricao.textContent = "";
   detalheCriacao.textContent = "";
-  detalheImagemPost.src = ""; // <-- Limpe a src para evitar mostrar imagem anterior
-  detalheImagemPost.style.display = "none"; // <-- Esconda a imagem por padrão até que a URL seja definida
+  detalheImagemPost.src = "";
+  detalheImagemPost.style.display = "none";
 
   try {
     const response = await fetch(
@@ -156,24 +151,20 @@ async function verDetalhesProjeto(idDoProjeto) {
     detalheTitulo.textContent = projeto.title;
     detalheTitulo.style.color = "black";
     detalheUsuario.textContent = projeto.nomeUsuario;
-    detalheUsuario.href = `../pages/perfil.html?userId=${projeto.userId}`; // Use 'projeto.userId' aqui, pois o objeto é 'projeto' e não 'post'
-
+    detalheUsuario.href = `../pages/perfil.html?userId=${projeto.userId}`;
     detalheDescricao.textContent = projeto.descricao;
     detalheCriacao.textContent = projeto.dataCriacaoPosts.split(" ")[0];
 
-    // --- Adicione esta lógica para a imagem ---
     if (projeto.imageUrl) {
       detalheImagemPost.src = projeto.imageUrl;
-      detalheImagemPost.style.display = "block"; // Mostra a imagem se houver uma URL
+      detalheImagemPost.style.display = "block";
     } else {
-      detalheImagemPost.style.display = "none"; // Garante que a imagem esteja escondida se não houver URL
+      detalheImagemPost.style.display = "none";
     }
-    // --- Fim da lógica da imagem ---
   } catch (error) {
-    console.error("Erro ao carregar detalhes:", error);
     detalheTitulo.textContent = `Erro: ${error.message}`;
     detalheTitulo.style.color = "black";
-    detalheImagemPost.style.display = "none"; // Esconda a imagem em caso de erro também
+    detalheImagemPost.style.display = "none";
   }
 }
 
