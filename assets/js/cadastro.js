@@ -2,7 +2,7 @@ const CONFIG = {
   API_URL: "http://localhost:8080/api/v1/usuarios ",
 
   MIN_LOADER_TIME: 1500,
-  MESSAGE_DISPLAY_TIME: 3000,
+  MESSAGE_DISPLAY_TIME: 1500,
   LOGIN_PAGE: "../pages/login.html",
 };
 

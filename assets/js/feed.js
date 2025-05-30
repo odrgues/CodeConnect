@@ -119,6 +119,8 @@ async function verDetalhesProjeto(idDoProjeto) {
   const detalheUsuario = document.getElementById("detalhe-usuario");
   const detalheDescricao = document.getElementById("detalhe-descricao");
   const detalheCriacao = document.getElementById("detalhe-data-criacao");
+  // Selecione o elemento da imagem no modal
+  const detalheImagemPost = document.getElementById("detalhe-imagem-post"); // <-- Adicione esta linha
 
   if (!modal) {
     console.error("Modal não encontrado!");
@@ -130,6 +132,8 @@ async function verDetalhesProjeto(idDoProjeto) {
   detalheUsuario.textContent = "";
   detalheDescricao.textContent = "";
   detalheCriacao.textContent = "";
+  detalheImagemPost.src = ""; // <-- Limpe a src para evitar mostrar imagem anterior
+  detalheImagemPost.style.display = "none"; // <-- Esconda a imagem por padrão até que a URL seja definida
 
   try {
     const response = await fetch(
@@ -141,6 +145,7 @@ async function verDetalhesProjeto(idDoProjeto) {
     }
 
     const projeto = await response.json();
+
     detalheTitulo.textContent = projeto.title;
     detalheTitulo.style.color = "black";
     detalheUsuario.textContent = projeto.nomeUsuario;
@@ -150,10 +155,20 @@ async function verDetalhesProjeto(idDoProjeto) {
 
     detalheDescricao.textContent = projeto.descricao;
     detalheCriacao.textContent = projeto.dataCriacaoPosts.split(" ")[0];
+
+    // --- Adicione esta lógica para a imagem ---
+    if (projeto.imageUrl) {
+      detalheImagemPost.src = projeto.imageUrl;
+      detalheImagemPost.style.display = "block"; // Mostra a imagem se houver uma URL
+    } else {
+      detalheImagemPost.style.display = "none"; // Garante que a imagem esteja escondida se não houver URL
+    }
+    // --- Fim da lógica da imagem ---
   } catch (error) {
     console.error("Erro ao carregar detalhes:", error);
     detalheTitulo.textContent = `Erro: ${error.message}`;
     detalheTitulo.style.color = "black";
+    detalheImagemPost.style.display = "none"; // Esconda a imagem em caso de erro também
   }
 }
 

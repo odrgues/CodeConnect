@@ -92,19 +92,6 @@ textarea {
   max-height: 300px;
 }
 
-/* .lista-tags li {
-  display: flex;
-  background-color: var(--secondary-color);
-  color: var(--background-color);
-  gap: 10px;
-  padding: 4px 8px;
-  border-radius: 4px;
-}
-
-.lista-tags {
-  display: flex;
-} */
-
 .container-botoes {
   display: flex;
   gap: 24px;
@@ -129,18 +116,8 @@ textarea {
   cursor: pointer;
 }
 
-.botao-descartar::after {
-  content: "";
-  /* background-image: url("./img/trash.svg"); */
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 15px;
-  height: 15px;
-  display: inline-block;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-left: 8px;
+.botao-descartar:hover {
+  transform: scale(1.05);
 }
 
 .botao-publicar {
@@ -151,18 +128,9 @@ textarea {
   cursor: pointer;
 }
 
-.botao-publicar::after {
-  content: "";
-  /* background-image: url("../img/arrow_forward2.svg"); */
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 15px;
-  height: 15px;
-  display: inline-block;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-left: 8px;
+.botao-publicar:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
 }
 
 .container-descricao {
@@ -200,7 +168,6 @@ textarea {
 
 .container-upload-imagem button::after {
   content: "";
-  /* background-image: url("./img/upload.svg"); */
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;

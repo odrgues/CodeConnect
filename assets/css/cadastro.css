@@ -126,9 +126,15 @@ input:focus {
   height: 30px;
   border-radius: 4px;
   font-size: 16px;
+  font-family: var(--fonte-principal);
   font-weight: var(--peso-subtitulo);
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+#btn-cadastro:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
 }
 
 .container-link-login {
@@ -183,28 +189,32 @@ output {
   border-radius: 4px;
   font-size: 12px;
   font-weight: var(--peso-subtitulo);
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-output.erro {
+.mensagem-sucesso {
   background-color: var(--cor-cinza-escuro);
-  color: #d32f2f;
-  border: 1px solid #ef9a9a;
+  color: var(--cor-verde-destaque);
+  border: 1px solid var(--cor-verde-destaque);
 }
 
-output.sucesso {
+.mensagem-erro {
   background-color: var(--cor-cinza-escuro);
-  color: #2e7d32;
-  border: 1px solid #a5d6a7;
+  color: #f93827;
+  border: 1px solid #f93827;
 }
 
 .loader {
-  display: inline-block;
   width: 20px;
   height: 20px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
+  border: 3px solid #ffffff;
+  border-top: 3px solid #4caf50;
   border-radius: 50%;
-  border-top-color: var(--cor-fundo);
-  animation: spin 1s ease-in-out infinite;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 @keyframes spin {

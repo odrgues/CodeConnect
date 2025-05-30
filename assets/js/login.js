@@ -1,7 +1,7 @@
 const CONFIG = {
   API_URL: "http://localhost:8080/api/v1/usuarios/login",
   MIN_LOADER_TIME: 1500,
-  MESSAGE_DISPLAY_TIME: 3000,
+  MESSAGE_DISPLAY_TIME: 1500,
   FEED_PAGE: "/pages/feed.html",
 };
 
@@ -201,7 +201,6 @@ const init = () => {
   DOM.senha.setAttribute("aria-label", "Insira sua senha");
   DOM.toggleSenha.addEventListener("click", Handlers.toggleVisibilidadeSenha);
   DOM.form.addEventListener("submit", Handlers.handleSubmit);
-  // Handlers.setupInputValidation();
 
   DOM.email.addEventListener("keydown", (e) => {
     if (e.key === "Enter") DOM.senha.focus();
