@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
         icon: "/assets/img/aside/desktop/Frame 5.png",
         text: "Sobre nós",
       },
-
       {
         href: "/pages/login.html",
         icon: "/assets/img/aside/desktop/Frame 4.png",
@@ -45,7 +44,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const currentPage = window.location.pathname;
 
   if (currentPage.includes("/pages/publicar.html")) {
-    container.querySelector("aside").classList.add("pagina-publicar");
+    const asideElement = container.querySelector("aside");
+    if (asideElement) {
+      asideElement.classList.add("pagina-publicar");
+    }
+    document.body.classList.add("pagina-publicar");
   }
 
   function loadCSS(path) {
