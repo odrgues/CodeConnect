@@ -92,6 +92,30 @@ textarea {
   max-height: 300px;
 }
 
+output {
+  display: none;
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: var(--peso-subtitulo);
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mensagem-sucesso {
+  background-color: var(--cor-cinza-escuro);
+  color: var(--cor-verde-destaque);
+  border: 1px solid var(--cor-verde-destaque);
+}
+
+.mensagem-erro {
+  background-color: var(--cor-cinza-escuro);
+  color: #f93827;
+  border: 1px solid #f93827;
+}
+
 .container-botoes {
   display: flex;
   gap: 24px;
