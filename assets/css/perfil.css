@@ -249,7 +249,6 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   margin-top: 10px; /* Garante espaçamento da descrição */
 }
 
@@ -259,6 +258,11 @@ button:hover {
   margin-right: 75%;
 }
 
+#btn-excluir-post {
+  justify-content: center;
+  align-items: center;
+  margin-left: 40%;
+}
 a {
   text-decoration: none;
 }
