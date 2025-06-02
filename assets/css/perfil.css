@@ -88,19 +88,18 @@ main {
 .detalhes-usuario input[type="text"],
 .detalhes-usuario textarea {
   width: 100%;
-  max-width: 500px; /* Limita a largura dos inputs */
-  padding: 10px 15px;
+  max-width: 600px; 
+  padding: 10px 50px;
   margin-top: 5px;
   border: 1px solid var(--cor-verde-destaque);
   border-radius: 5px;
   font-size: 1em;
   color: var(--text-color);
-  box-sizing: border-box; /* Inclui padding e borda na largura total */
 }
 
 .detalhes-usuario textarea {
   resize: vertical; /* Permite redimensionar verticalmente */
-  min-height: 80px;
+  min-height: 200px;
 }
 
 
@@ -120,6 +119,7 @@ main {
   color: var(--cor-cinza-claro);
   margin-top: 10px;
   cursor: pointer;
+  text-align: center;
 }
 
 /* Estilos para os botões */
@@ -222,12 +222,14 @@ button:hover {
 
 .post-card h3 {
   font-size: 1.4em;
+  font-weight: 300;
   color: var(--cor-cinza-claro);
   margin-top: 0;
   margin-bottom: 10px;
 }
 
 .post-card p {
+  font-weight: 200;
   font-size: 0.95em;
   color: var(--cor-cinza-claro);
   margin-bottom: 15px;
