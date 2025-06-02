@@ -1,11 +1,8 @@
-/* Importa uma fonte simples do Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
-@import url(./global.css);
+@import url(./global.css); /* Certifique-se que este caminho está correto para suas variáveis globais */
 
 :root {
   --primary-color: #007bff; /* Azul para botões e links */
   --secondary-color: #6c757d; /* Cinza para textos secundários */
-  --background-color: #f8f9fa; /* Fundo claro da página */
   --card-background-color: #ffffff; /* Fundo dos cards/seções */
   --border-color: #dee2e6; /* Cor da borda */
   --text-color: #343a40; /* Cor principal do texto */
@@ -16,69 +13,85 @@
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--fonte-principal);
   margin: 0;
   padding: 0;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  display: flex; /* Para o layout com aside */
-  min-height: 100vh; /* Garante que o body ocupe a altura total */
+  background-color: var(--cor-fundo);
+  color: var(--cor-cinza-claro);
+  min-height: 100vh;
 }
 
 main {
   flex-grow: 1; /* Ocupa o espaço restante */
   padding: 20px;
-  max-width: 900px; /* Largura máxima do conteúdo principal */
+  max-width: 1200px; /* Largura máxima do conteúdo principal */
   margin: 0 auto; /* Centraliza o conteúdo principal */
+  margin-left: 10%;
 }
 
 .container {
-  background-color: var(--card-background-color);
-  border-radius: 8px;
+  background-color: var(--cor-fundo);
   box-shadow: 0 4px 8px var(--shadow-color);
   padding: 30px;
   margin-bottom: 20px;
-  text-align: center; /* Centraliza os elementos dentro do container */
+  text-align: start;
+  max-width: 100%;
+  height: 20rem;
+  border-bottom: 2px solid var(--cor-cinza-claro);
 }
 
 /* --- Detalhes do Usuário (Perfil) --- */
 .detalhes-usuario {
   display: flex;
-  flex-direction: column; /* Organiza os itens em coluna */
-  align-items: center; /* Centraliza horizontalmente */
-  gap: 15px; /* Espaçamento entre os itens */
+  flex-direction: row; /* ALTERADO: Alinha a foto e o texto lado a lado */
+  align-items: flex-start; /* Alinha o topo dos itens */
+  gap: 30px; /* ALTERADO: Espaçamento entre a foto e o texto */
+  text-align: left; /* Garante que o texto fique à esquerda dentro do seu espaço */
+}
+
+/* NOVO ESTILO: Para agrupar o nome e a descrição */
+.info-usuario-texto {
+  font-weight: 300;
+  display: flex;
+  flex-direction: column; /* Coloca nome e descrição um abaixo do outro */
+  align-items: flex-start; /* Alinha o texto à esquerda */
+  flex-grow: 1; /* Permite que o bloco de texto ocupe o espaço restante */
 }
 
 .foto-perfil {
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
-  object-fit: cover; /* Garante que a imagem preencha o círculo */
-  border: 3px solid var(--primary-color);
+  object-fit: cover;
+  border: 1px solid var(--cor-verde-destaque);
   box-shadow: 0 2px 4px var(--shadow-color);
+  margin-top: 1rem;
+  flex-shrink: 0; /* Impede que a imagem encolha */
 }
 
 .detalhes-usuario h1 {
   font-size: 2.2em;
-  margin: 10px 0 5px;
-  color: var(--primary-color);
+  font-weight: 500;
+  margin: 0 0 5px; /* ALTERADO: Ajustado para o novo layout */
+  color: var(--cor-verde-destaque);
 }
 
 .detalhes-usuario p {
   font-size: 1.1em;
-  color: var(--secondary-color);
+  color: var(--cor-cinza-claro);
   line-height: 1.5;
   max-width: 600px; /* Limita a largura da descrição */
+  margin-bottom: 0; /* Garante que não tenha margem inferior extra */
 }
 
 /* Estilos para os campos de input de edição */
 .detalhes-usuario input[type="text"],
 .detalhes-usuario textarea {
   width: 100%;
-  max-width: 400px; /* Limita a largura dos inputs */
+  max-width: 500px; /* Limita a largura dos inputs */
   padding: 10px 15px;
   margin-top: 5px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--cor-verde-destaque);
   border-radius: 5px;
   font-size: 1em;
   color: var(--text-color);
@@ -89,6 +102,7 @@ main {
   resize: vertical; /* Permite redimensionar verticalmente */
   min-height: 80px;
 }
+
 
 /* Estilo para o input de arquivo (foto de perfil) */
 .detalhes-usuario input[type="file"] {
@@ -103,34 +117,38 @@ main {
 
 .label-foto-perfil {
   font-size: 0.9em;
-  color: var(--secondary-color);
+  color: var(--cor-cinza-claro);
   margin-top: 10px;
   cursor: pointer;
 }
 
 /* Estilos para os botões */
 button {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: var(--cor-verde-destaque);
+  color: var(--cor-fundo);
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1em;
-  transition: background-color 0.3s ease;
-  margin: 5px; /* Espaçamento entre botões */
+  transition: all 0.3s ease;
+  margin: 5px;
 }
 
 button:hover {
-  background-color: darken(var(--primary-color), 10%); /* Escurece no hover */
+  opacity: 0.9;
+  transform: scale(1.05);
 }
 
 #cancelar-edicao-btn {
-  background-color: var(--secondary-color);
+  background-color: var(--cor-cinza-escuro);
+  color: var(--cor-verde-destaque);
+  border: 1px solid var(--cor-verde-destaque);
 }
 
 #cancelar-edicao-btn:hover {
-  background-color: darken(var(--secondary-color), 10%);
+  opacity: 0.9;
+  transform: scale(1.05);
 }
 
 /* --- Mensagens de feedback (sucesso/erro/info) --- */
@@ -146,23 +164,23 @@ button:hover {
 }
 
 .mensagem.sucesso {
-  background-color: var(--success-color);
-  color: white;
+  background-color: var(--cor-verde-destaque);
+  color: var(--cor-branco);
 }
 
 .mensagem.erro {
-  background-color: var(--error-color);
-  color: white;
+  background-color: #f93827;
+  color: var(--cor-branco);
 }
 
 .mensagem.informacao {
-  background-color: var(--info-color);
-  color: white;
+  background-color: var(--cor-verde-destaque);
+  color: var(--cor-branco);
 }
 
 /* --- Seção de Posts (Projetos) --- */
 #lista-de-posts {
-  background-color: var(--card-background-color);
+  background-color: var(--cor-fundo);
   border-radius: 8px;
   box-shadow: 0 4px 8px var(--shadow-color);
   padding: 30px;
@@ -170,8 +188,9 @@ button:hover {
 }
 
 .section-title {
-  font-size: 1.8em;
-  color: var(--primary-color);
+  font-size: 1.0em;
+  color: var(--cor-verde-destaque);
+  text-decoration: underline 1px;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -180,14 +199,13 @@ button:hover {
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(280px, 1fr)
+    minmax(530px, 1fr)
   ); /* Layout responsivo */
   gap: 20px;
 }
 
 .post-card {
-  background-color: var(--background-color); /* Fundo dos cards de post */
-  border: 1px solid var(--border-color);
+  background-color: var(--cor-cinza-escuro); /* Fundo dos cards de post */
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 5px var(--shadow-color);
@@ -204,16 +222,16 @@ button:hover {
 
 .post-card h3 {
   font-size: 1.4em;
-  color: var(--text-color);
+  color: var(--cor-cinza-claro);
   margin-top: 0;
   margin-bottom: 10px;
 }
 
 .post-card p {
   font-size: 0.95em;
-  color: var(--secondary-color);
+  color: var(--cor-cinza-claro);
   margin-bottom: 15px;
-  flex-grow: 1; /* Permite que a descrição ocupe espaço */
+  flex-grow: 1;
 }
 
 .post-card img {
@@ -226,7 +244,7 @@ button:hover {
 
 .detalhes-post-card {
   font-size: 0.85em;
-  color: var(--secondary-color);
+  color: var(--cor-cinza-claro);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -235,8 +253,13 @@ button:hover {
 
 .detalhes-post-card span {
   font-weight: bold;
+  color: var(--cor-cinza-claro);
+  margin-right: 75%;
 }
 
+a {
+  text-decoration: none;
+}
 /* --- Modal de Detalhes do Post (Existente) --- */
 .modal {
   display: none; /* Escondido por padrão */
@@ -253,7 +276,7 @@ button:hover {
 }
 
 .modal-content {
-  background-color: var(--card-background-color);
+  background-color: var(--cor-cinza-escuro);
   margin: auto;
   padding: 30px;
   border-radius: 8px;
@@ -265,7 +288,7 @@ button:hover {
 }
 
 .close-button {
-  color: var(--secondary-color);
+  color: var(--cor-cinza-claro);
   font-size: 28px;
   font-weight: bold;
   position: absolute;
@@ -276,81 +299,20 @@ button:hover {
 
 .close-button:hover,
 .close-button:focus {
-  color: var(--primary-color);
+  color: var(--cor-verde-destaque);
   text-decoration: none;
   cursor: pointer;
 }
 
 .modal-content h2 {
-  color: var(--primary-color);
+  color: var(--cor-cinza-claro);
   margin-top: 0;
   margin-bottom: 15px;
   font-size: 1.8em;
 }
 
 .modal-content p {
-  color: var(--text-color);
+  color: var(--cor-cinza-claro);
   line-height: 1.6;
   margin-bottom: 10px;
-}
-
-/* Ajustes para layout com aside, se você tiver um */
-/* Se o aside for um menu lateral, você precisará de CSS para ele */
-#aside-container {
-  /* Exemplo, adapte ao seu aside.js e HTML */
-  width: 250px; /* Largura do aside */
-  background-color: var(--card-background-color);
-  box-shadow: 2px 0 5px var(--shadow-color);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  body {
-    flex-direction: column; /* Stacks aside on top on smaller screens */
-  }
-
-  #aside-container {
-    width: 100%;
-    box-shadow: 0 2px 5px var(--shadow-color);
-  }
-
-  main {
-    padding: 15px;
-  }
-
-  .container,
-  #lista-de-posts {
-    padding: 20px;
-  }
-
-  .post-card {
-    padding: 15px;
-  }
-
-  .modal-content {
-    width: 95%;
-    padding: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .detalhes-usuario h1 {
-    font-size: 1.8em;
-  }
-
-  .detalhes-usuario p {
-    font-size: 1em;
-  }
-
-  button {
-    padding: 8px 15px;
-    font-size: 0.9em;
-  }
-
-  .section-title {
-    font-size: 1.5em;
-  }
 }
