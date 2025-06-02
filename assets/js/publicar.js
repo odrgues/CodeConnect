@@ -458,9 +458,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const init = () => {
     Handlers.ajustarTextarea();
 
-    // Remover este if, pois verificarAutenticacao já lida com o redirecionamento.
-    // if (!Handlers.verificarAutenticacao()) return;
-
     DOM.form.addEventListener("submit", Handlers.handleSubmit);
     DOM.btnUpload.addEventListener("click", () => DOM.inputUpload.click());
 
