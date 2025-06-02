@@ -351,8 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
         DOM.listaDePosts.appendChild(postDiv);
       });
     } else {
-      DOM.listaDePosts.innerHTML =
-        '<div class="no-posts">O usuário ainda não criou nenhum post :(</div>';
+      DOM.listaDePosts.innerHTML = '<div class="no-posts"></div>';
     }
   }
 

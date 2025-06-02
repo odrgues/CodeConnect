@@ -159,6 +159,8 @@ main {
   border-radius: 8px; /* Cantos arredondados para a imagem */
   margin-bottom: 15px;
   display: block; /* Garante que a imagem preencha o espaço sem distorção */
+  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorção */
+  max-height: 180px; /* NOVO: Limita a altura máxima da imagem para evitar cortar o título */
 }
 
 .detalhes-projeto {
