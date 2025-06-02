@@ -1,223 +1,258 @@
-const CONFIG = {
-  API_URL: "http://localhost:8080/api/v1/usuarios/login",
-  MIN_LOADER_TIME: 1500,
-  MESSAGE_DISPLAY_TIME: 1500,
-  FEED_PAGE: "/pages/feed.html",
-};
+document.addEventListener("DOMContentLoaded", () => {
+  const CONFIG = {
+    API_URL: "http://localhost:8080/api/v1/usuarios/login",
+    MIN_LOADER_TIME: 1500,
+    MESSAGE_DISPLAY_TIME: 1500,
+    FEED_PAGE: "/pages/feed.html",
+  };
 
-const DOM = {
-  get form() {
-    return (
-      document.getElementById("form-login") || {
+  const DOM = {
+    form: null,
+    btnLogin: null,
+    email: null,
+    senha: null,
+    toggleSenha: null,
+    iconeSenha: null,
+    mensagem: null,
+
+    init: () => {
+      DOM.form = document.getElementById("form-login") || {
         addEventListener: () => {},
         requestSubmit: () => {},
-      }
-    );
-  },
-  get btnLogin() {
-    return (
-      document.getElementById("btn-login") || {
+      };
+
+      DOM.btnLogin = document.getElementById("btn-login") || {
         disabled: false,
         innerHTML: "",
         textContent: "",
-      }
-    );
-  },
-  get email() {
-    return (
-      document.getElementById("email-login") || {
+      };
+
+      DOM.email = document.getElementById("email-login") || {
         value: "",
         addEventListener: () => {},
         focus: () => {},
-      }
-    );
-  },
-  get senha() {
-    return (
-      document.getElementById("senha-login") || {
+      };
+
+      DOM.senha = document.getElementById("senha-login") || {
         value: "",
         type: "password",
         addEventListener: () => {},
         focus: () => {},
-      }
-    );
-  },
-  get toggleSenha() {
-    return (
-      document.getElementById("toggle-senha") || {
+      };
+      DOM.toggleSenha = document.getElementById("toggle-senha") || {
         addEventListener: () => {},
-      }
-    );
-  },
-  get iconeSenha() {
-    return (
-      document.querySelector(".icone-senha-login") || {
+      };
+      DOM.iconeSenha = document.querySelector(".icone-senha-login") || {
         src: "",
-      }
-    );
-  },
-  get mensagem() {
-    return document.getElementById("mensagem-login");
-  },
-};
-
-const IMAGES = {
-  show: "../assets/img/cadastro-login/visibility.png",
-  hide: "../assets/img/cadastro-login/visibility_off.png",
-};
-
-const API = {
-  loginUsuario: async (dados) => {
-    try {
-      const response = await fetch(CONFIG.API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(dados),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        const error = new Error(
-          errorData.message || "Erro ao processar a solicitação."
+      };
+      DOM.mensagem = document.getElementById("mensagem-login");
+      if (!DOM.mensagem) {
+        console.warn(
+          "Elemento 'mensagem-login' não encontrado. Mensagens de feedback podem não ser exibidas."
         );
-        error.status = response.status;
+      }
+    },
+  };
+
+  const IMAGES = {
+    show: "../assets/img/cadastro-login/visibility.png",
+    hide: "../assets/img/cadastro-login/visibility_off.png",
+  };
+
+  const API = {
+    loginUsuario: async (dados) => {
+      try {
+        const response = await fetch(CONFIG.API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(dados),
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+          const error = new Error(
+            responseData.message ||
+              `Erro do servidor: Status ${response.status}`
+          );
+          error.status = response.status;
+          throw error;
+        }
+        return responseData;
+      } catch (error) {
+        console.error("Erro na API de login:", error);
         throw error;
       }
+    },
+  };
 
-      const resposta = await response.json();
+  const Utils = {
+    validarEmail: (email) => {
+      const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regexEmail.test(email);
+    },
 
-      return resposta;
-    } catch (error) {
-      throw error;
-    }
-  },
-};
+    exibirMensagem: (elemento, texto, tipo = "erro") => {
+      if (!elemento) return;
+      elemento.textContent = texto;
+      elemento.className = `mensagem-${tipo}`;
+      elemento.style.display = "block";
 
-const Utils = {
-  validarEmail: (email) => {
-    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regexEmail.test(email);
-  },
-
-  exibirMensagem: (elemento, texto, tipo = "erro") => {
-    if (!elemento) return;
-    elemento.textContent = texto;
-    elemento.className = `mensagem-${tipo}`;
-    elemento.style.display = "block";
-
-    setTimeout(
-      () => {
-        elemento.style.display = "none";
-      },
-      tipo === "sucesso" ? CONFIG.MESSAGE_DISPLAY_TIME : 3000
-    );
-  },
-
-  toggleLoader: (elemento, isLoading) => {
-    if (isLoading) {
-      elemento.dataset.originalText = elemento.textContent;
-      elemento.innerHTML = '<span class="loader"></span>';
-      elemento.disabled = true;
-    } else {
-      elemento.textContent = elemento.dataset.originalText || "Entrar";
-      elemento.disabled = false;
-    }
-  },
-};
-
-const Handlers = {
-  toggleVisibilidadeSenha: () => {
-    const isSenhaVisivel = DOM.senha.type === "text";
-    DOM.senha.type = isSenhaVisivel ? "password" : "text";
-    DOM.iconeSenha.src = isSenhaVisivel ? IMAGES.show : IMAGES.hide;
-  },
-
-  handleSubmit: async (event) => {
-    event.preventDefault();
-
-    const startTime = Date.now();
-
-    Utils.toggleLoader(DOM.btnLogin, true);
-    const dados = {
-      email: DOM.email.value.trim(),
-      password: DOM.senha.value,
-    };
-
-    if (!dados.email || !dados.password) {
-      Utils.exibirMensagem(DOM.mensagem, "Preencha todos os campos", "erro");
-      Utils.toggleLoader(DOM.btnLogin, false);
-
-      return;
-    }
-
-    if (!Utils.validarEmail(dados.email)) {
-      Utils.exibirMensagem(DOM.mensagem, "E-mail inválido", "erro");
-      Utils.toggleLoader(DOM.btnLogin, false);
-
-      return;
-    }
-
-    try {
-      const resposta = await API.loginUsuario(dados);
-
-      localStorage.setItem("userId", resposta.id);
-
-      Utils.exibirMensagem(
-        DOM.mensagem,
-        resposta.message || "Login realizado!",
-        "sucesso"
+      setTimeout(
+        () => {
+          elemento.style.display = "none";
+        },
+        tipo === "sucesso" ? CONFIG.MESSAGE_DISPLAY_TIME : 3000
       );
+    },
 
-      const elapsed = Date.now() - startTime;
-      const remainingTime = Math.max(
-        CONFIG.MESSAGE_DISPLAY_TIME - elapsed,
-        1000
-      );
+    toggleLoader: (elemento, isLoading) => {
+      if (isLoading) {
+        elemento.dataset.originalText = elemento.textContent;
+        elemento.innerHTML = '<span class="loader"></span>';
+        elemento.disabled = true;
+      } else {
+        elemento.textContent = elemento.dataset.originalText || "Entrar";
+        elemento.disabled = false;
+      }
+    },
+  };
 
-      setTimeout(() => {
-        window.location.href = CONFIG.FEED_PAGE;
-      }, remainingTime);
-    } catch (error) {
-      Utils.exibirMensagem(
-        DOM.mensagem,
-        error.message || "Erro desconhecido",
-        "erro"
-      );
-    } finally {
-      const elapsed = Date.now() - startTime;
-      const remainingLoaderTime = Math.max(0, CONFIG.MIN_LOADER_TIME - elapsed);
+  const Handlers = {
+    toggleVisibilidadeSenha: () => {
+      if (!DOM.senha || !DOM.toggleSenha || !DOM.iconeSenha) {
+        console.warn("Elementos de senah ou ícone de toggle não encontrados.");
+        return;
+      }
 
-      if (remainingLoaderTime > 0) {
+      const isSenhaVisivel = DOM.senha.type === "text";
+      DOM.senha.type = isSenhaVisivel ? "password" : "text";
+      DOM.iconeSenha.src = isSenhaVisivel ? IMAGES.hide : IMAGES.show;
+    },
+
+    handleSubmit: async (event) => {
+      event.preventDefault();
+      const startime = Date.now();
+      Utils.toggleLoader(DOM.btnLogin, true);
+      const dados = {
+        email: DOM.email.value.trim().toLowerCase(),
+        password: DOM.senha.value,
+      };
+
+      if (!dados.email) {
+        Utils.exibirMensagem(
+          DOM.mensagem,
+          "Por favor, insira seu e-mail.",
+          "erro"
+        );
+        if (DOM.email) DOM.email.focus();
+        Utils.toggleLoader(DOM.btnLogin, false);
+        return;
+      }
+
+      if (!dados.password) {
+        Utils.exibirMensagem(
+          DOM.mensagem,
+          "Pro favor, insira sua senha.",
+          "erro"
+        );
+
+        if (DOM.senha) DOM.senha.focus();
+        Utils.toggleLoader(DOM.btnLogin, false);
+        return;
+      }
+
+      if (!Utils.validarEmail(dados.email)) {
+        Utils.exibirMensagem(DOM.mensagem, "E-mail inválido", "erro");
+        if (DOM.email) DOM.email.focus();
+        Utils.toggleLoader(DOM.btnLogin, false);
+        return;
+      }
+
+      try {
+        const resposta = await API.loginUsuario(dados);
+        localStorage.setItem("userId", resposta.id);
+        Utils.exibirMensagem(
+          DOM.mensagem,
+          resposta.message || "Login realizado com sucesso!",
+          "sucesso"
+        );
+
+        const elapsed = Date.now() - startime;
+        const remainingLoaderTime = Math.max(
+          0,
+          CONFIG.MIN_LOADER_TIME - elapsed
+        );
+
         setTimeout(() => {
           Utils.toggleLoader(DOM.btnLogin, false);
+          setTimeout(() => {
+            window.location.href = CONFIG.FEED_PAGE;
+          }, CONFIG.MESSAGE_DISPLAY_TIME);
         }, remainingLoaderTime);
-      } else {
-        Utils.toggleLoader(DOM.btnLogin, false);
+      } catch (error) {
+        Utils.exibirMensagem(
+          DOM.mensagem,
+          error.message || "Credenciais inválidas. Tente novamente.",
+          "erro"
+        );
+      } finally {
+        if (DOM.senha) {
+          DOM.senha.value = "";
+        }
       }
+    },
+  };
+
+  const init = () => {
+    DOM.init();
+
+    if (DOM.email) {
+      DOM.email.setAttribute("aria-label", "Insira seu e-mail");
     }
-  },
-};
 
-const init = () => {
-  DOM.email.setAttribute("aria-label", "Insira seu e-mail");
-  DOM.senha.setAttribute("aria-label", "Insira sua senha");
-  DOM.toggleSenha.addEventListener("click", Handlers.toggleVisibilidadeSenha);
-  DOM.form.addEventListener("submit", Handlers.handleSubmit);
-
-  DOM.email.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      DOM.senha.focus();
+    if (DOM.senha) {
+      DOM.senha.setAttribute("aria-label", "Insira sua senha");
     }
-  });
 
-  DOM.senha.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      DOM.form.requestSubmit();
+    if (DOM.toggleSenha) {
+      DOM.toggleSenha.addEventListener(
+        "click",
+        Handlers.toggleVisibilidadeSenha
+      );
+    } else {
+      console.warn(
+        "Elemento 'toggle-senha' não encontrado. Funcionalidade de toggle de senha desativada."
+      );
     }
-  });
-};
 
-document.addEventListener("DOMContentLoaded", init);
+    if (DOM.form) {
+      DOM.form.addEventListener("submit", Handlers.handleSubmit);
+    } else {
+      console.warn(
+        "Elemento 'form-login' não encontrado. Submissão do formulário não funcionará."
+      );
+    }
+    if (DOM.email && DOM.senha) {
+      DOM.email.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          DOM.senha.focus();
+        }
+      });
+    }
+
+    if (DOM.senha && DOM.form) {
+      DOM.senha.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          DOM.form.requestSubmit();
+        }
+      });
+    }
+  };
+  init();
+});
