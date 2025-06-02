@@ -332,7 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
               ? `<img src="${post.imageUrl}" alt="Imagem do Post ${post.title}" />`
               : ""
           }
-          <div class="detalhes-post-card" style="color: black;">
+          <div class="detalhes-post-card";">
             <span>${
               post.dataCriacaoPosts
                 ? post.dataCriacaoPosts.split(" ")[0]
@@ -477,7 +477,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       detalheTitulo.textContent = post.title || "Título Indisponível";
-      detalheTitulo.style.color = "black"; /////css
 
       console.log(
         `Perfil JS: Montando link de usuário no modal. userId do post: ${post.userId}, nomeUsuario do post: ${post.nomeUsuario}`

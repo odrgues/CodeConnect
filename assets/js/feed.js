@@ -265,7 +265,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const projeto = await API.buscarDetalhesProjeto(idDoProjeto);
 
         DOM.detalheTitulo.textContent = projeto.title;
-        DOM.detalheTitulo.style.color = "black";
         DOM.detalheUsuario.textContent = projeto.nomeUsuario;
 
         DOM.detalheUsuario.href = `${CONFIG.PERFIL_PAGE}?userId=${projeto.userId}`;
