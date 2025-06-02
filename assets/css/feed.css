@@ -1,7 +1,5 @@
 @import url(./global.css);
 
-/* REMOVIDO: Bloco :root, pois não estava presente no seu feed.css original e você pediu para não alterar nada além do necessário */
-
 /* --- Container principal da aplicação, para o sticky funcionar bem --- */
 body {
   background-color: var(--cor-fundo);
@@ -160,7 +158,7 @@ main {
   margin-bottom: 15px;
   display: block; /* Garante que a imagem preencha o espaço sem distorção */
   object-fit: cover; /* Garante que a imagem preencha o espaço sem distorção */
-  max-height: 180px; /* NOVO: Limita a altura máxima da imagem para evitar cortar o título */
+  max-height: 180px; /* Limita a altura máxima da imagem para evitar cortar o título */
 }
 
 .detalhes-projeto {
@@ -194,45 +192,93 @@ main {
 }
 
 /* --- Media Queries para Responsividade --- */
-@media (max-width: 768px) {
-  .cartao-projeto {
-    flex: 0 1 100%; /* Em telas menores, cada cartão ocupa 100% da largura */
+
+/* Para telas de até 1023px (tablets maiores e laptops pequenos) */
+@media (max-width: 1023px) {
+  main {
+    width: 90%; /* Aumenta a largura para ocupar mais espaço */
+    margin-left: auto; /* Centraliza o main */
+    margin-right: auto; /* Centraliza o main */
+    padding-top: 80px; /* Ajusta o padding top para o sticky header */
   }
+
+  .busca-e-filtros {
+    width: 90%; /* Alinha com o main */
+    margin-left: auto; /* Centraliza o sticky header */
+    margin-right: auto; /* Centraliza o sticky header */
+  }
+
+  .cartao-projeto h3 {
+    font-size: 1.4em; /* Leve redução no tamanho da fonte */
+  }
+
+  .cartao-projeto p {
+    font-size: 0.9em; /* Leve redução no tamanho da fonte */
+  }
+}
+
+/* Para telas de até 767px (tablets menores e a maioria dos celulares) */
+@media (max-width: 767px) {
+  main {
+    width: 100%; /* Ocupa a largura total */
+    margin-left: 0; /* Remove a margem esquerda */
+    padding: 15px; /* Adiciona padding geral para não grudar nas bordas */
+    padding-top: 80px; /* Mantém o padding top para o sticky header */
+  }
+
+  .busca-e-filtros {
+    width: 100%; /* Ocupa a largura total */
+    margin-left: 0; /* Remove a margem esquerda */
+    padding: 10px 15px; /* Adiciona padding horizontal para não grudar nas bordas */
+  }
+
+  .search-bar {
+    padding: 0; /* Remove padding extra se houver */
+  }
+
+  .cartao-projeto {
+    flex: 0 1 100%; /* Cada cartão ocupa 100% da largura (layout em coluna) */
+    padding: 15px; /* Reduz o padding do cartão */
+  }
+
   .container-projetos::after {
     display: none; /* Não precisa do pseudo-elemento quando os itens estão em coluna */
   }
 
-  /* Ajuste para o sticky header em telas menores */
-  main {
-    margin-left: 0; /* Remove a margem esquerda para ocupar a largura total */
-    width: 100%; /* Ocupa 100% da largura do body */
-  }
-
-  .busca-e-filtros {
-    width: 100%; /* Ocupa 100% da largura do body */
-    margin-left: 0; /* Remove a margem esquerda */
-  }
-
-  .search-bar {
-    padding: 0 15px; /* Adiciona padding horizontal para não grudar nas bordas */
-  }
-}
-
-@media (max-width: 480px) {
-  .cartao-projeto {
-    padding: 15px;
-  }
   .cartao-projeto h3 {
-    font-size: 1.3em;
+    font-size: 1.2em; /* Reduz mais o tamanho da fonte */
   }
+
   .cartao-projeto p {
-    font-size: 0.9em;
+    font-size: 0.85em; /* Reduz mais o tamanho da fonte */
   }
+
   .detalhes-projeto {
-    flex-direction: column; /* Empilha likes e data em telas muito pequenas */
+    flex-direction: column; /* Empilha likes e data em telas menores */
     gap: 5px;
   }
 }
+
+/* Para telas de até 480px (celulares muito pequenos) */
+@media (max-width: 480px) {
+  .cartao-projeto {
+    padding: 10px; /* Reduz o padding para telas muito pequenas */
+  }
+  .cartao-projeto h3 {
+    font-size: 1.1em;
+  }
+  .cartao-projeto p {
+    font-size: 0.8em;
+  }
+  .detalhes-projeto {
+    font-size: 0.75em;
+  }
+  .search-btn {
+    padding: 8px 12px; /* Reduz o padding do botão de busca */
+    font-size: 0.9em;
+  }
+}
+
 
 /* Estilos para o modal */
 .modal {
@@ -300,7 +346,7 @@ h2 {
 }
 
 .close-button {
-  color: #0056b3;
+  color: var(--cor-verde-destaque)
 }
 
 /* Estilos para o link do nome do usuário no modal */
