@@ -95,28 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
         textContent: "",
         style: {},
       };
-
-      if (!DOM.form) console.warn("DOM.init: Elemento 'form' não encontrado.");
-      if (!DOM.nomeProjeto)
-        console.warn("DOM.init: Elemento 'nome' (nomeProjeto) não encontrado.");
-      if (!DOM.descricao)
-        console.warn("DOM.init: Elemento 'descricao' não encontrado.");
-      if (!DOM.mensagem)
-        console.warn("DOM.init: Elemento 'mensagem-publicar' não encontrado.");
-      if (!DOM.btnPublicar)
-        console.warn("DOM.init: Elemento 'btn-publicar' não encontrado.");
-      if (!DOM.btnDescartar)
-        console.warn("DOM.init: Elemento 'btn-descartar' não encontrado.");
-      if (!DOM.btnUpload)
-        console.warn("DOM.init: Elemento 'upload-btn' não encontrado.");
-      if (!DOM.inputUpload)
-        console.warn("DOM.init: Elemento 'image-upload' não encontrado.");
-      if (!DOM.imagemPrincipal)
-        console.warn("DOM.init: Elemento '.main-imagem' não encontrado.");
-      if (!DOM.nomeImagem)
-        console.warn(
-          "DOM.init: Elemento '.container-imagem-nome p' não encontrado."
-        );
     },
   };
 
