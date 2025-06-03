@@ -21,25 +21,19 @@
             margin-top: 10px;
         }
 
-        /* Remova ou ajuste esta regra se você quiser que o modal comece visível para depuração,
-           mas geralmente é 'none' para começar escondido. */
         #detalhes-modal-post {
             display: none;
-            /* Mantenha isso como 'none' para que o modal inicie escondido */
         }
 
-        /* Adicione estilos para a imagem do post no modal */
         #detalhe-imagem-post {
-            max-width: 100%;
-            /* Garante que a imagem não ultrapasse a largura do modal */
+            max-width: auto;
             height: auto;
-            /* Mantém a proporção da imagem */
+            align-items: center;
+            display: flex;
             margin-top: 15px;
-            /* Espaço acima da imagem */
             margin-bottom: 15px;
-            /* Espaço abaixo da imagem */
             display: none;
-            /* Inicia escondido, será mostrado via JS se houver URL */
+
         }
     </style>
 </head>
@@ -54,20 +48,25 @@
                 <img id="foto-perfil-padrao" src="../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif"
                     alt="Foto de Perfil" class="foto-perfil">
 
-                <h1 id="nome-usuario">Nome</h1>
-                <p id="descricao-usuario">Descrição</p>
-
-                <input type="text" id="input-nome-usuario" placeholder="Seu Nome">
-                <textarea id="input-descricao-usuario" placeholder="Sua Descrição"></textarea>
-
-                <label for="input-foto-perfil" class="label-foto-perfil" style="display: none;">Alterar Foto de
-                    Perfil:</label>
-                <input type="file" id="input-foto-perfil" class="input-foto-perfil">
-                <img id="preview-foto-perfil" src="" alt="Pré-visualização da Foto" class="foto-perfil">
-
+                <div class="info-usuario-texto">
+                    <h1 id="nome-usuario">Nome</h1>
+                    <p id="descricao-usuario">Descrição</p>
+                </div>
+                <div class="container-inputs">
+                    <input type="text" id="input-nome-usuario" placeholder="Seu Nome">
+                    <textarea id="input-descricao-usuario" placeholder="Sua Descrição"></textarea>
+                </div>
+                <div class="container-img">
+                    <label for="input-foto-perfil" class="label-foto-perfil" style="display: none;">Alterar Foto de
+                        Perfil:</label>
+                    <input type="file" id="input-foto-perfil" class="input-foto-perfil">
+                    <img id="preview-foto-perfil" src="" alt="Pré-visualização da Foto" class="foto-perfil">
+                </div>
                 <button id="editar-perfil-btn">Editar Perfil</button>
-                <button id="salvar-perfil-btn">Salvar</button>
-                <button id="cancelar-edicao-btn">Cancelar</button>
+                <div>
+                    <button id="salvar-perfil-btn">Salvar</button>
+                    <button id="cancelar-edicao-btn">Cancelar</button>
+                </div>
             </div>
 
         </div>
@@ -75,7 +74,7 @@
         <output id="mensagem-perfil"></output>
 
         <section id="lista-de-posts">
-            <h2 class="section-title">Projetos</h2>
+            <h2 class="section-title"> Meus Projetos</h2>
             <div id="posts-list"></div>
         </section>
     </main>
@@ -93,22 +92,22 @@
                 Post</button>
 
             <div id="confirmacao-exclusao-modal" style="
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.95);
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    z-index: 1000;
-    border-radius: 8px;
-    box-sizing: border-box;
-    display: flex;
-">
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.95);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 1000;
+        border-radius: 8px;
+        box-sizing: border-box;
+        display: flex;
+    ">
 
                 <h4>Tem certeza que deseja excluir este post?</h4>
                 <p>Esta ação não pode ser desfeita.</p>
@@ -123,7 +122,7 @@
         </div>
     </div>
 
-    <script src="../assets/js/authUtils.js"></script>
+
     <script src="../assets/js/perfil.js"></script>
     <script src="../assets/js/aside.js"></script>
 </body>

@@ -1,10 +1,8 @@
-/* Importa uma fonte simples do Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url(./global.css); /* Certifique-se que este caminho está correto para suas variáveis globais */
 
 :root {
   --primary-color: #007bff; /* Azul para botões e links */
   --secondary-color: #6c757d; /* Cinza para textos secundários */
-  --background-color: #f8f9fa; /* Fundo claro da página */
   --card-background-color: #ffffff; /* Fundo dos cards/seções */
   --border-color: #dee2e6; /* Cor da borda */
   --text-color: #343a40; /* Cor principal do texto */
@@ -15,121 +13,140 @@
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--fonte-principal);
   margin: 0;
   padding: 0;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  display: flex; /* Para o layout com aside */
-  min-height: 100vh; /* Garante que o body ocupe a altura total */
+  background-color: var(--cor-fundo);
+  color: var(--cor-cinza-claro);
+  min-height: 100vh;
 }
 
 main {
-  flex-grow: 1; /* Ocupa o espaço restante */
+  flex-grow: 1;
   padding: 20px;
-  max-width: 900px; /* Largura máxima do conteúdo principal */
-  margin: 0 auto; /* Centraliza o conteúdo principal */
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-left: 10%;
 }
 
 .container {
-  background-color: var(--card-background-color);
-  border-radius: 8px;
+  background-color: var(--cor-fundo);
   box-shadow: 0 4px 8px var(--shadow-color);
   padding: 30px;
   margin-bottom: 20px;
-  text-align: center; /* Centraliza os elementos dentro do container */
+  text-align: start;
+  max-width: 100%;
+  margin-left: 4%;
+  height: 18rem;
+  border-bottom: 2px solid var(--cor-cinza-claro);
 }
 
 /* --- Detalhes do Usuário (Perfil) --- */
 .detalhes-usuario {
   display: flex;
-  flex-direction: column; /* Organiza os itens em coluna */
-  align-items: center; /* Centraliza horizontalmente */
-  gap: 15px; /* Espaçamento entre os itens */
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+}
+
+/* NOVO ESTILO: Para agrupar o nome e a descrição */
+.info-usuario-texto {
+  font-weight: 300;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .foto-perfil {
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
-  object-fit: cover; /* Garante que a imagem preencha o círculo */
-  border: 3px solid var(--primary-color);
+  object-fit: cover;
+  border: 1px solid var(--cor-verde-destaque);
   box-shadow: 0 2px 4px var(--shadow-color);
+  margin-top: 1rem;
+  margin-right: 5px;
 }
 
 .detalhes-usuario h1 {
   font-size: 2.2em;
-  margin: 10px 0 5px;
-  color: var(--primary-color);
+  font-weight: 500;
+  margin: 0 0 5px;
+  color: var(--cor-verde-destaque);
 }
 
 .detalhes-usuario p {
   font-size: 1.1em;
-  color: var(--secondary-color);
+  color: var(--cor-cinza-claro);
   line-height: 1.5;
-  max-width: 600px; /* Limita a largura da descrição */
+  max-width: 1000px; /* MANTIDO: Largura máxima da descrição original */
+  margin-bottom: 0;
 }
 
-/* Estilos para os campos de input de edição */
 .detalhes-usuario input[type="text"],
 .detalhes-usuario textarea {
   width: 100%;
-  max-width: 400px; /* Limita a largura dos inputs */
-  padding: 10px 15px;
+  max-width: 400px; 
+  padding: 5px;
   margin-top: 5px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--cor-verde-destaque);
   border-radius: 5px;
   font-size: 1em;
   color: var(--text-color);
-  box-sizing: border-box; /* Inclui padding e borda na largura total */
 }
 
 .detalhes-usuario textarea {
-  resize: vertical; /* Permite redimensionar verticalmente */
-  min-height: 80px;
+  resize: vertical;
+  min-height: 210px;
 }
 
 /* Estilo para o input de arquivo (foto de perfil) */
 .detalhes-usuario input[type="file"] {
-  max-width: 400px; /* Ajusta largura */
+  max-width: 600px; /* AJUSTADO: Revertido para 600px para alinhar com a descrição */
   padding: 8px 0;
   margin-top: 10px;
   font-size: 0.9em;
-  border: none; /* Remove a borda padrão do input file */
+  border: none;
   background: none;
   cursor: pointer;
 }
 
 .label-foto-perfil {
   font-size: 0.9em;
-  color: var(--secondary-color);
+  color: var(--cor-cinza-claro);
   margin-top: 10px;
   cursor: pointer;
+  text-align: center;
 }
 
 /* Estilos para os botões */
 button {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: var(--cor-verde-destaque);
+  color: var(--cor-fundo);
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1em;
-  transition: background-color 0.3s ease;
-  margin: 5px; /* Espaçamento entre botões */
+  transition: all 0.3s ease;
+  margin: 5px;
 }
 
 button:hover {
-  background-color: darken(var(--primary-color), 10%); /* Escurece no hover */
+  opacity: 0.9;
+  transform: scale(1.05);
 }
 
 #cancelar-edicao-btn {
-  background-color: var(--secondary-color);
+  background-color: var(--cor-cinza-escuro);
+  color: var(--cor-verde-destaque);
+  border: 1px solid var(--cor-verde-destaque);
 }
 
 #cancelar-edicao-btn:hover {
-  background-color: darken(var(--secondary-color), 10%);
+  opacity: 0.9;
+  transform: scale(1.05);
 }
 
 /* --- Mensagens de feedback (sucesso/erro/info) --- */
@@ -138,30 +155,30 @@ button:hover {
   padding: 10px;
   margin: 20px auto;
   border-radius: 5px;
-  display: none; /* Escondido por padrão, JavaScript o mostra */
+  display: none;
   font-weight: bold;
   max-width: 600px;
   box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .mensagem.sucesso {
-  background-color: var(--success-color);
-  color: white;
+  background-color: var(--cor-verde-destaque);
+  color: var(--cor-branco);
 }
 
 .mensagem.erro {
-  background-color: var(--error-color);
-  color: white;
+  background-color: #f93827;
+  color: var(--cor-branco);
 }
 
 .mensagem.informacao {
-  background-color: var(--info-color);
-  color: white;
+  background-color: var(--cor-verde-destaque);
+  color: var(--cor-branco);
 }
 
 /* --- Seção de Posts (Projetos) --- */
-#lista-de-posts {
-  background-color: var(--card-background-color);
+#lista-de-posts { /* Este é o <section> pai */
+  background-color: var(--cor-fundo);
   border-radius: 8px;
   box-shadow: 0 4px 8px var(--shadow-color);
   padding: 30px;
@@ -169,90 +186,116 @@ button:hover {
 }
 
 .section-title {
-  font-size: 1.8em;
-  color: var(--primary-color);
+  font-size: 1em;
+  color: var(--cor-verde-destaque);
+  text-decoration: underline 1px;
   margin-bottom: 20px;
   text-align: center;
 }
 
-#posts-list {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(280px, 1fr)
-  ); /* Layout responsivo */
+#posts-list { /* Este é o <div> que contém os cartões de posts */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 20px;
+  padding: 10px;
+  margin: 20px 0;
+  width: 100%;
+}
+
+/* Pseudo-elemento para corrigir alinhamento do último item em linha ímpar */
+#posts-list::after {
+  content: "";
+  flex: 0 1 calc(50% - 10px); /* Ocupa o mesmo espaço que um cartão */
 }
 
 .post-card {
-  background-color: var(--background-color); /* Fundo dos cards de post */
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  flex: 0 1 calc(50% - 10px);
+  box-sizing: border-box;
+  border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 2px 5px var(--shadow-color);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: var(--cor-cinza-escuro);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Para empurrar detalhes para baixo */
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
 }
 
 .post-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 10px var(--shadow-color);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .post-card h3 {
-  font-size: 1.4em;
-  color: var(--text-color);
+  font-size: 1.5em;
   margin-top: 0;
   margin-bottom: 10px;
+  color: var(--cor-cinza-claro);
 }
 
 .post-card p {
   font-size: 0.95em;
-  color: var(--secondary-color);
+  line-height: 1.4;
   margin-bottom: 15px;
-  flex-grow: 1; /* Permite que a descrição ocupe espaço */
+  color: var(--cor-cinza-claro);
+  flex-grow: 1;
 }
 
 .post-card img {
   max-width: 100%;
   height: auto;
-  border-radius: 5px;
+  border-radius: 8px;
   margin-bottom: 15px;
-  display: block; /* Remove espaço extra abaixo da imagem */
+  display: block;
+  object-fit: cover;
+  max-height: 180px;
 }
 
 .detalhes-post-card {
-  font-size: 0.85em;
-  color: var(--secondary-color);
+  font-size: 0.7em;
+  color: var(--cor-cinza-claro);
+  border-top: 1px solid var(--cor-cinza-claro);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px; /* Garante espaçamento da descrição */
+  justify-content: space-around;
+  margin-top: auto;
+  width: 100%;
+  padding-top: 10px;
+  padding-left: 120px;
 }
 
 .detalhes-post-card span {
   font-weight: bold;
+  color: var(--cor-cinza-claro);
 }
 
+#btn-excluir-post {
+  justify-content: center;
+  align-items: center;
+  margin-left: 40%;
+}
+a {
+  text-decoration: none;
+}
 /* --- Modal de Detalhes do Post (Existente) --- */
 .modal {
-  display: none; /* Escondido por padrão */
-  position: fixed; /* Fica por cima de tudo */
-  z-index: 1000; /* Alto z-index para estar acima de outros elementos */
+  display: none;
+  position: fixed;
+  z-index: 1000;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto; /* Adiciona scroll se o conteúdo for grande */
-  background-color: rgba(0, 0, 0, 0.6); /* Fundo semi-transparente */
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
-  background-color: var(--card-background-color);
+  background-color: var(--cor-cinza-escuro);
   margin: auto;
   padding: 30px;
   border-radius: 8px;
@@ -264,7 +307,7 @@ button:hover {
 }
 
 .close-button {
-  color: var(--secondary-color);
+  color: var(--cor-cinza-claro);
   font-size: 28px;
   font-weight: bold;
   position: absolute;
@@ -275,81 +318,232 @@ button:hover {
 
 .close-button:hover,
 .close-button:focus {
-  color: var(--primary-color);
+  color: var(--cor-cinza-escuro);
   text-decoration: none;
   cursor: pointer;
 }
 
 .modal-content h2 {
-  color: var(--primary-color);
+  color: var(--cor-cinza-claro);
   margin-top: 0;
   margin-bottom: 15px;
   font-size: 1.8em;
 }
 
 .modal-content p {
-  color: var(--text-color);
+  color: var(--cor-cinza-claro);
   line-height: 1.6;
   margin-bottom: 10px;
 }
 
-/* Ajustes para layout com aside, se você tiver um */
-/* Se o aside for um menu lateral, você precisará de CSS para ele */
-#aside-container {
-  /* Exemplo, adapte ao seu aside.js e HTML */
-  width: 250px; /* Largura do aside */
-  background-color: var(--card-background-color);
-  box-shadow: 2px 0 5px var(--shadow-color);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
+/* Estilos para as divs de edição - Escondidas por padrão */
+.container-inputs,
+.container-img,
+.container-buttons {
+  justify-content: end;
+  flex-direction: column; /* Conteúdo interno em coluna */
+  width: 30%; /* Ocupa a largura total disponível */
+  max-width: 300px; /* AJUSTADO: Revertido para 600px para alinhar com a descrição */
+  gap: 40px; /* Espaçamento entre os elementos internos */
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  body {
-    flex-direction: column; /* Stacks aside on top on smaller screens */
-  }
 
-  #aside-container {
-    width: 100%;
-    box-shadow: 0 2px 5px var(--shadow-color);
-  }
+/* Ajustes de margem para espaçamento entre as novas seções de edição */
+.detalhes-usuario.is-editing .container-inputs {
+  margin-top: 20px; /* Espaço após a foto de perfil */
+}
 
+.detalhes-usuario.is-editing .container-img {
+  margin-top: 15px; /* Espaço após a seção de inputs */
+}
+
+.detalhes-usuario.is-editing .container-buttons {
+  margin-top: 20px; /* Espaço após a seção de imagem/inputs */
+}
+
+/* --- Media Queries para Responsividade --- */
+/* Para telas de até 1023px (tablets maiores e laptops pequenos) */
+@media (max-width: 1023px) {
   main {
-    padding: 15px;
+    width: 90%; /* Aumenta a largura para ocupar mais espaço */
+    margin-left: auto; /* Centraliza o main */
+    margin-right: auto; /* Centraliza o main */
+    padding-top: 80px; /* Ajusta o padding top para o sticky header */
   }
 
-  .container,
-  #lista-de-posts {
+  .container { /* Ajuste para o container do perfil em telas menores */
     padding: 20px;
+    height: auto; /* Permite que a altura se ajuste ao conteúdo */
+  }
+
+  .busca-e-filtros { /* Não existe no perfil, mas mantido para contexto */
+    width: 90%; /* Alinha com o main */
+    margin-left: auto; /* Centraliza o sticky header */
+    margin-right: auto; /* Centraliza o sticky header */
+  }
+
+  .post-card h3 {
+    font-size: 1.4em; /* Leve redução no tamanho da fonte */
+  }
+
+  .post-card p {
+    font-size: 0.9em; /* Leve redução no tamanho da fonte */
+  }
+}
+
+/* Para telas de até 767px (tablets menores e a maioria dos celulares) */
+@media (max-width: 767px) {
+  main {
+    width: 100%; /* Ocupa a largura total */
+    margin-left: 0; /* Remove a margem esquerda */
+    padding: 15px; /* Adiciona padding geral para não grudar nas bordas */
+    padding-top: 80px; /* Mantém o padding top para o sticky header */
+  }
+
+  .container { /* Ajuste para o container do perfil em telas menores */
+    padding: 15px;
   }
 
   .post-card {
-    padding: 15px;
+    flex: 0 1 100%; /* Cada cartão ocupa 100% da largura (layout em coluna) */
+    padding: 15px; /* Reduz o padding do cartão */
   }
 
-  .modal-content {
-    width: 95%;
-    padding: 20px;
+  #posts-list::after { /* Agora aplicado a #posts-list */
+    display: none; /* Não precisa do pseudo-elemento quando os itens estão em coluna */
+  }
+
+  .post-card h3 {
+    font-size: 1.2em; /* Reduz mais o tamanho da fonte */
+  }
+
+  .post-card p {
+    font-size: 0.85em; /* Reduz mais o tamanho da fonte */
+  }
+
+  .detalhes-post-card {
+    flex-direction: column; /* Empilha likes e data em telas menores */
+    gap: 5px;
   }
 }
 
+/* Para telas de até 480px (celulares muito pequenos) */
 @media (max-width: 480px) {
-  .detalhes-usuario h1 {
-    font-size: 1.8em;
+  .post-card {
+    padding: 10px; /* Reduz o padding para telas muito pequenas */
   }
+  .post-card h3 {
+    font-size: 1.1em;
+  }
+  .post-card p {
+    font-size: 0.8em;
+  }
+  .detalhes-post-card {
+    font-size: 0.75em;
+  }
+}
 
-  .detalhes-usuario p {
-    font-size: 1em;
-  }
 
-  button {
-    padding: 8px 15px;
-    font-size: 0.9em;
-  }
+/* Estilos para o modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
 
-  .section-title {
-    font-size: 1.5em;
-  }
+.modal-content {
+  background-color: var(--cor-cinza-escuro);
+  margin: auto;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px var(--shadow-color);
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+  text-align: left;
+}
+
+.close-button {
+  color: var(--cor-cinza-claro);
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: var(--cor-cinza-claro);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-content h2 {
+  color: var(--cor-cinza-claro);
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.8em;
+}
+
+.modal-content p {
+  color: var(--cor-cinza-claro);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+#btn-excluir-post {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  display: none; /* Mantido para controle via JS */
+}
+
+#btn-excluir-post:hover {
+  background-color: #d32f2f;
+}
+
+h2 {
+  color: floralwhite; /* Esta regra pode estar duplicada ou em conflito, verificar global.css */
+}
+
+.close-button {
+  color: var(--cor-verde-destaque);
+}
+
+/* Estilos para o link do nome do usuário no modal */
+.user-link {
+  color: var(--cor-verde-destaque); /* Uma cor típica de link */
+  cursor: pointer; /* Muda o cursor para uma mãozinha */
+  text-decoration: underline; /* Adiciona sublinhado */
+  font-weight: bold; /* Opcional: para destacar */
+}
+
+.user-link:hover {
+  color: var(--cor-cinza-claro); /* Cor mais escura ao passar o mouse */
+  text-decoration: none; /* Opcional: remove o sublinhado ao passar o mouse */
+}
+
+/* Ajustes básicos para o modal da imagem */
+#detalhe-imagem-post {
+  max-width: 100%; /* Garante que a imagem não ultrapasse a largura do modal */
+  height: auto; /* Mantém a proporção da imagem */
+  margin-top: 15px; /* Espaço acima da imagem */
+  margin-bottom: 15px; /* Espaço abaixo da imagem */
+  border-radius: 8px; /* Cantos arredondados */
+  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorção */
+  display: none; 
 }

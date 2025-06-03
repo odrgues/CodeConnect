@@ -1,13 +1,14 @@
 @import url(./global.css);
 
+/* --- Container principal da aplicação, para o sticky funcionar bem --- */
 body {
   background-color: var(--cor-fundo);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 100%;
   min-height: 100vh;
+  font-family: var(--fonte-principal); 
 }
 
 main {
@@ -16,42 +17,42 @@ main {
   align-items: stretch;
   gap: 10px;
   width: 80%;
-  padding-top: 100px;
+  margin-left: 10%; 
+  padding-top: 100px; 
 }
 
+/* --- Nova classe para o contêiner da busca e filtros --- */
 .busca-e-filtros {
-  position: sticky; /* Torna o elemento "grudento" */
-  top: 0; /* Ele vai grudar no topo da tela quando a rolagem atingir 0px */
-  width: 100%; /* Garante que ocupe a largura total */
+  position: sticky;
+  top: 0; 
+  width: 80%; 
+  margin-left: 10%; 
   background-color: var(
     --cor-fundo
-  ); /* Adicione um fundo para evitar que o conteúdo abaixo vaze */
-  z-index: 100; /* Garante que fique acima de outros elementos ao rolar */
-  padding: 10px 0; /* Um pouco de padding para espaçamento */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Opcional: uma sombra para dar profundidade */
+  ); 
+  z-index: 100; 
+  padding: 10px 0; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
 
+/* --- Ajustes na barra de busca --- */
 .search-bar {
-  width: 100%;
+  width: 100%; 
   display: flex;
   align-items: center;
-  padding: 20px 0;
-  order: 0;
+  padding: 0; 
   gap: 10px;
+  position: relative; 
+  margin-left: 1%;
 }
 
 ::placeholder {
   color: var(--cor-cinza-claro);
 }
 
-.search-bar {
-  position: relative;
-  width: 100%;
-}
-
 .input-icon {
   position: absolute;
-  top: 74%;
+  top: 50%; 
   left: 10px;
   transform: translateY(-50%);
   width: 20px;
@@ -63,34 +64,19 @@ main {
 #search-input {
   flex-grow: 1;
   padding: 10px;
-  background-color: var(--cor-cinza);
+  background-color: var(--cor-cinza-escuro);
   border-radius: 5px;
   font-size: 1em;
   border: none;
-  width: 100vh;
+  width: 100%; 
   color: var(--cor-cinza-claro);
-  margin-top: 70px;
+  margin-top: 0; 
   padding-left: 50px;
 }
 
 #search-input:focus {
   outline: none;
   border: var(--cor-verde-destaque) 1px solid;
-}
-
-.search-btn {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s ease;
-}
-
-.search-btn:hover {
-  background-color: #1e7e34;
 }
 
 .section-title {
@@ -105,22 +91,21 @@ main {
 
 /* --- Estilos para o Contêiner de Projetos (Flexbox) --- */
 .container-projetos {
-  display: flex; /* Transforma o contêiner em um contêiner flex */
-  flex-wrap: wrap; /* Permite que os itens flexíveis quebrem para a próxima linha */
-  justify-content: space-between; /* Distribui o espaço entre os cartões */
-  gap: 20px; /* Espaçamento entre os cartões (horizontal e vertical) */
-  padding: 10px; /* Adiciona um padding interno ao contêiner */
-  margin: 20px 0; /* Margem acima e abaixo da seção de projetos */
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: space-between; 
+  gap: 20px; 
+  padding: 10px; 
+  margin: 20px 0; 
 }
 
 /* --- Estilos para cada Cartão de Projeto --- */
 .cartao-projeto {
-  flex: 0 1 calc(50% - 10px); /* Ocupa 50% da largura menos metade do gap */
-  box-sizing: border-box; /* Garante que padding e borda não aumentem a largura total */
-  border: 1px solid #e0e0e0; /* Borda suave */
-  border-radius: 10px; /* Cantos arredondados */
+  flex: 0 1 calc(50% - 10px); 
+  box-sizing: border-box; 
+  border-radius: 10px; 
   padding: 20px;
-  background-color: #ffffff;
+  background-color: var(--cor-cinza-escuro);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para profundidade */
   display: flex; /* Transforma o cartão em um contêiner flex para seu próprio conteúdo */
   flex-direction: column; /* Organiza o conteúdo em coluna */
@@ -141,12 +126,12 @@ main {
 .cartao-projeto h3 {
   margin-top: 0;
   margin-bottom: 10px;
-  color: #333;
+  color: var(--cor-cinza-claro);
   font-size: 1.5em;
 }
 
 .cartao-projeto p {
-  color: #666;
+  color: var(--cor-cinza-claro);
   font-size: 0.95em;
   line-height: 1.4;
   margin-bottom: 15px;
@@ -157,7 +142,9 @@ main {
   height: auto; /* Mantém a proporção da imagem */
   border-radius: 8px; /* Cantos arredondados para a imagem */
   margin-bottom: 15px;
+  display: block; /* Garante que a imagem preencha o espaço sem distorção */
   object-fit: cover; /* Garante que a imagem preencha o espaço sem distorção */
+  max-height: 180px; /* NOVO: Limita a altura máxima da imagem para evitar cortar o título */
 }
 
 .detalhes-projeto {
@@ -166,8 +153,8 @@ main {
   display: flex;
   justify-content: space-around; /* Espaça os likes e a data */
   font-size: 0.8em;
-  color: #888;
-  border-top: 1px solid #eee; /* Linha divisória sutil */
+  color: var(--cor-cinza-claro);
+  border-top: 1px solid var(--cor-cinza-claro); /* Linha divisória sutil */
   padding-top: 10px;
 }
 
@@ -198,6 +185,21 @@ main {
   .container-projetos::after {
     display: none; /* Não precisa do pseudo-elemento quando os itens estão em coluna */
   }
+
+  /* Ajuste para o sticky header em telas menores */
+  main {
+    margin-left: 0; /* Remove a margem esquerda para ocupar a largura total */
+    width: 100%; /* Ocupa 100% da largura do body */
+  }
+
+  .busca-e-filtros {
+    width: 100%; /* Ocupa 100% da largura do body */
+    margin-left: 0; /* Remove a margem esquerda */
+  }
+
+  .search-bar {
+    padding: 0 15px; /* Adiciona padding horizontal para não grudar nas bordas */
+  }
 }
 
 @media (max-width: 480px) {
@@ -224,18 +226,23 @@ main {
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: auto;
+  color: var(--cor-cinza-claro);
   background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
   z-index: 1000; /* Garante que fique acima de outros elementos */
   justify-content: center; /* Centraliza horizontalmente */
   align-items: center; /* Centraliza verticalmente */
 }
 
+.detalhe-titulo {
+  color: var(--cor-cinza-claro);
+}
 .modal-content {
-  background-color: white;
+  background-color: var(--cor-cinza-escuro);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 80%; /* Largura do modal */
+  width: 90%; /* Largura do modal */
   max-width: 600px;
   position: relative; /* Para posicionar o botão de fechar */
 }
@@ -277,79 +284,8 @@ h2 {
 }
 
 .close-button {
-  color: #0056b3;
+  color: var(--cor-verde-destaque)
 }
-
-/* --- Container principal da aplicação, para o sticky funcionar bem --- */
-body {
-  /* Mantém o flexbox para centralizar o conteúdo, mas com uma direção de coluna para rolagem */
-  display: flex;
-  flex-direction: column; /* Agora o corpo é uma coluna */
-  align-items: center; /* Centraliza o main horizontalmente */
-  width: 100%;
-  min-height: 100vh; /* Garante que o body ocupe pelo menos a altura da tela */
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 10px;
-  width: 80%; /* Mantém a largura do seu conteúdo principal */
-  /* Adicione um padding-top ao main se o header sticky for cobrir parte dele */
-  padding-top: 100px; /* Ajuste este valor se o seu header sticky tiver outra altura */
-}
-
-/* --- Nova classe para o contêiner da busca e filtros --- */
-.busca-e-filtros {
-  position: sticky; /* Torna o elemento "grudento" */
-  top: 0; /* Ele vai grudar no topo da tela quando a rolagem atingir 0px */
-  width: 100%; /* Garante que ocupe a largura total */
-  background-color: var(
-    --cor-fundo
-  ); /* Adicione um fundo para evitar que o conteúdo abaixo vaze */
-  z-index: 100; /* Garante que fique acima de outros elementos ao rolar */
-  padding: 10px 0; /* Um pouco de padding para espaçamento */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Opcional: uma sombra para dar profundidade */
-}
-
-/* --- Ajustes na barra de busca --- */
-.search-bar {
-  width: 80%; /* Ajuste para centralizar e corresponder ao 'main' */
-  margin: 0 auto; /* Centraliza a barra de busca dentro do .busca-e-filtros */
-  display: flex;
-  align-items: center;
-  padding: 0; /* Remova o padding de 20px 0 que estava duplicando ou causando problemas */
-  gap: 10px;
-  position: relative; /* Mantém para posicionamento do ícone */
-}
-
-.input-icon {
-  position: absolute;
-  top: 50%; /* Centraliza verticalmente o ícone em relação ao input */
-  left: 10px;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-#search-input {
-  flex-grow: 1;
-  padding: 10px;
-  background-color: var(--cor-cinza);
-  border-radius: 5px;
-  font-size: 1em;
-  border: none;
-  width: 100%; /* Use 100% em vez de 100vh, que é uma altura da viewport */
-  color: var(--cor-cinza-claro);
-  margin-top: 0; /* Remova o margin-top de 70px aqui, pois o .busca-e-filtros já terá seu próprio espaçamento */
-  padding-left: 50px;
-}
-
-/* Os outros estilos dos cartões de projeto e modais permanecem os mesmos */
-/* ... (Seus estilos para .container-projetos, .cartao-projeto, .modal, etc.) ... */
 
 /* Estilos para o link do nome do usuário no modal */
 .user-link {

@@ -17,11 +17,14 @@ document.addEventListener("DOMContentLoaded", () => {
     errors: {
       notLoggedIn: "Faça login para publicar.",
       requiredFields: "Preencha todos os campos obrigatórios.",
-      invalidImage: "Selecione uma imagem válida (PNG, JPG, JPEG).",
-      networkError: "Erro de conexão. Tente novamente.",
-      serverError: "Erro ao publicar. Tente mais tarde.",
+      invalidImage: "Selecione uma imagem válida (PNG, JPG, JPEG, GIF).",
+      networkError:
+        "Erro de conexão. Verifique sua internet e tente novamente.",
+      serverError: "Erro interno do servidor. Tente novamente mais tarde.",
       uploadFailed:
         "Falha ao enviar imagem para o servidor de arquivos. Tente novamente.",
+      nameTooShort: "O nome do projeto deve ter pelo menos 3 caracteres.",
+      descriptionTooShort: "A descrição deve ter pelo menos 10 caracteres.",
     },
     success: {
       postCreated: "Projeto publicado com sucesso!",
@@ -29,122 +32,81 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const DOM = {
-    get form() {
-      return (
-        document.querySelector("form") || {
-          addEventListener: () => {},
-          reset: () => {},
-          requestSubmit: () => {},
-        }
-      );
-    },
+    form: null,
+    nomeProjeto: null,
+    descricao: null,
+    mensagem: null,
+    btnPublicar: null,
+    btnDescartar: null,
+    btnUpload: null,
+    inputUpload: null,
+    imagemPrincipal: null,
+    nomeImagem: null,
 
-    get nomeProjeto() {
-      return (
-        document.getElementById("nome") || {
-          value: "",
-          addEventListener: () => {},
-          focus: () => {},
-        }
-      );
-    },
-
-    get descricao() {
-      return (
-        document.getElementById("descricao") || {
-          value: "",
-          addEventListener: () => {},
-          focus: () => {},
-        }
-      );
-    },
-
-    get mensagem() {
-      return (
-        document.getElementById("mensagem-publicar") || {
-          textContent: "",
-          className: "",
-          style: { display: "none" },
-        }
-      );
-    },
-
-    get btnPublicar() {
-      return (
-        document.getElementById("btn-publicar") || {
-          disabled: false,
-          addEventListener: () => {},
-          textContent: "",
-        }
-      );
-    },
-
-    get btnDescartar() {
-      return (
-        document.getElementById("btn-descartar") || {
-          disabled: false,
-          addEventListener: () => {},
-          textContent: "",
-        }
-      );
-    },
-
-    get btnUpload() {
-      return (
-        document.getElementById("upload-btn") || {
-          addEventListener: () => {},
-          textContent: "",
-        }
-      );
-    },
-
-    get inputUpload() {
-      return (
-        document.getElementById("image-upload") || {
-          addEventListener: () => {},
-          files: [],
-          value: "",
-        }
-      );
-    },
-
-    get imagemPrincipal() {
-      return (
-        document.querySelector(".main-imagem") || {
-          src: "",
-          style: {},
-          classList: {
-            add: () => {},
-            remove: () => {},
-          },
-        }
-      );
-    },
-    get nomeImagem() {
-      return (
-        document.querySelector(".container-imagem-nome p") || {
-          textContent: "",
-          style: {},
-        }
-      );
+    init: () => {
+      DOM.form = document.querySelector("form") || {
+        addEventListener: () => {},
+        reset: () => {},
+        requestSubmit: () => {},
+      };
+      DOM.nomeProjeto = document.getElementById("nome") || {
+        value: "",
+        addEventListener: () => {},
+        focus: () => {},
+      };
+      DOM.descricao = document.getElementById("descricao") || {
+        value: "",
+        addEventListener: () => {},
+        focus: () => {},
+      };
+      DOM.mensagem = document.getElementById("mensagem-publicar") || {
+        textContent: "",
+        className: "",
+        style: { display: "none" },
+      };
+      DOM.btnPublicar = document.getElementById("btn-publicar") || {
+        disabled: false,
+        addEventListener: () => {},
+        textContent: "",
+      };
+      DOM.btnDescartar = document.getElementById("btn-descartar") || {
+        disabled: false,
+        addEventListener: () => {},
+        textContent: "",
+      };
+      DOM.btnUpload = document.getElementById("upload-btn") || {
+        addEventListener: () => {},
+        textContent: "",
+      };
+      DOM.inputUpload = document.getElementById("image-upload") || {
+        addEventListener: () => {},
+        files: [],
+        value: "",
+      };
+      DOM.imagemPrincipal = document.querySelector(".main-imagem") || {
+        src: "",
+        style: {},
+        classList: {
+          add: () => {},
+          remove: () => {},
+        },
+      };
+      DOM.nomeImagem = document.querySelector(".container-imagem-nome p") || {
+        textContent: "",
+        style: {},
+      };
     },
   };
 
   const API = {
     criarPublicacao: async (dadosDoPost, timeout = 8000) => {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), timeout);
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+        console.warn("API.criarPublicacao: Requisição abortada por timeout.");
+      }, timeout);
 
       try {
-        console.log(
-          "API.criarPublicacao: Enviando requisição POST para:",
-          CONFIG.API_PUBLICACAO_URL
-        );
-        console.log(
-          "API.criarPublicacao: Dados do corpo (JSON):",
-          JSON.stringify(dadosDoPost)
-        );
-
         const response = await fetch(CONFIG.API_PUBLICACAO_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -154,28 +116,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
         clearTimeout(timeoutId);
 
-        console.log("API.criarPublicacao: Resposta da API:", response);
+        const responseData = await response.json().catch((err) => {
+          console.error(
+            "API.criarPublicacao: Erro ao parsear JSON da resposta:",
+            err
+          );
+
+          return { message: MESSAGES.errors.serverError };
+        });
 
         if (!response.ok) {
-          const errorData = await response
-            .json()
-            .catch(() => ({ message: MESSAGES.errors.serverError }));
           console.error(
             "API.criarPublicacao: Erro na resposta da API:",
-            errorData
+            responseData
           );
-          throw new Error(errorData.message || MESSAGES.errors.serverError);
+
+          throw new Error(responseData.message || MESSAGES.errors.serverError);
         }
 
-        const responseData = await response.json();
-        console.log(
-          "API.criarPublicacao: Dados da resposta (JSON):",
-          responseData
-        );
         return responseData;
       } catch (error) {
         clearTimeout(timeoutId);
         console.error("API.criarPublicacao: Erro na requisição:", error);
+        if (error.name === "AbortError") {
+          throw new Error("A requisição demorou muito tempo. Tente novamente.");
+        }
         throw error;
       }
     },
@@ -183,6 +148,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const Utils = {
     exibirMensagem: (elemento, texto, tipo = "erro") => {
+      if (!elemento) {
+        console.warn(
+          "Utils.exibirMensagem: Elemento de mensagem não encontrado."
+        );
+        return;
+      }
       elemento.textContent = texto;
       elemento.className = `mensagem-${tipo}`;
       elemento.style.display = "block";
@@ -193,15 +164,11 @@ document.addEventListener("DOMContentLoaded", () => {
     },
 
     validarFormulario: () => {
-      const form = DOM.form;
       const nomeProjeto = DOM.nomeProjeto.value.trim();
       const descricao = DOM.descricao.value.trim();
 
-      console.log("Utils.validarFormulario: Nome do Projeto:", nomeProjeto);
-      console.log("Utils.validarFormulario: Descrição:", descricao);
-
-      if (!form.checkValidity()) {
-        form.reportValidity();
+      if (DOM.form && !DOM.form.checkValidity()) {
+        DOM.form.reportValidity();
         console.warn(
           "Utils.validarFormulario: Formulário inválido (HTML5 validation)."
         );
@@ -211,10 +178,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (nomeProjeto.length < 3) {
         Utils.exibirMensagem(
           DOM.mensagem,
-          "O nome do projeto deve ter pelo menos 3 caracteres.",
+          MESSAGES.errors.nameTooShort,
           "erro"
         );
-        DOM.nomeProjeto.focus();
+        if (DOM.nomeProjeto) DOM.nomeProjeto.focus();
         console.warn("Utils.validarFormulario: Nome do projeto muito curto.");
         return false;
       }
@@ -222,15 +189,13 @@ document.addEventListener("DOMContentLoaded", () => {
       if (descricao.length < 10) {
         Utils.exibirMensagem(
           DOM.mensagem,
-          "A descrição deve ter pelo menos 10 caracteres.",
+          MESSAGES.errors.descriptionTooShort,
           "erro"
         );
-        DOM.descricao.focus();
+        if (DOM.descricao) DOM.descricao.focus();
         console.warn("Utils.validarFormulario: Descrição muito curta.");
         return false;
       }
-
-      console.log("Utils.validarFormulario: Formulário validado com sucesso.");
       return true;
     },
 
@@ -242,20 +207,26 @@ document.addEventListener("DOMContentLoaded", () => {
           "image/jpg",
           "image/gif",
         ];
-        console.log("Utils.lerArquivo: Tipo do arquivo:", arquivo.type);
+
+        if (!arquivo) {
+          console.error("Utils.lerArquivo: Nenhum arquivo fornecido.");
+          return reject("Nenhum arquivo selecionado para upload.");
+        }
 
         if (!tiposPermitidos.includes(arquivo.type)) {
-          console.error("Utils.lerArquivo: Tipo de imagem inválido.");
+          console.error(
+            "Utils.lerArquivo: Tipo de imagem inválido:",
+            arquivo.type
+          );
           return reject(MESSAGES.errors.invalidImage);
         }
 
         const leitor = new FileReader();
         leitor.onload = () => {
-          console.log("Utils.lerArquivo: Arquivo lido com sucesso.");
           resolve({ url: leitor.result, nome: arquivo.name });
         };
-        leitor.onerror = () => {
-          console.error("Utils.lerArquivo: Erro ao ler arquivo.");
+        leitor.onerror = (error) => {
+          console.error("Utils.lerArquivo: Erro ao ler arquivo:", error);
           reject(MESSAGES.errors.invalidImage);
         };
         leitor.readAsDataURL(arquivo);
@@ -263,38 +234,45 @@ document.addEventListener("DOMContentLoaded", () => {
     },
 
     limparFormulario: () => {
-      DOM.form.reset();
-      DOM.imagemPrincipal.src = "/assets/img/publicacao/imagem1.png";
-      DOM.nomeImagem.textContent = "image_projeto.png";
-      DOM.inputUpload.value = "";
+      if (DOM.form) DOM.form.reset();
+      if (DOM.imagemPrincipal)
+        DOM.imagemPrincipal.src = "/assets/img/publicacao/imagem1.png";
+      if (DOM.nomeImagem) DOM.nomeImagem.textContent = "image_projeto.png";
+      if (DOM.inputUpload) DOM.inputUpload.value = "";
       console.log("Utils.limparFormulario: Formulário limpo.");
     },
   };
 
   async function uploadCloudinary(file) {
+    if (!file) {
+      console.warn("uploadCloudinary: Nenhum arquivo para upload.");
+      return null;
+    }
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", CONFIG.CLOUDINARY.UPLOAD_PRESET);
-    console.log("uploadCloudinary: Iniciando upload para Cloudinary...");
     try {
       const response = await fetch(CONFIG.CLOUDINARY.UPLOAD_URL, {
         method: "POST",
         body: formData,
       });
       const data = await response.json();
-      console.log("uploadCloudinary: Resposta do Cloudinary:", data);
       if (data.secure_url) {
-        console.log("uploadCloudinary: URL segura obtida:", data.secure_url);
+        console.log(
+          "uploadCloudinary: Upload bem-sucedido. URL:",
+          data.secure_url
+        );
         return data.secure_url;
       } else {
         console.error(
-          "uploadCloudinary: secure_url não encontrada na resposta do Cloudinary."
+          "uploadCloudinary: secure_url não encontrada na resposta do Cloudinary.",
+          data
         );
-        return null;
+        throw new Error(MESSAGES.errors.uploadFailed);
       }
     } catch (error) {
       console.error("uploadCloudinary: Erro no upload para Cloudinary:", error);
-      return null;
+      throw new Error(MESSAGES.errors.uploadFailed);
     }
   }
 
@@ -302,14 +280,26 @@ document.addEventListener("DOMContentLoaded", () => {
     handleUpload: async (event) => {
       const arquivo = event.target.files[0];
       console.log("Handlers.handleUpload: Arquivo selecionado:", arquivo);
-      if (!arquivo) return;
+      if (!arquivo) {
+        if (DOM.imagemPrincipal)
+          DOM.imagemPrincipal.src = "/assets/img/publicacao/imagem1.png";
+        if (DOM.nomeImagem) DOM.nomeImagem.textContent = "image_projeto.png";
+        console.log(
+          "Handlers.handleUpload: Nenhuma imagem selecionada ou seleção cancelada."
+        );
+        return;
+      }
       try {
         const conteudo = await Utils.lerArquivo(arquivo);
-        DOM.imagemPrincipal.src = conteudo.url;
-        DOM.nomeImagem.textContent = conteudo.nome;
+        if (DOM.imagemPrincipal) DOM.imagemPrincipal.src = conteudo.url;
+        if (DOM.nomeImagem) DOM.nomeImagem.textContent = conteudo.nome;
         console.log("Handlers.handleUpload: Imagem preview atualizada.");
       } catch (erro) {
         Utils.exibirMensagem(DOM.mensagem, erro, "erro");
+        if (DOM.imagemPrincipal)
+          DOM.imagemPrincipal.src = "/assets/img/publicacao/imagem1.png";
+        if (DOM.nomeImagem) DOM.nomeImagem.textContent = "image_projeto.png";
+        if (DOM.inputUpload) DOM.inputUpload.value = "";
       }
     },
 
@@ -322,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!currentUserId) {
         Utils.exibirMensagem(DOM.mensagem, MESSAGES.errors.notLoggedIn, "erro");
         setTimeout(() => {
-          window.location.href = CONFIG.LOGIN_PAGE || "/pages/login.html";
+          window.location.href = CONFIG.LOGIN_PAGE;
         }, 2000);
         console.warn("Handlers.verificarAutenticacao: Usuário não logado.");
         return false;
@@ -333,18 +323,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     handleDescartar: () => {
       Utils.limparFormulario();
+      Utils.exibirMensagem(DOM.mensagem, "Formulário descartado.", "sucesso");
       console.log("Handlers.handleDescartar: Botão Descartar clicado.");
     },
 
     ajustarTextarea: () => {
-      const textarea = document.getElementById("descricao");
-      if (textarea) {
-        textarea.addEventListener("input", function () {
+      if (DOM.descricao) {
+        DOM.descricao.addEventListener("input", function () {
           this.style.height = "auto";
           this.style.height = this.scrollHeight + "px";
         });
         console.log(
           "Handlers.ajustarTextarea: Listener de ajuste de textarea adicionado."
+        );
+      } else {
+        console.warn(
+          "Handlers.ajustarTextarea: Elemento 'descricao' não encontrado para ajuste."
         );
       }
     },
@@ -352,8 +346,11 @@ document.addEventListener("DOMContentLoaded", () => {
     handleSubmit: async (event) => {
       event.preventDefault();
       const startTime = Date.now();
-      const currentUserId = localStorage.getItem("userId");
+
+      if (DOM.btnPublicar) DOM.btnPublicar.disabled = true;
       console.log("Handlers.handleSubmit: Início da submissão do formulário.");
+
+      const currentUserId = localStorage.getItem("userId");
       console.log(
         "Handlers.handleSubmit: currentUserId (do localStorage):",
         currentUserId
@@ -409,8 +406,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const dadosParaEnvio = {
           title: DOM.nomeProjeto.value.trim(),
           descricao: DOM.descricao.value.trim(),
-          // >>> CORREÇÃO AQUI: Mudado de 'userId' para 'usuarioId' <<<
-          usuarioId: currentUserId ? parseInt(currentUserId) : null, // Convertendo para número se existir, ou null
+          usuarioId: currentUserId ? parseInt(currentUserId) : null,
+          imageUrl: imageUrl || null,
         };
 
         const userName = localStorage.getItem("userName");
@@ -422,12 +419,8 @@ document.addEventListener("DOMContentLoaded", () => {
           );
         } else {
           console.warn(
-            "Handlers.handleSubmit: Nome do usuário 'userName' não encontrado no localStorage. Verifique se está 'username' ou outra chave."
+            "Handlers.handleSubmit: Nome do usuário 'userName' não encontrado no localStorage."
           );
-        }
-
-        if (imageUrl) {
-          dadosParaEnvio.imageUrl = imageUrl;
         }
 
         console.log(
@@ -442,7 +435,7 @@ document.addEventListener("DOMContentLoaded", () => {
           MESSAGES.success.postCreated,
           "sucesso"
         );
-        console.log("Handlers.handleSubmit: Post criado com sucesso!");
+        console.log("Handlers.handleSubmit: Projeto publicado com sucesso!");
 
         const elapsed = Date.now() - startTime;
         const remainingTime = Math.max(
@@ -462,36 +455,48 @@ document.addEventListener("DOMContentLoaded", () => {
           "Handlers.handleSubmit: Erro durante a submissão:",
           error
         );
-        if (error.name === "AbortError") {
-          Utils.exibirMensagem(
-            DOM.mensagem,
-            "A requisição demorou muito tempo. Tente novamente.",
-            "erro"
-          );
-        } else {
-          Utils.exibirMensagem(
-            DOM.mensagem,
-            error.message || MESSAGES.errors.serverError,
-            "erro"
-          );
-        }
+        Utils.exibirMensagem(
+          DOM.mensagem,
+          error.message || MESSAGES.errors.serverError,
+          "erro"
+        );
       } finally {
+        if (DOM.btnPublicar) DOM.btnPublicar.disabled = false;
         console.log("Handlers.handleSubmit: Finalizando submissão.");
       }
     },
   };
 
   const init = () => {
+    DOM.init();
     Handlers.ajustarTextarea();
 
-    // Remover este if, pois verificarAutenticacao já lida com o redirecionamento.
-    // if (!Handlers.verificarAutenticacao()) return;
+    if (DOM.form) {
+      DOM.form.addEventListener("submit", Handlers.handleSubmit);
+    } else {
+      console.warn("init: Formulário não encontrado. Submissão desativada.");
+    }
 
-    DOM.form.addEventListener("submit", Handlers.handleSubmit);
-    DOM.btnUpload.addEventListener("click", () => DOM.inputUpload.click());
+    if (DOM.btnUpload && DOM.inputUpload) {
+      DOM.btnUpload.addEventListener("click", () => DOM.inputUpload.click());
+    } else {
+      console.warn("init: Botão de upload ou input de imagem não encontrado.");
+    }
 
-    DOM.inputUpload.addEventListener("change", Handlers.handleUpload);
-    DOM.btnDescartar.addEventListener("click", Handlers.handleDescartar);
+    if (DOM.inputUpload) {
+      DOM.inputUpload.addEventListener("change", Handlers.handleUpload);
+    } else {
+      console.warn(
+        "init: Input de imagem não encontrado para listener de mudança."
+      );
+    }
+
+    if (DOM.btnDescartar) {
+      DOM.btnDescartar.addEventListener("click", Handlers.handleDescartar);
+    } else {
+      console.warn("init: Botão Descartar não encontrado.");
+    }
+
     console.log("init: Event listeners configurados.");
   };
 

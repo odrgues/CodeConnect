@@ -4,6 +4,7 @@
   --icon-container: 3.75rem;
   --logo-size: 6.25rem;
   --gap-items: 1.5rem;
+  --mobile-header-height: 6rem;
 }
 
 aside {
@@ -113,19 +114,19 @@ aside img[alt="logo do codeconnect"]:hover {
 }
 
 @media (max-width: 1023px) {
-  aside {
-    width: 100%;
-    height: auto;
+  body {
+    padding-top: var(--mobile-header-height);
+  }
+
+  body::before {
+    content: '';
     position: fixed;
-    bottom: 0;
-    top: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: stretch;
-    padding: 0.5rem 5rem 0.5rem 3rem;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--mobile-header-height);
     background-color: var(--cor-cinza-escuro);
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
   }
 
@@ -134,30 +135,45 @@ aside img[alt="logo do codeconnect"]:hover {
     position: fixed;
     top: 2.4rem;
     left: 3.5rem;
-    width: 8.5rem;
+    width: 5rem;
     height: auto;
     z-index: 1001;
-  }
-
-  aside.pagina-publicar img[alt="logo do codeconnect"],
-  aside.pagina-publicar .btn-publicar {
-    display: none !important;
   }
 
   .btn-publicar {
     display: block;
     position: fixed;
-    top: 0.95rem;
-    right: 0.75rem;
-    font-size: 20px;
-    font-weight: 300;
-    padding: 0.7rem 0.75rem;
+    top: 2.0rem;
+    right: 1.8rem;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+    width: auto;
+    max-width: 150px;
+    height: auto;
+    margin: 0;
     z-index: 1001;
-    width: 200px;
-    height: 60px;
+    left: auto;
+    transform: none;
+  }
+
+  aside {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
+    padding: 0.5rem 5rem 0.5rem 3rem;
+    background-color: var(--cor-cinza-escuro);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
   }
 
   .lista-links {
+    list-style: none;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -165,6 +181,7 @@ aside img[alt="logo do codeconnect"]:hover {
     width: 100%;
     height: 100%;
     margin: 0;
+    padding: 0;
     gap: 40px;
   }
 
@@ -182,6 +199,7 @@ aside img[alt="logo do codeconnect"]:hover {
   .menu-link img {
     width: 52px;
     height: 92px;
+    object-fit: contain;
     transition: all 0.3s ease;
   }
 
@@ -192,5 +210,50 @@ aside img[alt="logo do codeconnect"]:hover {
   .menu-link:hover img {
     transform: scale(1.25);
     filter: brightness(1.2);
+  }
+
+  /* REGRAS PARA OCULTAR NA PÁGINA DE PUBLICAR (RESPONSIVO) */
+  /* Oculta o logo e o botão */
+  aside.pagina-publicar img[alt="logo do codeconnect"],
+  aside.pagina-publicar .btn-publicar {
+    display: none !important;
+  }
+
+  /* Oculta o background fixo e remove o padding-top do body
+     quando o body tem a classe 'pagina-publicar' */
+  body.pagina-publicar::before {
+    display: none;
+  }
+
+  body.pagina-publicar {
+    padding-top: 0 !important; /* Remove o padding-top para evitar espaço vazio */
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --mobile-header-height: 7.2rem;
+  }
+
+  body {
+    padding-top: var(--mobile-header-height);
+  }
+
+  aside img[alt="logo do codeconnect"] {
+    width: 4rem;
+    top: 1rem;
+    left: 42%;
+    transform: none;
+    right: auto;
+  }
+
+  .btn-publicar {
+    width: 100px;
+    height: 35px;
+    font-size: 0.8rem;
+    top: calc(0.5rem + 3rem + 0.1rem);
+    left: 40%;
+    transform: none;
+    right: auto;
   }
 }
