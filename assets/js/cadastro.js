@@ -1,66 +1,73 @@
-<<<<<<< HEAD
-const CONFIG = {
-  API_URL: "http://localhost:8080/api/v1/usuarios",
-=======
+// js/cadastro.js
+
+// Todo o código deve estar dentro deste único listener DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
+  // === INÍCIO DAS CONFIGURAÇÕES ===
+  // Esta é a ÚNICA declaração de CONFIG
   const CONFIG = {
-    API_URL: "http://localhost:8080/api/v1/usuarios",
+    API_URL: "http://localhost:8080/api/v1/usuarios", // URL do endpoint de cadastro (sem espaço no final)
     MIN_LOADER_TIME: 1500,
     MESSAGE_DISPLAY_TIME: 1500,
-    LOGIN_PAGE: "../pages/login.html",
+    LOGIN_PAGE: "../pages/login.html", // Caminho para a página de login
   };
->>>>>>> master
+  // === FIM DAS CONFIGURAÇÕES ===
 
+  // === INÍCIO DA SELEÇÃO DE ELEMENTOS DOM ===
   const DOM = {
-    form: null,
-    nome: null,
-    email: null,
-    senha: null,
-    toggleSenha: null,
-    iconeSenha: null,
-    mensagem: null,
-    btnCadastro: null,
+    // Usando getters para garantir que os elementos sejam buscados após o DOM estar pronto
+    get form() {
+      return document.getElementById("form-cadastro");
+    },
+    get nome() {
+      return document.getElementById("nome");
+    },
+    get email() {
+      return document.getElementById("email-cadastro");
+    },
+    get senha() {
+      return document.getElementById("senha");
+    },
+    get toggleSenha() {
+      return document.getElementById("toggle-senha");
+    },
+    get iconeSenha() {
+      return document.querySelector(".icone-senha-cadastro");
+    },
+    get mensagem() {
+      return document.getElementById("mensagem-cadastro");
+    },
+    get btnCadastro() {
+      return document.getElementById("btn-cadastro");
+    },
 
+    // Função init para inicializar e verificar a presença dos elementos
     init: () => {
-      DOM.form = document.getElementById("form-cadastro") || {
-        addEventListener: () => {},
-        requestSubmit: () => {},
-      };
-      DOM.nome = document.getElementById("nome") || {
-        value: "",
-        addEventListener: () => {},
-        focus: () => {},
-      };
-      DOM.email = document.getElementById("email-cadastro") || {
-        value: "",
-        addEventListener: () => {},
-        focus: () => {},
-      };
-      DOM.senha = document.getElementById("senha") || {
-        value: "",
-        type: "password",
-        addEventListener: () => {},
-        focus: () => {},
-      };
-      DOM.toggleSenha = document.getElementById("toggle-senha") || {
-        addEventListener: () => {},
-      };
-      DOM.iconeSenha = document.querySelector(".icone-senha-cadastro") || {
-        src: "",
-      };
-      DOM.mensagem = document.getElementById("mensagem-cadastro");
-      if (!DOM.mensagem) {
-        console.warn(
-          "Elemento 'mensagem-cadastro' não encontrado. Mensagens de feedback podem não ser exibidas."
-        );
-      }
-      DOM.btnCadastro = document.getElementById("btn-cadastro") || {
-        disabled: false,
-        innerHTML: "",
-        textContent: "",
-      };
+      // Atribui os elementos DOM diretamente
+      DOM.form = DOM.form; // Reatribui para acionar o getter e pegar o elemento real
+      DOM.nome = DOM.nome;
+      DOM.email = DOM.email;
+      DOM.senha = DOM.senha;
+      DOM.toggleSenha = DOM.toggleSenha;
+      DOM.iconeSenha = DOM.iconeSenha;
+      DOM.mensagem = DOM.mensagem;
+      DOM.btnCadastro = DOM.btnCadastro;
+
+      // Adiciona warnings se algum elemento essencial não for encontrado
+      if (!DOM.form) console.warn("Elemento 'form-cadastro' não encontrado.");
+      if (!DOM.nome) console.warn("Elemento 'nome' não encontrado.");
+      if (!DOM.email) console.warn("Elemento 'email-cadastro' não encontrado.");
+      if (!DOM.senha) console.warn("Elemento 'senha' não encontrado.");
+      if (!DOM.toggleSenha)
+        console.warn("Elemento 'toggle-senha' não encontrado.");
+      if (!DOM.iconeSenha)
+        console.warn("Elemento '.icone-senha-cadastro' não encontrado.");
+      if (!DOM.mensagem)
+        console.warn("Elemento 'mensagem-cadastro' não encontrado.");
+      if (!DOM.btnCadastro)
+        console.warn("Elemento 'btn-cadastro' não encontrado.");
     },
   };
+  // === FIM DA SELEÇÃO DE ELEMENTOS DOM ===
 
   const IMAGES = {
     show: "../assets/img/cadastro-login/visibility.png",
@@ -227,7 +234,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const init = () => {
-    DOM.init();
+    DOM.init(); // Inicializa os elementos DOM
+
+    // Adiciona event listeners e atributos de acessibilidade
     if (DOM.toggleSenha) {
       DOM.toggleSenha.addEventListener(
         "click",
@@ -247,6 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
 
+    // Navegação com Enter
     if (DOM.nome && DOM.email) {
       DOM.nome.addEventListener("keydown", (e) => {
         if (e.key === "Enter") DOM.email.focus();
@@ -266,5 +276,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  init();
+  init(); // Chama a função de inicialização
 });

@@ -1,15 +1,21 @@
+// js/login.js
+
 document.addEventListener("DOMContentLoaded", () => {
-<<<<<<< HEAD
+  // === INÍCIO: Lógica para verificar se o usuário já está logado ===
+  // Se o token JWT já existir no localStorage, redireciona para a página do feed
   if (localStorage.getItem("jwt_token")) {
-    window.location.href = "/pages/feed.html";
-    return;
+    window.location.href = "/pages/feed.html"; // Ajuste o caminho se necessário para a página do feed
+    return; // Interrompe a execução do script para não tentar logar novamente
   }
+  // === FIM: Lógica para verificar se o usuário já está logado ===
 
   const CONFIG = {
-    API_URL: "http://localhost:8080/api/v1/auth",
+    // URL do endpoint de login do backend.
+    // Confirmado: http://localhost:8080/api/v1/auth/ (com a barra final)
+    API_URL: "http://localhost:8080/api/v1/auth/", // <<== AJUSTADO AQUI PARA INCLUIR A BARRA FINAL
     MIN_LOADER_TIME: 1500,
     MESSAGE_DISPLAY_TIME: 1500,
-    FEED_PAGE: "/pages/feed.html",
+    FEED_PAGE: "/pages/feed.html", // Caminho para a página do feed
   };
 
   const DOM = {
@@ -22,14 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
     mensagem: null,
 
     init: () => {
+      // Usando getElementById diretamente e adicionando warnings se não encontrados
       DOM.form = document.getElementById("form-login");
       DOM.btnLogin = document.getElementById("btn-login");
       DOM.email = document.getElementById("email-login");
       DOM.senha = document.getElementById("senha-login");
       DOM.toggleSenha = document.getElementById("toggle-senha");
-      DOM.iconeSenha = document.querySelector(".icone-senha-login");
+      DOM.iconeSenha = document.querySelector(".icone-senha-login"); // Usando querySelector para classe
       DOM.mensagem = document.getElementById("mensagem-login");
 
+      // Adição de console.warn para elementos não encontrados para depuração
       if (!DOM.form) console.warn("Elemento 'form-login' não encontrado.");
       if (!DOM.btnLogin) console.warn("Elemento 'btn-login' não encontrado.");
       if (!DOM.email) console.warn("Elemento 'email-login' não encontrado.");
@@ -57,86 +65,13 @@ document.addEventListener("DOMContentLoaded", () => {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
-          body: JSON.stringify(dados),
+          body: JSON.stringify(dados), // Dados: { email: "...", password: "..." }
         });
 
-=======
-  const CONFIG = {
-    API_URL: "http://localhost:8080/api/v1/usuarios/login",
-    MIN_LOADER_TIME: 1500,
-    MESSAGE_DISPLAY_TIME: 1500,
-    FEED_PAGE: "/pages/feed.html",
-  };
-
-  const DOM = {
-    form: null,
-    btnLogin: null,
-    email: null,
-    senha: null,
-    toggleSenha: null,
-    iconeSenha: null,
-    mensagem: null,
-
-    init: () => {
-      DOM.form = document.getElementById("form-login") || {
-        addEventListener: () => {},
-        requestSubmit: () => {},
-      };
-
-      DOM.btnLogin = document.getElementById("btn-login") || {
-        disabled: false,
-        innerHTML: "",
-        textContent: "",
-      };
-
-      DOM.email = document.getElementById("email-login") || {
-        value: "",
-        addEventListener: () => {},
-        focus: () => {},
-      };
-
-      DOM.senha = document.getElementById("senha-login") || {
-        value: "",
-        type: "password",
-        addEventListener: () => {},
-        focus: () => {},
-      };
-      DOM.toggleSenha = document.getElementById("toggle-senha") || {
-        addEventListener: () => {},
-      };
-      DOM.iconeSenha = document.querySelector(".icone-senha-login") || {
-        src: "",
-      };
-      DOM.mensagem = document.getElementById("mensagem-login");
-      if (!DOM.mensagem) {
-        console.warn(
-          "Elemento 'mensagem-login' não encontrado. Mensagens de feedback podem não ser exibidas."
-        );
-      }
-    },
-  };
-
-  const IMAGES = {
-    show: "../assets/img/cadastro-login/visibility.png",
-    hide: "../assets/img/cadastro-login/visibility_off.png",
-  };
-
-  const API = {
-    loginUsuario: async (dados) => {
-      try {
-        const response = await fetch(CONFIG.API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify(dados),
-        });
-
->>>>>>> master
         const responseData = await response.json();
 
         if (!response.ok) {
+          // Se a resposta não for 200 OK, lançar um erro
           const error = new Error(
             responseData.message ||
               `Erro do servidor: Status ${response.status}`
@@ -144,10 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
           error.status = response.status;
           throw error;
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
+        // Se a resposta.ok for true, retorna os dados (que devem conter o token)
         return responseData;
       } catch (error) {
         console.error("Erro na API de login:", error);
@@ -177,13 +109,10 @@ document.addEventListener("DOMContentLoaded", () => {
     },
 
     toggleLoader: (elemento, isLoading) => {
-<<<<<<< HEAD
-      if (!elemento) return;
-=======
->>>>>>> master
+      if (!elemento) return; // Garante que o elemento existe
       if (isLoading) {
         elemento.dataset.originalText = elemento.textContent;
-        elemento.innerHTML = '<span class="loader"></span>';
+        elemento.innerHTML = '<span class="loader"></span>'; // Assumindo que você tem CSS para .loader
         elemento.disabled = true;
       } else {
         elemento.textContent = elemento.dataset.originalText || "Entrar";
@@ -195,11 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const Handlers = {
     toggleVisibilidadeSenha: () => {
       if (!DOM.senha || !DOM.toggleSenha || !DOM.iconeSenha) {
-<<<<<<< HEAD
         console.warn("Elementos de senha ou ícone de toggle não encontrados.");
-=======
-        console.warn("Elementos de senah ou ícone de toggle não encontrados.");
->>>>>>> master
         return;
       }
 
@@ -209,24 +134,17 @@ document.addEventListener("DOMContentLoaded", () => {
     },
 
     handleSubmit: async (event) => {
-      event.preventDefault();
-<<<<<<< HEAD
-      const startTime = Date.now();
+      event.preventDefault(); // Impede o recarregamento da página
+      const startTime = Date.now(); // Correção: 'startime' para 'startTime'
 
-      Utils.toggleLoader(DOM.btnLogin, true);
+      Utils.toggleLoader(DOM.btnLogin, true); // Ativa o loader no botão
 
       const dados = {
-        email: DOM.email ? DOM.email.value.trim().toLowerCase() : "",
-        password: DOM.senha ? DOM.senha.value : "",
-=======
-      const startime = Date.now();
-      Utils.toggleLoader(DOM.btnLogin, true);
-      const dados = {
-        email: DOM.email.value.trim().toLowerCase(),
-        password: DOM.senha.value,
->>>>>>> master
+        email: DOM.email ? DOM.email.value.trim().toLowerCase() : "", // Garante que DOM.email existe
+        password: DOM.senha ? DOM.senha.value : "", // Garante que DOM.senha existe
       };
 
+      // === Validações de Entrada ===
       if (!dados.email) {
         Utils.exibirMensagem(
           DOM.mensagem,
@@ -241,56 +159,44 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!dados.password) {
         Utils.exibirMensagem(
           DOM.mensagem,
-<<<<<<< HEAD
           "Por favor, insira sua senha.",
           "erro"
         );
-=======
-          "Pro favor, insira sua senha.",
-          "erro"
-        );
-
->>>>>>> master
         if (DOM.senha) DOM.senha.focus();
         Utils.toggleLoader(DOM.btnLogin, false);
         return;
       }
 
       if (!Utils.validarEmail(dados.email)) {
-<<<<<<< HEAD
         Utils.exibirMensagem(DOM.mensagem, "E-mail inválido.", "erro");
-=======
-        Utils.exibirMensagem(DOM.mensagem, "E-mail inválido", "erro");
->>>>>>> master
         if (DOM.email) DOM.email.focus();
         Utils.toggleLoader(DOM.btnLogin, false);
         return;
       }
+      // === FIM Validações de Entrada ===
 
       try {
         const resposta = await API.loginUsuario(dados);
-<<<<<<< HEAD
 
+        // === INÍCIO: Lógica para armazenar o JWT ===
         if (resposta.token) {
-          localStorage.setItem("jwt_token", resposta.token);
+          // Confirma que o backend retorna o token na chave 'token'
+          localStorage.setItem("jwt_token", resposta.token); // <<== AQUI ESTÁ O JWT
+          // Se o backend também retorna o ID do usuário separadamente e você precisa, mantenha:
+          // localStorage.setItem("userId", resposta.id); // Você pode manter isso se quiser o ID separado
         } else {
+          // Se o token não veio na resposta esperada, trate como erro
           throw new Error("Token de autenticação não recebido na resposta.");
         }
+        // === FIM: Lógica para armazenar o JWT ===
 
-=======
-        localStorage.setItem("userId", resposta.id);
->>>>>>> master
         Utils.exibirMensagem(
           DOM.mensagem,
           resposta.message || "Login realizado com sucesso!",
           "sucesso"
         );
 
-<<<<<<< HEAD
-        const elapsed = Date.now() - startTime;
-=======
-        const elapsed = Date.now() - startime;
->>>>>>> master
+        const elapsed = Date.now() - startTime; // Correção: 'startime' para 'startTime'
         const remainingLoaderTime = Math.max(
           0,
           CONFIG.MIN_LOADER_TIME - elapsed
@@ -298,10 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(() => {
           Utils.toggleLoader(DOM.btnLogin, false);
-<<<<<<< HEAD
-
-=======
->>>>>>> master
+          // Redireciona após exibir a mensagem de sucesso e o tempo mínimo do loader
           setTimeout(() => {
             window.location.href = CONFIG.FEED_PAGE;
           }, CONFIG.MESSAGE_DISPLAY_TIME);
@@ -309,28 +212,28 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (error) {
         Utils.exibirMensagem(
           DOM.mensagem,
-          error.message || "Credenciais inválidas. Tente novamente.",
+          error.message || "Credenciais inválidas. Tente novamente.", // Mensagem genérica para erro no login
           "erro"
         );
       } finally {
+        // Sempre limpa a senha após a tentativa, sucesso ou falha
         if (DOM.senha) {
           DOM.senha.value = "";
         }
-<<<<<<< HEAD
-
+        // O loader é desativado no finally apenas se não houve erro que o desligou antes
+        // Ou em caso de erro na API, para que o loader não fique travado
         if (DOM.btnLogin && DOM.btnLogin.disabled) {
+          // Desativa o loader se ainda estiver ativo
           Utils.toggleLoader(DOM.btnLogin, false);
         }
-=======
->>>>>>> master
       }
     },
   };
 
   const init = () => {
-    DOM.init();
+    DOM.init(); // Inicializa os elementos DOM
 
-<<<<<<< HEAD
+    // Configura listeners e atributos de acessibilidade
     if (DOM.email) DOM.email.setAttribute("aria-label", "Insira seu e-mail");
     if (DOM.senha) DOM.senha.setAttribute("aria-label", "Insira sua senha");
 
@@ -353,6 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
 
+    // Navegação com Enter
     if (DOM.email && DOM.senha) {
       DOM.email.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
@@ -362,43 +266,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-=======
-    if (DOM.email) {
-      DOM.email.setAttribute("aria-label", "Insira seu e-mail");
-    }
-
-    if (DOM.senha) {
-      DOM.senha.setAttribute("aria-label", "Insira sua senha");
-    }
-
-    if (DOM.toggleSenha) {
-      DOM.toggleSenha.addEventListener(
-        "click",
-        Handlers.toggleVisibilidadeSenha
-      );
-    } else {
-      console.warn(
-        "Elemento 'toggle-senha' não encontrado. Funcionalidade de toggle de senha desativada."
-      );
-    }
-
-    if (DOM.form) {
-      DOM.form.addEventListener("submit", Handlers.handleSubmit);
-    } else {
-      console.warn(
-        "Elemento 'form-login' não encontrado. Submissão do formulário não funcionará."
-      );
-    }
-    if (DOM.email && DOM.senha) {
-      DOM.email.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          DOM.senha.focus();
-        }
-      });
-    }
-
->>>>>>> master
     if (DOM.senha && DOM.form) {
       DOM.senha.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
@@ -408,5 +275,5 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   };
-  init();
+  init(); // Chama a função de inicialização
 });
