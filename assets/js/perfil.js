@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   );
 
   const token = getAuthToken();
+  console.log("Perfil JS: Token JWT obtido:", token);
   if (!token) {
     console.log(
       "Perfil JS: Token JWT não encontrado. Redirecionando para login."
