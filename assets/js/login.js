@@ -1,21 +1,14 @@
-// js/login.js
-
 document.addEventListener("DOMContentLoaded", () => {
-  // === INÍCIO: Lógica para verificar se o usuário já está logado ===
-  // Se o token JWT já existir no localStorage, redireciona para a página do feed
   if (localStorage.getItem("jwt_token")) {
-    window.location.href = "/pages/feed.html"; // Ajuste o caminho se necessário para a página do feed
-    return; // Interrompe a execução do script para não tentar logar novamente
+    window.location.href = "/pages/feed.html";
+    return;
   }
-  // === FIM: Lógica para verificar se o usuário já está logado ===
 
   const CONFIG = {
-    // URL do endpoint de login do backend.
-    // Confirmado: http://localhost:8080/api/v1/auth/ (com a barra final)
-    API_URL: "http://localhost:8080/api/v1/auth/", // <<== AJUSTADO AQUI PARA INCLUIR A BARRA FINAL
+    API_URL: "http://localhost:8080/api/v1/auth/",
     MIN_LOADER_TIME: 1500,
     MESSAGE_DISPLAY_TIME: 1500,
-    FEED_PAGE: "/pages/feed.html", // Caminho para a página do feed
+    FEED_PAGE: "/pages/feed.html",
   };
 
   const DOM = {
@@ -28,16 +21,14 @@ document.addEventListener("DOMContentLoaded", () => {
     mensagem: null,
 
     init: () => {
-      // Usando getElementById diretamente e adicionando warnings se não encontrados
       DOM.form = document.getElementById("form-login");
       DOM.btnLogin = document.getElementById("btn-login");
       DOM.email = document.getElementById("email-login");
       DOM.senha = document.getElementById("senha-login");
       DOM.toggleSenha = document.getElementById("toggle-senha");
-      DOM.iconeSenha = document.querySelector(".icone-senha-login"); // Usando querySelector para classe
+      DOM.iconeSenha = document.querySelector(".icone-senha-login");
       DOM.mensagem = document.getElementById("mensagem-login");
 
-      // Adição de console.warn para elementos não encontrados para depuração
       if (!DOM.form) console.warn("Elemento 'form-login' não encontrado.");
       if (!DOM.btnLogin) console.warn("Elemento 'btn-login' não encontrado.");
       if (!DOM.email) console.warn("Elemento 'email-login' não encontrado.");
@@ -65,13 +56,12 @@ document.addEventListener("DOMContentLoaded", () => {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
-          body: JSON.stringify(dados), // Dados: { email: "...", password: "..." }
+          body: JSON.stringify(dados),
         });
 
         const responseData = await response.json();
 
         if (!response.ok) {
-          // Se a resposta não for 200 OK, lançar um erro
           const error = new Error(
             responseData.message ||
               `Erro do servidor: Status ${response.status}`
@@ -79,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
           error.status = response.status;
           throw error;
         }
-        // Se a resposta.ok for true, retorna os dados (que devem conter o token)
+
         return responseData;
       } catch (error) {
         console.error("Erro na API de login:", error);
@@ -109,10 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
     },
 
     toggleLoader: (elemento, isLoading) => {
-      if (!elemento) return; // Garante que o elemento existe
+      if (!elemento) return;
       if (isLoading) {
         elemento.dataset.originalText = elemento.textContent;
-        elemento.innerHTML = '<span class="loader"></span>'; // Assumindo que você tem CSS para .loader
+        elemento.innerHTML = '<span class="loader"></span>';
         elemento.disabled = true;
       } else {
         elemento.textContent = elemento.dataset.originalText || "Entrar";
@@ -134,17 +124,16 @@ document.addEventListener("DOMContentLoaded", () => {
     },
 
     handleSubmit: async (event) => {
-      event.preventDefault(); // Impede o recarregamento da página
-      const startTime = Date.now(); // Correção: 'startime' para 'startTime'
+      event.preventDefault();
+      const startTime = Date.now();
 
-      Utils.toggleLoader(DOM.btnLogin, true); // Ativa o loader no botão
+      Utils.toggleLoader(DOM.btnLogin, true);
 
       const dados = {
-        email: DOM.email ? DOM.email.value.trim().toLowerCase() : "", // Garante que DOM.email existe
-        password: DOM.senha ? DOM.senha.value : "", // Garante que DOM.senha existe
+        email: DOM.email ? DOM.email.value.trim().toLowerCase() : "",
+        password: DOM.senha ? DOM.senha.value : "",
       };
 
-      // === Validações de Entrada ===
       if (!dados.email) {
         Utils.exibirMensagem(
           DOM.mensagem,
@@ -173,22 +162,15 @@ document.addEventListener("DOMContentLoaded", () => {
         Utils.toggleLoader(DOM.btnLogin, false);
         return;
       }
-      // === FIM Validações de Entrada ===
 
       try {
         const resposta = await API.loginUsuario(dados);
 
-        // === INÍCIO: Lógica para armazenar o JWT ===
         if (resposta.token) {
-          // Confirma que o backend retorna o token na chave 'token'
-          localStorage.setItem("jwt_token", resposta.token); // <<== AQUI ESTÁ O JWT
-          // Se o backend também retorna o ID do usuário separadamente e você precisa, mantenha:
-          // localStorage.setItem("userId", resposta.id); // Você pode manter isso se quiser o ID separado
+          localStorage.setItem("jwt_token", resposta.token);
         } else {
-          // Se o token não veio na resposta esperada, trate como erro
           throw new Error("Token de autenticação não recebido na resposta.");
         }
-        // === FIM: Lógica para armazenar o JWT ===
 
         Utils.exibirMensagem(
           DOM.mensagem,
@@ -196,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
           "sucesso"
         );
 
-        const elapsed = Date.now() - startTime; // Correção: 'startime' para 'startTime'
+        const elapsed = Date.now() - startTime;
         const remainingLoaderTime = Math.max(
           0,
           CONFIG.MIN_LOADER_TIME - elapsed
@@ -204,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(() => {
           Utils.toggleLoader(DOM.btnLogin, false);
-          // Redireciona após exibir a mensagem de sucesso e o tempo mínimo do loader
+
           setTimeout(() => {
             window.location.href = CONFIG.FEED_PAGE;
           }, CONFIG.MESSAGE_DISPLAY_TIME);
@@ -212,18 +194,15 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (error) {
         Utils.exibirMensagem(
           DOM.mensagem,
-          error.message || "Credenciais inválidas. Tente novamente.", // Mensagem genérica para erro no login
+          error.message || "Credenciais inválidas. Tente novamente.",
           "erro"
         );
       } finally {
-        // Sempre limpa a senha após a tentativa, sucesso ou falha
         if (DOM.senha) {
           DOM.senha.value = "";
         }
-        // O loader é desativado no finally apenas se não houve erro que o desligou antes
-        // Ou em caso de erro na API, para que o loader não fique travado
+
         if (DOM.btnLogin && DOM.btnLogin.disabled) {
-          // Desativa o loader se ainda estiver ativo
           Utils.toggleLoader(DOM.btnLogin, false);
         }
       }
@@ -231,9 +210,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const init = () => {
-    DOM.init(); // Inicializa os elementos DOM
+    DOM.init();
 
-    // Configura listeners e atributos de acessibilidade
     if (DOM.email) DOM.email.setAttribute("aria-label", "Insira seu e-mail");
     if (DOM.senha) DOM.senha.setAttribute("aria-label", "Insira sua senha");
 
@@ -256,7 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
 
-    // Navegação com Enter
     if (DOM.email && DOM.senha) {
       DOM.email.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
@@ -275,5 +252,5 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   };
-  init(); // Chama a função de inicialização
+  init();
 });

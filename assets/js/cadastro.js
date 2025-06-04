@@ -1,20 +1,12 @@
-// js/cadastro.js
-
-// Todo o código deve estar dentro deste único listener DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
-  // === INÍCIO DAS CONFIGURAÇÕES ===
-  // Esta é a ÚNICA declaração de CONFIG
   const CONFIG = {
-    API_URL: "http://localhost:8080/api/v1/usuarios", // URL do endpoint de cadastro (sem espaço no final)
+    API_URL: "http://localhost:8080/api/v1/usuarios",
     MIN_LOADER_TIME: 1500,
     MESSAGE_DISPLAY_TIME: 1500,
-    LOGIN_PAGE: "../pages/login.html", // Caminho para a página de login
+    LOGIN_PAGE: "../pages/login.html",
   };
-  // === FIM DAS CONFIGURAÇÕES ===
 
-  // === INÍCIO DA SELEÇÃO DE ELEMENTOS DOM ===
   const DOM = {
-    // Usando getters para garantir que os elementos sejam buscados após o DOM estar pronto
     get form() {
       return document.getElementById("form-cadastro");
     },
@@ -40,10 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return document.getElementById("btn-cadastro");
     },
 
-    // Função init para inicializar e verificar a presença dos elementos
     init: () => {
-      // Atribui os elementos DOM diretamente
-      DOM.form = DOM.form; // Reatribui para acionar o getter e pegar o elemento real
+      DOM.form = DOM.form;
       DOM.nome = DOM.nome;
       DOM.email = DOM.email;
       DOM.senha = DOM.senha;
@@ -52,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
       DOM.mensagem = DOM.mensagem;
       DOM.btnCadastro = DOM.btnCadastro;
 
-      // Adiciona warnings se algum elemento essencial não for encontrado
       if (!DOM.form) console.warn("Elemento 'form-cadastro' não encontrado.");
       if (!DOM.nome) console.warn("Elemento 'nome' não encontrado.");
       if (!DOM.email) console.warn("Elemento 'email-cadastro' não encontrado.");
@@ -67,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.warn("Elemento 'btn-cadastro' não encontrado.");
     },
   };
-  // === FIM DA SELEÇÃO DE ELEMENTOS DOM ===
 
   const IMAGES = {
     show: "../assets/img/cadastro-login/visibility.png",
@@ -234,9 +222,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const init = () => {
-    DOM.init(); // Inicializa os elementos DOM
+    DOM.init();
 
-    // Adiciona event listeners e atributos de acessibilidade
     if (DOM.toggleSenha) {
       DOM.toggleSenha.addEventListener(
         "click",
@@ -256,7 +243,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
 
-    // Navegação com Enter
     if (DOM.nome && DOM.email) {
       DOM.nome.addEventListener("keydown", (e) => {
         if (e.key === "Enter") DOM.email.focus();
@@ -276,5 +262,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  init(); // Chama a função de inicialização
+  init();
 });

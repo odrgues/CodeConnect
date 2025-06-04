@@ -33,7 +33,52 @@
             margin-top: 15px;
             margin-bottom: 15px;
             display: none;
+        }
 
+
+        #confirmacao-exclusao-modal {
+            display: none;
+            /* Inicialmente oculto */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1000;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        #confirmacao-exclusao-modal h4,
+        #confirmacao-exclusao-modal p {
+            color: black;
+
+        }
+
+        #confirmacao-exclusao-modal button {
+
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        #btn-confirmar-exclusao {
+            background-color: #dc3545;
+
+            color: white;
+        }
+
+        #btn-cancelar-confirmacao {
+            background-color: #6c757d;
+
+            color: white;
         }
     </style>
 </head>
@@ -43,7 +88,6 @@
 
     <main>
         <div class="container">
-
             <div class="detalhes-usuario">
                 <img id="foto-perfil-padrao" src="../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif"
                     alt="Foto de Perfil" class="foto-perfil">
@@ -68,7 +112,6 @@
                     <button id="cancelar-edicao-btn">Cancelar</button>
                 </div>
             </div>
-
         </div>
 
         <output id="mensagem-perfil"></output>
@@ -91,38 +134,19 @@
                 style="background-color: #dc3545; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; display: none;">Excluir
                 Post</button>
 
-            <div id="confirmacao-exclusao-modal" style="
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.95);
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        z-index: 1000;
-        border-radius: 8px;
-        box-sizing: border-box;
-        display: flex;
-    ">
-
+            <div id="confirmacao-exclusao-modal">
                 <h4>Tem certeza que deseja excluir este post?</h4>
                 <p>Esta ação não pode ser desfeita.</p>
                 <div style="margin-top: 20px;">
-                    <button id="btn-confirmar-exclusao"
-                        style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px;">Sim,
-                        Excluir</button>
-                    <button id="btn-cancelar-confirmacao"
-                        style="background-color: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Cancelar</button>
+                    <button id="btn-confirmar-exclusao">Sim, Excluir</button>
+                    <button id="btn-cancelar-confirmacao">Cancelar</button>
                 </div>
             </div>
         </div>
     </div>
 
 
+    <script src="../assets/js/authUtils.js"></script>
     <script src="../assets/js/perfil.js"></script>
     <script src="../assets/js/aside.js"></script>
 </body>

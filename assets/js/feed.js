@@ -1,4 +1,14 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  const token = getAuthToken();
+  if (!token) {
+    console.log(
+      "Feed JS: Token JWT não encontrado. Redirecionando para login."
+    );
+    window.location.href = "../pages/login.html";
+    return;
+  }
+  console.log("Feed JS: Token JWT encontrado. Usuário autenticado.");
+
   let listaDeProjetos = [];
 
   const CONFIG = {
@@ -44,18 +54,49 @@ document.addEventListener("DOMContentLoaded", () => {
       DOM.detalheDescricao = document.getElementById("detalhe-descricao");
       DOM.detalheCriacao = document.getElementById("detalhe-data-criacao");
       DOM.detalheImagemPost = document.getElementById("detalhe-imagem-post");
+
+      if (!DOM.projectList)
+        console.warn("DOM.init: Elemento 'project-list' não encontrado.");
+      if (!DOM.searchInput)
+        console.warn("DOM.init: Elemento 'search-input' não encontrado.");
+      if (!DOM.sortBySelect)
+        console.warn("DOM.init: Elemento 'sort-by' não encontrado.");
+      if (!DOM.detalhesModal)
+        console.warn("DOM.init: Elemento 'detalhes-modal' não encontrado.");
+      if (!DOM.closeModalButton)
+        console.warn(
+          "DOM.init: Elemento '.close-button' (modal) não encontrado."
+        );
+      if (!DOM.detalheTitulo)
+        console.warn("DOM.init: Elemento 'detalhe-titulo' não encontrado.");
+      if (!DOM.detalheUsuario)
+        console.warn("DOM.init: Elemento 'detalhe-usuario' não encontrado.");
+      if (!DOM.detalheDescricao)
+        console.warn("DOM.init: Elemento 'detalhe-descricao' não encontrado.");
+      if (!DOM.detalheCriacao)
+        console.warn(
+          "DOM.init: Elemento 'detalhe-data-criacao' não encontrado."
+        );
+      if (!DOM.detalheImagemPost)
+        console.warn(
+          "DOM.init: Elemento 'detalhe-imagem-post' não encontrado."
+        );
     },
   };
 
   const API = {
     fetchData: async (url) => {
       try {
-        const response = await fetch(url);
+        const response = await authenticatedFetch(url);
         const responseData = await response.json().catch((err) => {
           console.error(
             "API.fetchData: Erro ao parsear JSON da resposta:",
-            err
+            err,
+            "Resposta bruta:",
+            response.status,
+            response.statusText
           );
+
           return { message: MESSAGES.errors.serverError };
         });
 
@@ -65,12 +106,14 @@ document.addEventListener("DOMContentLoaded", () => {
             response.status,
             responseData
           );
+
           throw new Error(responseData.message || MESSAGES.errors.serverError);
         }
         return responseData;
       } catch (error) {
         console.error("API.fetchData: Erro na requisição:", error);
-        throw new Error(MESSAGES.errors.networkError);
+
+        throw new Error(error.message || MESSAGES.errors.networkError);
       }
     },
 
@@ -95,10 +138,11 @@ document.addEventListener("DOMContentLoaded", () => {
     exibirMensagem: (elemento, texto, tipo = "erro") => {
       if (!elemento) {
         console.warn(
-          "Utils.exibirMensagem: Elemento de mensagem não encontrado."
+          `Utils.exibirMensagem: Elemento de mensagem não encontrado para exibir: "${texto}"`
         );
         return;
       }
+
       elemento.textContent = texto;
       elemento.className = `mensagem-${tipo}`;
       elemento.style.display = "block";
@@ -148,8 +192,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   : "N/A"
               }</span>
               <p>
-                <a href="${CONFIG.PERFIL_PAGE}?userId=${projeto.userId}" 
-                   class="link-perfil-usuario" 
+                <a href="${CONFIG.PERFIL_PAGE}?userId=${projeto.userId}"
+                   class="link-perfil-usuario"
                    aria-label="Ver perfil de ${projeto.nomeUsuario}">
                   ${projeto.nomeUsuario}
                 </a>
@@ -266,7 +310,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         DOM.detalheTitulo.textContent = projeto.title;
         DOM.detalheUsuario.textContent = projeto.nomeUsuario;
-
         DOM.detalheUsuario.href = `${CONFIG.PERFIL_PAGE}?userId=${projeto.userId}`;
         DOM.detalheDescricao.textContent = projeto.descricao;
         DOM.detalheCriacao.textContent = projeto.dataCriacaoPosts
@@ -330,9 +373,10 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  const init = () => {
+  const init = async () => {
     DOM.init();
-    Handlers.carregarProjetosIniciais();
+
+    await Handlers.carregarProjetosIniciais();
 
     Handlers.inicializarModal();
 
@@ -348,7 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
       DOM.sortBySelect.addEventListener("change", Utils.filtrarProjetos);
     }
 
-    console.log("init: Event listeners configurados.");
+    console.log("init: Event listeners configurados e projetos carregados.");
   };
 
   init();
