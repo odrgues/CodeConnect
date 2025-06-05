@@ -256,14 +256,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const searchTerm = DOM.searchInput
         ? DOM.searchInput.value.trim().toLowerCase()
         : "";
-      if (searchTerm.length < 3 && searchTerm.length > 0) {
-        Utils.exibirMensagem(
-          DOM.projectList,
-          "Digite pelo menos 3 caracteres para buscar.",
-          "erro"
-        );
-        return;
-      }
+
+      // Removemos a condição de 3 caracteres mínimos.
+      // Se o termo de busca estiver vazio, carregamos os projetos iniciais.
       if (!searchTerm) {
         await Handlers.carregarProjetosIniciais();
         return;

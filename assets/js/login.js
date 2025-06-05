@@ -172,6 +172,31 @@ document.addEventListener("DOMContentLoaded", () => {
           throw new Error("Token de autenticação não recebido na resposta.");
         }
 
+        // --- CORREÇÃO AQUI: Salvando 'id' como 'userId' e 'name' como 'userName' ---
+        if (resposta.id) {
+          localStorage.setItem("userId", resposta.id);
+          console.log("Login JS: userId salvo:", resposta.id); // Log para confirmar
+        } else {
+          console.warn("Login JS: 'id' não encontrado na resposta do backend.");
+        }
+
+        if (resposta.name) {
+          // Assumindo que o backend envia 'name'
+          localStorage.setItem("userName", resposta.name);
+          console.log("Login JS: userName salvo (do 'name'):", resposta.name); // Log para confirmar
+        } else if (resposta.userName) {
+          // Fallback caso o backend envie 'userName'
+          localStorage.setItem("userName", resposta.userName);
+          console.log(
+            "Login JS: userName salvo (do 'userName'):",
+            resposta.userName
+          );
+        } else {
+          console.warn(
+            "Login JS: 'name' ou 'userName' não encontrado na resposta do backend."
+          );
+        }
+
         Utils.exibirMensagem(
           DOM.mensagem,
           resposta.message || "Login realizado com sucesso!",

@@ -1,15 +1,21 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  // --- VERIFICAÇÃO DE AUTENTICAÇÃO JWT ---
+  // Esta é a primeira coisa a ser verificada em uma página protegida.
+  // getAuthToken() é uma função do authUtils.js que busca o token JWT no localStorage.
   const token = getAuthToken();
   if (!token) {
     console.log(
       "Publicar JS: Token JWT não encontrado. Redirecionando para login."
     );
-    window.location.href = "../pages/login.html";
-    return;
+    window.location.href = "../pages/login.html"; // Redireciona para a página de login
+    return; // Interrompe a execução do script se não houver token
   }
   console.log("Publicar JS: Token JWT encontrado. Usuário autenticado.");
+  // --- FIM DA VERIFICAÇÃO DE AUTENTICAÇÃO ---
+
+  // Obter o ID do usuário logado do localStorage (agora que o token foi verificado)
   const userId = localStorage.getItem("userId");
-  console.log("Publicar JS: ID do usuário logado (do localStorage):", userId);
+  console.log("ID do usuário (do localStorage, após autenticação):", userId);
 
   const CONFIG = {
     API_PUBLICACAO_URL: "http://localhost:8080/api/v1/Posts",
@@ -19,12 +25,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       UPLOAD_URL: "https://api.cloudinary.com/v1_1/dzzk4ybjo/image/upload",
       UPLOAD_PRESET: "codeconnect_upload",
     },
-    LOGIN_PAGE: "/pages/login.html",
+    LOGIN_PAGE: "../pages/login.html", // Corrigido para caminho relativo
   };
 
   const MESSAGES = {
     errors: {
-      notLoggedIn: "Faça login para publicar.",
+      notLoggedIn: "Faça login para publicar.", // Esta mensagem será menos usada agora devido ao redirecionamento inicial
       requiredFields: "Preencha todos os campos obrigatórios.",
       invalidImage: "Selecione uma imagem válida (PNG, JPG, JPEG, GIF).",
       networkError:
@@ -34,7 +40,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         "Falha ao enviar imagem para o servidor de arquivos. Tente novamente.",
       nameTooShort: "O nome do projeto deve ter pelo menos 3 caracteres.",
       descriptionTooShort: "A descrição deve ter pelo menos 10 caracteres.",
-      postCreationFailed: "Falha ao criar o projeto. Tente novamente.",
     },
     success: {
       postCreated: "Projeto publicado com sucesso!",
@@ -57,18 +62,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     contadorCaracteres: null,
 
     init: () => {
-<<<<<<< HEAD
+      // Atribuições diretas para referências DOM, sem getters para simplificar
       DOM.form = document.querySelector("form");
       DOM.nomeProjeto = document.getElementById("nome");
       DOM.descricao = document.getElementById("descricao");
       DOM.mensagem = document.getElementById("mensagem-publicar");
       DOM.btnPublicar = document.getElementById("btn-publicar");
+      DOM.btnPublicarText = DOM.btnPublicar
+        ? DOM.btnPublicar.querySelector(".button-text")
+        : null;
+      DOM.btnPublicarLoader = DOM.btnPublicar
+        ? DOM.btnPublicar.querySelector(".loader")
+        : null;
       DOM.btnDescartar = document.getElementById("btn-descartar");
       DOM.btnUpload = document.getElementById("upload-btn");
       DOM.inputUpload = document.getElementById("image-upload");
       DOM.imagemPrincipal = document.querySelector(".main-imagem");
       DOM.nomeImagem = document.querySelector(".container-imagem-nome p");
+      DOM.contadorCaracteres = document.getElementById("contador-caracteres");
 
+      // Adiciona avisos para elementos não encontrados para depuração
       if (!DOM.form) console.warn("DOM.init: Elemento 'form' não encontrado.");
       if (!DOM.nomeProjeto)
         console.warn("DOM.init: Elemento 'nome' não encontrado.");
@@ -78,6 +91,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.warn("DOM.init: Elemento 'mensagem-publicar' não encontrado.");
       if (!DOM.btnPublicar)
         console.warn("DOM.init: Elemento 'btn-publicar' não encontrado.");
+      if (!DOM.btnPublicarText)
+        console.warn(
+          "DOM.init: Elemento '.button-text' dentro de btn-publicar não encontrado."
+        );
+      if (!DOM.btnPublicarLoader)
+        console.warn(
+          "DOM.init: Elemento '.loader' dentro de btn-publicar não encontrado."
+        );
       if (!DOM.btnDescartar)
         console.warn("DOM.init: Elemento 'btn-descartar' não encontrado.");
       if (!DOM.btnUpload)
@@ -90,78 +111,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.warn(
           "DOM.init: Elemento '.container-imagem-nome p' não encontrado."
         );
-=======
-      DOM.form = document.querySelector("form") || {
-        addEventListener: () => {},
-        reset: () => {},
-        requestSubmit: () => {},
-      };
-      DOM.nomeProjeto = document.getElementById("nome") || {
-        value: "",
-        addEventListener: () => {},
-        focus: () => {},
-      };
-      DOM.descricao = document.getElementById("descricao") || {
-        value: "",
-        addEventListener: () => {},
-        focus: () => {},
-      };
-      DOM.mensagem = document.getElementById("mensagem-publicar") || {
-        textContent: "",
-        className: "",
-        style: { display: "none" },
-      };
-
-      DOM.btnPublicar = document.getElementById("btn-publicar") || {
-        disabled: false,
-        addEventListener: () => {},
-        textContent: "",
-        classList: { add: () => {}, remove: () => {} },
-        querySelector: () => null,
-      };
-
-      DOM.btnPublicarText = DOM.btnPublicar.querySelector(".button-text") || {
-        style: { display: "" },
-      };
-      DOM.btnPublicarLoader = DOM.btnPublicar.querySelector(".loader") || {
-        style: { display: "" },
-        classList: { add: () => {}, remove: () => {} },
-      };
-
-      DOM.btnDescartar = document.getElementById("btn-descartar") || {
-        disabled: false,
-        addEventListener: () => {},
-        textContent: "",
-      };
-      DOM.btnUpload = document.getElementById("upload-btn") || {
-        addEventListener: () => {},
-        textContent: "",
-      };
-      DOM.inputUpload = document.getElementById("image-upload") || {
-        addEventListener: () => {},
-        files: [],
-        value: "",
-      };
-      DOM.imagemPrincipal = document.querySelector(".main-imagem") || {
-        src: "",
-        style: {},
-        classList: {
-          add: () => {},
-          remove: () => {},
-        },
-      };
-      DOM.nomeImagem = document.querySelector(".container-imagem-nome p") || {
-        textContent: "",
-        style: {},
-      };
-
-      DOM.contadorCaracteres = document.getElementById(
-        "contador-caracteres"
-      ) || {
-        textContent: "",
-        classList: { add: () => {}, remove: () => {} },
-      };
->>>>>>> master
+      if (!DOM.contadorCaracteres)
+        console.warn(
+          "DOM.init: Elemento 'contador-caracteres' não encontrado."
+        );
     },
   };
 
@@ -174,6 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }, timeout);
 
       try {
+        // --- ALTERADO AQUI: Usando authenticatedFetch para API de publicação ---
         const response = await authenticatedFetch(CONFIG.API_PUBLICACAO_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -200,9 +154,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             response.status,
             responseData
           );
-          throw new Error(
-            responseData.message || MESSAGES.errors.postCreationFailed
-          );
+          throw new Error(responseData.message || MESSAGES.errors.serverError);
         }
 
         return responseData;
@@ -238,8 +190,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const nomeProjeto = DOM.nomeProjeto.value.trim();
       const descricao = DOM.descricao.value.trim();
 
+      // Utiliza a validação HTML5 nativa, mas DOM.form precisa ser o elemento real
       if (DOM.form && !DOM.form.checkValidity()) {
-        DOM.form.reportValidity();
+        DOM.form.reportValidity(); // Exibe as mensagens de erro do navegador
         console.warn(
           "Utils.validarFormulario: Formulário inválido (HTML5 validation)."
         );
@@ -315,7 +268,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     limparFormulario: () => {
       if (DOM.form) DOM.form.reset();
       if (DOM.imagemPrincipal)
-        DOM.imagemPrincipal.src = "../assets/img/publicacao/imagem1.png";
+        DOM.imagemPrincipal.src = "../assets/img/publicacao/imagem1.png"; // Ajustado para caminho relativo correto
       if (DOM.nomeImagem) DOM.nomeImagem.textContent = "image_projeto.png";
       if (DOM.inputUpload) DOM.inputUpload.value = "";
       console.log("Utils.limparFormulario: Formulário limpo.");
@@ -325,7 +278,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     toggleLoader: (isLoading) => {
       if (!DOM.btnPublicar || !DOM.btnPublicarText || !DOM.btnPublicarLoader) {
         console.warn(
-          "Utils.toggleLoader: Elementos do botão publicar não encontrados."
+          "Utils.toggleLoader: Elementos do botão publicar não encontrados. Loader desativado."
         );
         return;
       }
@@ -334,13 +287,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.btnPublicar.disabled = true;
         DOM.btnPublicar.classList.add("loading");
         DOM.btnPublicarText.style.display = "none";
-        DOM.btnPublicarLoader.style.display = "block";
+        // DOM.btnPublicarLoader.style.display = "block"; // Removido display: block aqui, controlado por classes
         DOM.btnPublicarLoader.classList.remove("hidden");
       } else {
         DOM.btnPublicar.disabled = false;
         DOM.btnPublicar.classList.remove("loading");
         DOM.btnPublicarText.style.display = "block";
-        DOM.btnPublicarLoader.style.display = "none";
+        // DOM.btnPublicarLoader.style.display = "none"; // Removido display: none aqui, controlado por classes
         DOM.btnPublicarLoader.classList.add("hidden");
       }
     },
@@ -385,6 +338,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     formData.append("file", file);
     formData.append("upload_preset", CONFIG.CLOUDINARY.UPLOAD_PRESET);
     try {
+      // Uso de fetch normal para Cloudinary, pois não exige JWT
       const response = await fetch(CONFIG.CLOUDINARY.UPLOAD_URL, {
         method: "POST",
         body: formData,
@@ -415,7 +369,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log("Handlers.handleUpload: Arquivo selecionado:", arquivo);
       if (!arquivo) {
         if (DOM.imagemPrincipal)
-          DOM.imagemPrincipal.src = "../assets/img/publicacao/imagem1.png";
+          DOM.imagemPrincipal.src = "../assets/img/publicacao/imagem1.png"; // Ajustado para caminho relativo correto
         if (DOM.nomeImagem) DOM.nomeImagem.textContent = "image_projeto.png";
         console.log(
           "Handlers.handleUpload: Nenhuma imagem selecionada ou seleção cancelada."
@@ -430,7 +384,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       } catch (erro) {
         Utils.exibirMensagem(DOM.mensagem, erro, "erro");
         if (DOM.imagemPrincipal)
-          DOM.imagemPrincipal.src = "../assets/img/publicacao/imagem1.png";
+          DOM.imagemPrincipal.src = "../assets/img/publicacao/imagem1.png"; // Ajustado para caminho relativo correto
         if (DOM.nomeImagem) DOM.nomeImagem.textContent = "image_projeto.png";
         if (DOM.inputUpload) DOM.inputUpload.value = "";
       }
@@ -463,11 +417,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       event.preventDefault();
       const startTime = Date.now();
 
-      Utils.toggleLoader(true);
+      Utils.toggleLoader(true); // Ativa o loader
 
       console.log("Handlers.handleSubmit: Início da submissão do formulário.");
 
+      // userId já foi verificado no topo do script e é garantido que existe
+      // A linha abaixo foi removida pois 'userId' já é uma constante global do DOMContentLoaded
+      // const currentUserId = localStorage.getItem("userId");
+
       try {
+        // A verificação de autenticação no topo do script já cuida disso.
+        // Se o usuário não estivesse logado, ele já teria sido redirecionado.
+        // Removida a chamada redundante: if (!Handlers.verificarAutenticacao()) { return; }
+
         if (!Utils.validarFormulario()) {
           console.warn(
             "Handlers.handleSubmit: Validação do formulário falhou. Abortando submissão."
@@ -511,7 +473,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const dadosParaEnvio = {
           title: DOM.nomeProjeto.value.trim(),
           descricao: DOM.descricao.value.trim(),
-          usuarioId: userId ? parseInt(userId) : null,
+          usuarioId: userId ? parseInt(userId) : null, // Usa a constante userId do topo
           imageUrl: imageUrl || null,
         };
 
@@ -524,7 +486,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           );
         } else {
           console.warn(
-            "Handlers.handleSubmit: Nome do usuário 'userName' não encontrado no localStorage. O post pode não ter o nome do usuário."
+            "Handlers.handleSubmit: Nome do usuário 'userName' não encontrado no localStorage."
           );
         }
 
@@ -533,7 +495,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           dadosParaEnvio
         );
 
-        await API.criarPublicacao(dadosParaEnvio);
+        await API.criarPublicacao(dadosParaEnvio); // Chama a API de criação de post
 
         Utils.exibirMensagem(
           DOM.mensagem,
@@ -553,6 +515,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           console.log(
             "Handlers.handleSubmit: Redirecionando para a página de perfil..."
           );
+          // Redireciona para o perfil do usuário logado após a publicação
           window.location.href = `${CONFIG.PERFIL_PAGE}?userId=${userId}`;
         }, remainingTime);
       } catch (error) {
@@ -566,16 +529,17 @@ document.addEventListener("DOMContentLoaded", async () => {
           "erro"
         );
       } finally {
-        Utils.toggleLoader(false);
+        Utils.toggleLoader(false); // Desativa o loader, mesmo em caso de erro
         console.log("Handlers.handleSubmit: Finalizando submissão.");
       }
     },
   };
 
   const init = () => {
-    DOM.init();
-    Handlers.ajustarTextarea();
+    DOM.init(); // Inicializa as referências aos elementos DOM
+    Handlers.ajustarTextarea(); // Configura o ajuste automático do textarea
 
+    // Listener para o contador de caracteres na descrição
     if (DOM.descricao && DOM.contadorCaracteres) {
       Utils.atualizarContadorCaracteres();
       DOM.descricao.addEventListener(
@@ -589,18 +553,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
     }
 
+    // Listener para a submissão do formulário
     if (DOM.form) {
       DOM.form.addEventListener("submit", Handlers.handleSubmit);
     } else {
       console.warn("init: Formulário não encontrado. Submissão desativada.");
     }
 
+    // Listener para o botão de upload (simula o clique no input file)
     if (DOM.btnUpload && DOM.inputUpload) {
       DOM.btnUpload.addEventListener("click", () => DOM.inputUpload.click());
     } else {
       console.warn("init: Botão de upload ou input de imagem não encontrado.");
     }
 
+    // Listener para a mudança no input de arquivo (quando um arquivo é selecionado)
     if (DOM.inputUpload) {
       DOM.inputUpload.addEventListener("change", Handlers.handleUpload);
     } else {
@@ -609,6 +576,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
     }
 
+    // Listener para o botão Descartar
     if (DOM.btnDescartar) {
       DOM.btnDescartar.addEventListener("click", Handlers.handleDescartar);
     } else {
@@ -618,5 +586,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("init: Event listeners configurados.");
   };
 
-  init();
+  init(); // Chama a função de inicialização
 });

@@ -1,84 +1,97 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  // Obter o ID do usuário logado do localStorage e da URL
   const loggedInUserId = localStorage.getItem("userId");
+  const urlParams = new URLSearchParams(window.location.search);
+  const profileIdFromUrl = urlParams.get("userId");
+  const currentProfileId = profileIdFromUrl || loggedInUserId;
+
   console.log(
     "Perfil JS: (1) ID do usuário logado do localStorage:",
     loggedInUserId
   );
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const profileIdFromUrl = urlParams.get("userId");
   console.log("Perfil JS: (2) ID do usuário obtido da URL:", profileIdFromUrl);
-
-  const currentProfileId = profileIdFromUrl || loggedInUserId;
   console.log(
     "Perfil JS: (3) ID FINAL do perfil a ser carregado (currentProfileId):",
     currentProfileId
   );
 
+  // --- VERIFICAÇÃO DE AUTENTICAÇÃO JWT ---
+  // Esta é a primeira coisa a ser verificada em uma página protegida.
+  // getAuthToken() é uma função do authUtils.js que busca o token JWT no localStorage.
   const token = getAuthToken();
-  console.log("Perfil JS: Token JWT obtido:", token);
   if (!token) {
     console.log(
       "Perfil JS: Token JWT não encontrado. Redirecionando para login."
     );
-    window.location.href = "../pages/login.html";
-    return;
+    window.location.href = "../pages/login.html"; // Redireciona para a página de login
+    return; // Interrompe a execução do script se não houver token
   }
   console.log("Perfil JS: Token JWT encontrado. Usuário autenticado.");
+  // --- FIM DA VERIFICAÇÃO DE AUTENTICAÇÃO ---
 
   const CONFIG = {
     API_BUSCAR_POSTS_USUARIO: "http://localhost:8080/api/v1/Posts/usuario",
     API_BUSCAR_POST: "http://localhost:8080/api/v1/Posts",
     API_BUSCAR_USUARIO: "http://localhost:8080/api/v1/usuarios",
     API_EDITAR_USUARIO: "http://localhost:8080/api/v1/usuarios/atualiza-dados/",
+    API_EXCLUIR_POST: "http://localhost:8080/api/v1/Posts/",
     MESSAGE_DISPLAY_TIME: 3000,
     MIN_LOADER_TIME: 1500,
     CLOUDINARY: {
       UPLOAD_URL: "https://api.cloudinary.com/v1_1/dzzk4ybjo/image/upload",
       UPLOAD_PRESET: "codeconnect_upload",
     },
-    API_EXCLUIR_POST: "http://localhost:8080/api/v1/Posts/",
   };
 
   const DOM = {
     mensagem: document.getElementById("mensagem-perfil"),
+    fotoPerfilPadrao: document.getElementById("foto-perfil-padrao"),
     nomeUsuario: document.getElementById("nome-usuario"),
     descricaoUsuario: document.getElementById("descricao-usuario"),
+    editarPerfilBtn: document.getElementById("editar-perfil-btn"),
+    inputNomeUsuario: document.getElementById("input-nome-usuario"),
+    inputDescricaoUsuario: document.getElementById("input-descricao-usuario"),
+    inputFotoPerfil: document.getElementById("input-foto-perfil"),
+    previewFotoPerfil: document.getElementById("preview-foto-perfil"),
+    salvarPerfilBtn: document.getElementById("salvar-perfil-btn"),
+    cancelarEdicaoBtn: document.getElementById("cancelar-edicao-btn"),
+    labelInputFoto: document.querySelector('label[for="input-foto-perfil"]'),
     listaDePosts: document.getElementById("posts-list"),
     modalDetalhesPost: document.getElementById("detalhes-modal-post"),
     closeModalDetalhesPost: document.querySelector(
       "#detalhes-modal-post .close-button"
     ),
-    inputNomeUsuario: document.getElementById("input-nome-usuario"),
-    inputDescricaoUsuario: document.getElementById("input-descricao-usuario"),
-    inputFotoPerfil: document.getElementById("input-foto-perfil"),
-    previewFotoPerfil: document.getElementById("preview-foto-perfil"),
-    editarPerfilBtn: document.getElementById("editar-perfil-btn"),
-    salvarPerfilBtn: document.getElementById("salvar-perfil-btn"),
-    cancelarEdicaoBtn: document.getElementById("cancelar-edicao-btn"),
+    detalheTituloPost: document.getElementById("detalhe-titulo-post"),
+    detalheUsuarioPost: document.getElementById("detalhe-usuario-post"),
+    detalheDescricaoPost: document.getElementById("detalhe-descricao-post"),
+    detalheDataCriacaoPost: document.getElementById("detalhe-data-criacao"),
+    detalheImagemPost: document.getElementById("detalhe-imagem-post"),
     btnExcluirPost: document.getElementById("btn-excluir-post"),
     confirmacaoExclusaoModal: document.getElementById(
       "confirmacao-exclusao-modal"
     ),
     btnConfirmarExclusao: document.getElementById("btn-confirmar-exclusao"),
     btnCancelarConfirmacao: document.getElementById("btn-cancelar-confirmacao"),
-    detalheImagemPost: document.getElementById("detalhe-imagem-post"),
   };
 
   const MESSAGES = {
     errors: {
       userNotFound: "ID do usuário não encontrado.",
-      projectFetchFailed: (status) =>
-        `Erro ao buscar posts do usuário: ${status}`,
+      fetchFailed: (status) => `Erro ao buscar dados: ${status}`,
       default: "Ocorreu um erro inesperado.",
       postNotFound: "Detalhes do post não encontrados.",
       uploadFailed: "Falha ao enviar imagem. Tente novamente.",
-      nameTooShort: "Nome precisa ter pelo menos 3 caracteres.",
+      nameTooShort: "Nome de usuário precisa ter pelo menos 3 caracteres.",
       postDeleteFailed: "Erro ao excluir o post. Tente novamente.",
     },
     success: {
       profileUpdated: "Perfil atualizado com sucesso!",
       postDeleted: "Post excluído com sucesso!",
+      editCanceled: "Edição cancelada.",
+      deleteCanceled: "Exclusão cancelada.",
+    },
+    info: {
+      loading: "Carregando...",
     },
   };
 
@@ -93,201 +106,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       setTimeout(() => {
         DOM.mensagem.style.display = "none";
       }, CONFIG.MESSAGE_DISPLAY_TIME);
+    } else {
+      console.error("Perfil JS: Elemento DOM.mensagem não encontrado.");
     }
   };
 
-  async function carregarPerfilUsuario() {
-    console.log("Perfil JS: Carregando perfil para o ID:", currentProfileId);
-    if (!currentProfileId) {
-      console.error(
-        "Perfil JS: ERRO - ID do usuário não definido em carregarPerfilUsuario."
-      );
-      mostrarMensagem(MESSAGES.errors.userNotFound, "erro");
-      return null;
-    }
+  async function handleFetchError(response) {
+    let errorMessage = `Erro HTTP: ${response.status} ${response.statusText}`;
     try {
-      const apiUrl = `${CONFIG.API_BUSCAR_USUARIO}/${currentProfileId}`;
-      console.log("Perfil JS: URL da requisição de perfil:", apiUrl);
-
-      const response = await authenticatedFetch(apiUrl);
-      console.log("Perfil JS: Resposta HTTP da API de usuário:", response);
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({
-          message: `Erro ${response.status}: ${response.statusText}`,
-        }));
-        console.error(
-          "Perfil JS: Erro na resposta da API de usuário (JSON de erro):",
-          errorData
-        );
-        throw new Error(
-          errorData.message || `Erro ${response.status}: ${response.statusText}`
-        );
+      const errorBody = await response.json();
+      if (errorBody.message) {
+        errorMessage = errorBody.message;
+      } else if (typeof errorBody === "string") {
+        errorMessage = errorBody;
       }
-      const usuario = await response.json();
-      console.log(
-        "Perfil JS: Dados do perfil recebidos (JSON de sucesso):",
-        usuario
-      );
-      if (!usuario) throw new Error("Dados do usuário não encontrados");
-      await atualizarInterfacePerfil(usuario);
-      return usuario;
-    } catch (error) {
-      console.error("Perfil JS: Erro ao carregar perfil do usuário:", error);
-      mostrarMensagem(
-        "Falha ao carregar perfil. " + (error.message || "Tente novamente"),
-        "erro"
-      );
-      return null;
-    }
-  }
-
-  async function executarExclusaoPost(idDoPost) {
-    console.log("Perfil JS: Iniciando exclusão do post com ID:", idDoPost);
-    try {
-      const response = await authenticatedFetch(
-        `${CONFIG.API_EXCLUIR_POST}${idDoPost}`,
-        {
-          method: "DELETE",
-        }
-      );
-      console.log("Perfil JS: Resposta da API de exclusão de post:", response);
-
-      if (!response.ok) {
-        const errorData = await response
-          .json()
-          .catch(() => ({ message: "Erro desconhecido ao excluir post." }));
-        console.error(
-          "Perfil JS: Erro na exclusão de post (JSON de erro):",
-          errorData
-        );
-        throw new Error(errorData.message || MESSAGES.errors.postDeleteFailed);
-      }
-
-      console.log("Perfil JS: Post excluído com sucesso!");
-      mostrarMensagem(MESSAGES.success.postDeleted, "sucesso");
-      DOM.modalDetalhesPost.style.display = "none";
-      exibirPostUsuario();
-    } catch (error) {
-      console.error("Perfil JS: Erro ao excluir post (capturado):", error);
-      mostrarMensagem(error.message, "erro");
-      DOM.confirmacaoExclusaoModal.style.display = "none";
-    }
-  }
-
-  function iniciarExclusaoPost(idDoPost) {
-    console.log(
-      "Perfil JS: Iniciando processo de confirmação de exclusão para o post ID:",
-      idDoPost
-    );
-    if (DOM.confirmacaoExclusaoModal) {
-      DOM.confirmacaoExclusaoModal.style.display = "flex";
-
-      DOM.btnConfirmarExclusao.onclick = null;
-      DOM.btnCancelarConfirmacao.onclick = null;
-
-      DOM.btnConfirmarExclusao.onclick = () => {
-        DOM.confirmacaoExclusaoModal.style.display = "none";
-        executarExclusaoPost(idDoPost);
-      };
-
-      DOM.btnCancelarConfirmacao.onclick = () => {
-        DOM.confirmacaoExclusaoModal.style.display = "none";
-        mostrarMensagem("Exclusão cancelada.", "informacao");
-      };
-    } else {
-      console.error(
-        "Perfil JS: Elemento de confirmação de exclusão não encontrado."
-      );
-
-      if (
-        confirm(
-          "Tem certeza que deseja excluir este post? Esta ação não pode ser desfeita."
-        )
-      ) {
-        executarExclusaoPost(idDoPost);
-      }
-    }
-  }
-
-  async function atualizarInterfacePerfil(usuario) {
-    console.log(
-      "Perfil JS: Atualizando interface do perfil com dados:",
-      usuario
-    );
-    const fotoPerfil = document.getElementById("foto-perfil-padrao");
-    const urlImagem = usuario.fotoUrl;
-
-    if (fotoPerfil) {
-      if (urlImagem && urlImagem !== "null" && urlImagem !== "undefined") {
-        fotoPerfil.src = urlImagem;
-
-        await new Promise((resolve) => {
-          fotoPerfil.onload = () => {
-            console.log("Perfil JS: Foto de perfil carregada com sucesso.");
-            resolve(true);
-          };
-          fotoPerfil.onerror = () => {
-            console.warn(
-              "Perfil JS: Erro ao carregar a foto de perfil. Usando fallback."
-            );
-            fotoPerfil.src =
-              "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
-            resolve(false);
-          };
-
-          setTimeout(() => {
-            if (!fotoPerfil.complete) {
-              console.warn(
-                "Perfil JS: Carregamento da foto de perfil excedeu o tempo limite. Usando fallback."
-              );
-              fotoPerfil.src =
-                "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
-              resolve(false);
-            } else {
-              resolve(true);
-            }
-          }, 5000);
-        });
-      } else {
-        console.log(
-          "Perfil JS: URL da foto de perfil ausente ou inválida. Usando fallback."
-        );
-        fotoPerfil.src =
-          "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
-      }
-    } else {
+    } catch (parseError) {
       console.warn(
-        "Perfil JS: Elemento 'foto-perfil-padrao' não encontrado no DOM."
+        `handleFetchError: Falha ao parsear JSON de erro: ${parseError.message}`
       );
     }
-
-    DOM.nomeUsuario.textContent = usuario.username || "Usuário Indisponível";
-    DOM.descricaoUsuario.textContent =
-      usuario.descricao || "Descrição Indisponível";
-    console.log("Perfil JS: Nome e descrição do perfil atualizados.");
-
-    if (
-      currentProfileId &&
-      loggedInUserId &&
-      String(currentProfileId) === String(loggedInUserId)
-    ) {
-      console.log(
-        "Perfil JS: Usuário logado é o mesmo do perfil. Mostrando botão de editar."
-      );
-      DOM.editarPerfilBtn.style.display = "inline-block";
-
-      if (DOM.inputNomeUsuario)
-        DOM.inputNomeUsuario.value = usuario.username || "";
-      if (DOM.inputDescricaoUsuario)
-        DOM.inputDescricaoUsuario.value = usuario.descricao || "";
-    } else {
-      console.log(
-        "Perfil JS: Usuário logado NÃO é o mesmo do perfil. Escondendo botão de editar."
-      );
-      DOM.editarPerfilBtn.style.display = "none";
-      toggleEditMode(false);
-    }
+    return new Error(errorMessage);
   }
 
   async function uploadCloudinary(file) {
@@ -299,6 +137,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     formData.append("file", file);
     formData.append("upload_preset", CONFIG.CLOUDINARY.UPLOAD_PRESET);
     try {
+      // Uso de fetch normal para Cloudinary, pois não exige JWT
       const response = await fetch(CONFIG.CLOUDINARY.UPLOAD_URL, {
         method: "POST",
         body: formData,
@@ -312,19 +151,176 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function exibirPost(posts) {
+  function toggleEditMode(enable) {
+    console.log(
+      `Perfil JS: Toggle Modo de Edição: ${enable ? "ATIVADO" : "DESATIVADO"}`
+    );
+
+    const elementsExist =
+      DOM.nomeUsuario &&
+      DOM.descricaoUsuario &&
+      DOM.editarPerfilBtn &&
+      DOM.inputNomeUsuario &&
+      DOM.inputDescricaoUsuario &&
+      DOM.inputFotoPerfil &&
+      DOM.previewFotoPerfil &&
+      DOM.salvarPerfilBtn &&
+      DOM.cancelarEdicaoBtn &&
+      DOM.fotoPerfilPadrao;
+
+    if (!elementsExist) {
+      console.error(
+        "Perfil JS: ERRO - Alguns elementos DOM para edição de perfil não foram encontrados. Verifique o objeto DOM."
+      );
+      return;
+    }
+
+    if (enable) {
+      DOM.nomeUsuario.style.display = "none";
+      DOM.descricaoUsuario.style.display = "none";
+      DOM.editarPerfilBtn.style.display = "none";
+
+      DOM.inputNomeUsuario.style.display = "block";
+      DOM.inputDescricaoUsuario.style.display = "block";
+      DOM.inputFotoPerfil.style.display = "block";
+      DOM.previewFotoPerfil.style.display = "block";
+      DOM.salvarPerfilBtn.style.display = "inline-block";
+      DOM.cancelarEdicaoBtn.style.display = "inline-block";
+      if (DOM.labelInputFoto) DOM.labelInputFoto.style.display = "block";
+      DOM.fotoPerfilPadrao.style.display = "none";
+    } else {
+      DOM.nomeUsuario.style.display = "block";
+      DOM.descricaoUsuario.style.display = "block";
+
+      DOM.inputNomeUsuario.style.display = "none";
+      DOM.inputDescricaoUsuario.style.display = "none";
+      DOM.inputFotoPerfil.style.display = "none";
+      DOM.previewFotoPerfil.style.display = "none";
+      DOM.salvarPerfilBtn.style.display = "none";
+      DOM.cancelarEdicaoBtn.style.display = "none";
+      if (DOM.labelInputFoto) DOM.labelInputFoto.style.display = "none";
+      DOM.fotoPerfilPadrao.style.display = "block";
+    }
+  }
+
+  async function carregarPerfilUsuario() {
+    console.log("Perfil JS: Carregando perfil para o ID:", currentProfileId);
+    if (!currentProfileId) {
+      console.error(
+        "Perfil JS: ERRO - ID do usuário não definido em carregarPerfilUsuario."
+      );
+      mostrarMensagem(MESSAGES.errors.userNotFound, "erro");
+      return null;
+    }
+    try {
+      const apiUrl = `${CONFIG.API_BUSCAR_USUARIO}/${currentProfileId}`;
+      console.log("Perfil JS: URL da requisição de perfil:", apiUrl);
+      // Usando authenticatedFetch para buscar dados do perfil (rota protegida)
+      const response = await authenticatedFetch(apiUrl);
+      console.log("Perfil JS: Resposta HTTP da API de usuário:", response);
+
+      if (!response.ok) {
+        throw await handleFetchError(response);
+      }
+      const usuario = await response.json();
+      console.log(
+        "Perfil JS: Dados do perfil recebidos (JSON de sucesso):",
+        usuario
+      );
+      if (!usuario) throw new Error("Dados do usuário não encontrados");
+
+      DOM.nomeUsuario.textContent = usuario.username || "Usuário Indisponível";
+      DOM.descricaoUsuario.textContent =
+        usuario.descricao || "Descrição Indisponível";
+      console.log("Perfil JS: Nome e descrição do perfil atualizados.");
+
+      const urlImagem = usuario.fotoUrl;
+      if (DOM.fotoPerfilPadrao) {
+        if (urlImagem && urlImagem !== "null" && urlImagem !== "undefined") {
+          DOM.fotoPerfilPadrao.src = urlImagem;
+
+          await new Promise((resolve) => {
+            DOM.fotoPerfilPadrao.onload = () => {
+              console.log("Perfil JS: Foto de perfil carregada com sucesso.");
+              resolve(true);
+            };
+            DOM.fotoPerfilPadrao.onerror = () => {
+              console.warn(
+                "Perfil JS: Erro ao carregar a foto de perfil. Usando fallback."
+              );
+              DOM.fotoPerfilPadrao.src =
+                "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
+              resolve(false);
+            };
+
+            setTimeout(() => {
+              if (!DOM.fotoPerfilPadrao.complete) {
+                console.warn(
+                  "Perfil JS: Carregamento da foto de perfil excedeu o tempo limite. Usando fallback."
+                );
+                DOM.fotoPerfilPadrao.src =
+                  "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
+                resolve(false);
+              }
+            }, 5000);
+          });
+        } else {
+          console.log(
+            "Perfil JS: URL da foto de perfil ausente ou inválida. Usando fallback."
+          );
+          DOM.fotoPerfilPadrao.src =
+            "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
+        }
+      } else {
+        console.warn(
+          "Perfil JS: Elemento 'foto-perfil-padrao' não encontrado no DOM."
+        );
+      }
+
+      if (
+        currentProfileId &&
+        loggedInUserId &&
+        String(currentProfileId) === String(loggedInUserId)
+      ) {
+        console.log(
+          "Perfil JS: Usuário logado é o mesmo do perfil. Mostrando botão de editar."
+        );
+        DOM.editarPerfilBtn.style.display = "inline-block";
+
+        if (DOM.inputNomeUsuario)
+          DOM.inputNomeUsuario.value = usuario.username || "";
+        if (DOM.inputDescricaoUsuario)
+          DOM.inputDescricaoUsuario.value = usuario.descricao || "";
+      } else {
+        console.log(
+          "Perfil JS: Usuário logado NÃO é o mesmo do perfil. Escondendo botão de editar."
+        );
+        DOM.editarPerfilBtn.style.display = "none";
+        toggleEditMode(false);
+      }
+      return usuario;
+    } catch (error) {
+      console.error("Perfil JS: Erro ao carregar perfil do usuário:", error);
+      mostrarMensagem(
+        "Falha ao carregar perfil. " + (error.message || "Tente novamente"),
+        "erro"
+      );
+      return null;
+    }
+  }
+
+  function renderPosts(posts) {
     console.log(
       "Perfil JS: Exibindo posts. Total de posts:",
       posts ? posts.length : 0
     );
     if (!DOM.listaDePosts) {
       console.error(
-        "Perfil JS: ERRO - Elemento DOM.listaDePosts não encontrado."
+        "Perfil JS: ERRO - Elemento DOM.listaDePosts (posts-list) não encontrado."
       );
       return;
     }
     DOM.listaDePosts.innerHTML = "";
-
     if (posts && posts.length > 0) {
       posts.forEach((post) => {
         const postDiv = document.createElement("div");
@@ -332,54 +328,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         postDiv.style.cursor = "pointer";
         postDiv.addEventListener("click", (event) => {
           if (!event.target.closest("a")) {
-            verDetalhesPosts(post.id);
+            fetchAndShowPostDetails(post.id);
           }
         });
 
         console.log(
-          `Perfil JS: Montando link para post ID ${post.id}. userId do post: ${post.userId}, nomeUsuario do post: ${post.nomeUsuario}`
+          `Perfil JS: Montando cartão para post ID ${post.id}. userId do post: ${post.userId}, nomeUsuario do post: ${post.nomeUsuario}`
         );
 
         postDiv.innerHTML = `
-<<<<<<< HEAD
-          <h3>${post.title}</h3>
-=======
           ${
             post.imageUrl
               ? `<img src="${post.imageUrl}" alt="Imagem do Post ${post.title}" />`
               : ""
           }
           <h3>${post.title || "Título Indisponível"}</h3>
->>>>>>> master
           <p>${
             post.descricao
               ? post.descricao.substring(0, 100) +
                 (post.descricao.length > 100 ? "..." : "")
               : "Sem descrição"
           }</p>
-<<<<<<< HEAD
-          ${
-            post.imageUrl
-              ? `<img src="${post.imageUrl}" alt="Imagem do Post ${post.title}" />`
-              : ""
-          }
-          <div class="detalhes-post-card" style="color: black;">
-=======
 
-          <div class="detalhes-post-card";">
->>>>>>> master
+          <div class="detalhes-post-card">
             <span>${
               post.dataCriacaoPosts
                 ? post.dataCriacaoPosts.split(" ")[0]
                 : "N/A"
             }</span>
-<<<<<<< HEAD
-            <p><a href="../pages/perfil.html?userId=${
-              post.userId
-            }" style="color: #007bff; text-decoration: underline;">${
-          post.nomeUsuario
-        }</a></p>
-=======
             <p>
               <a href="../pages/perfil.html?userId=${
                 post.userId
@@ -387,24 +363,25 @@ document.addEventListener("DOMContentLoaded", async () => {
                 ${post.nomeUsuario || "Usuário Desconhecido"}
               </a>
             </p>
->>>>>>> master
           </div>
         `;
 
         DOM.listaDePosts.appendChild(postDiv);
       });
     } else {
-      DOM.listaDePosts.innerHTML =
-        '<div class="no-posts">O usuário ainda não criou nenhum post :(</div>';
+      DOM.listaDePosts.innerHTML = '<div class="no-posts"></div>';
     }
   }
 
-  async function exibirPostUsuario() {
-    console.log("Perfil JS: Exibindo posts para o ID:", currentProfileId);
+  async function fetchAndRenderUserPosts() {
+    console.log(
+      "Perfil JS: Buscando e exibindo posts para o ID:",
+      currentProfileId
+    );
     if (!currentProfileId) {
       mostrarMensagem(MESSAGES.errors.userNotFound, "erro");
       console.error(
-        "Perfil JS: ERRO - ID do usuário não definido para exibirPostUsuario."
+        "Perfil JS: ERRO - ID do usuário não definido para fetchAndRenderUserPosts."
       );
       return;
     }
@@ -412,32 +389,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const apiUrl = `${CONFIG.API_BUSCAR_POSTS_USUARIO}/${currentProfileId}`;
       console.log("Perfil JS: URL da requisição de posts do usuário:", apiUrl);
-
+      // Usando authenticatedFetch para buscar posts do usuário (rota protegida)
       const response = await authenticatedFetch(apiUrl);
       console.log("Perfil JS: Resposta HTTP da API de posts:", response);
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({
-          message: `Erro ${response.status}: ${response.statusText}`,
-        }));
-        console.error(
-          "Perfil JS: Erro na resposta da API de posts (JSON de erro):",
-          errorData
-        );
-        throw new Error(
-          errorData.message ||
-            MESSAGES.errors.projectFetchFailed(response.status)
-        );
+        throw await handleFetchError(response);
       }
       const data = await response.json();
       console.log(
         "Perfil JS: Dados dos posts recebidos (JSON de sucesso):",
         data
       );
-      exibirPost(data);
+      renderPosts(data);
     } catch (error) {
       console.error(
-        "Perfil JS: Erro ao exibir posts do usuário (capturado):",
+        "Perfil JS: Erro ao buscar e exibir posts do usuário (capturado):",
         error
       );
       mostrarMensagem(error.message || MESSAGES.errors.default, "erro");
@@ -448,16 +415,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  async function verDetalhesPosts(idDoPost) {
+  async function fetchAndShowPostDetails(idDoPost) {
     console.log(
       "Perfil JS: Abrindo modal de detalhes para o post ID:",
       idDoPost
     );
     const modal = DOM.modalDetalhesPost;
-    const detalheTitulo = document.getElementById("detalhe-titulo-post");
-    const detalheUsuario = document.getElementById("detalhe-usuario-post");
-    const detalheDescricao = document.getElementById("detalhe-descricao-post");
-    const detalheCriacao = document.getElementById("detalhe-data-criacao");
+    const detalheTitulo = DOM.detalheTituloPost;
+    const detalheUsuario = DOM.detalheUsuarioPost;
+    const detalheDescricao = DOM.detalheDescricaoPost;
+    const detalheCriacao = DOM.detalheDataCriacaoPost;
     const detalheImagemPost = DOM.detalheImagemPost;
 
     if (!modal) {
@@ -483,9 +450,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (DOM.btnExcluirPost) {
       const oldBtn = DOM.btnExcluirPost;
-      const newBtn = oldBtn.cloneNode(true);
+      const newBtn = oldBtn.cloneNode(true); // Clonar para remover event listeners antigos
       oldBtn.parentNode.replaceChild(newBtn, oldBtn);
-      DOM.btnExcluirPost = newBtn;
+      DOM.btnExcluirPost = newBtn; // Atualizar a referência DOM
 
       DOM.btnExcluirPost.addEventListener("click", () =>
         iniciarExclusaoPost(idDoPost)
@@ -505,11 +472,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Perfil JS: Botão de exclusão ESCONDIDO.");
         DOM.btnExcluirPost.style.display = "none";
       }
+    } else {
+      console.warn("Perfil JS: Elemento 'btn-excluir-post' não encontrado.");
     }
 
     try {
       const apiUrl = `${CONFIG.API_BUSCAR_POST}/${idDoPost}`;
       console.log("Perfil JS: URL da requisição de detalhes do post:", apiUrl);
+      // Usando authenticatedFetch para buscar detalhes do post (rota protegida)
       const response = await authenticatedFetch(apiUrl);
       console.log(
         "Perfil JS: Resposta HTTP da API de post específico:",
@@ -517,14 +487,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
 
       if (!response.ok) {
-        const errorData = await response
-          .json()
-          .catch(() => ({ message: MESSAGES.errors.postNotFound }));
-        console.error(
-          "Perfil JS: Erro na resposta da API de post específico (JSON de erro):",
-          errorData
-        );
-        throw new Error(errorData.message || "Erro ao buscar detalhes do post");
+        throw await handleFetchError(response);
       }
       const post = await response.json();
       console.log(
@@ -533,20 +496,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
 
       detalheTitulo.textContent = post.title || "Título Indisponível";
-      detalheTitulo.style.color = "black";
 
       console.log(
         `Perfil JS: Montando link de usuário no modal. userId do post: ${post.userId}, nomeUsuario do post: ${post.nomeUsuario}`
       );
-<<<<<<< HEAD
-      detalheUsuario.innerHTML = `Por: <a href="../pages/perfil.html?userId=${post.userId}" style="color: #007bff; text-decoration: underline; cursor: pointer;">${post.nomeUsuario}</a>`;
-=======
       detalheUsuario.innerHTML = `<a href="../pages/perfil.html?userId=${
         post.userId
       }" style="color: #81fe88; text-decoration: none; cursor: pointer;">${
-        post.nomeUsuario || "Usuário Desconhecido" //css
+        post.nomeUsuario || "Usuário Desconhecido"
       }</a>`;
->>>>>>> master
 
       detalheDescricao.textContent = post.descricao || "Sem descrição.";
       detalheCriacao.textContent = post.dataCriacaoPosts
@@ -566,7 +524,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         "Perfil JS: Erro ao carregar detalhes do post (capturado):",
         error
       );
-      detalheTitulo.textContent = `Erro: ${error.message}`;
+      detalheTitulo.textContent = `Erro: ${
+        error.message || MESSAGES.errors.default
+      }`;
       detalheTitulo.style.color = "black";
       mostrarMensagem("Erro ao carregar detalhes do post.", "erro");
       if (DOM.btnExcluirPost) DOM.btnExcluirPost.style.display = "none";
@@ -574,63 +534,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function toggleEditMode(enable) {
-    console.log(
-      `Perfil JS: Toggle Modo de Edição: ${enable ? "ATIVADO" : "DESATIVADO"}`
-    );
-    const fotoPerfilPadrao = document.getElementById("foto-perfil-padrao");
-    const labelInputFoto = document.querySelector(
-      'label[for="input-foto-perfil"]'
-    );
-
-    if (
-      !DOM.nomeUsuario ||
-      !DOM.descricaoUsuario ||
-      !DOM.editarPerfilBtn ||
-      !DOM.inputNomeUsuario ||
-      !DOM.inputDescricaoUsuario ||
-      !DOM.inputFotoPerfil ||
-      !DOM.previewFotoPerfil ||
-      !DOM.salvarPerfilBtn ||
-      !DOM.cancelarEdicaoBtn
-    ) {
-      console.error(
-        "Perfil JS: ERRO - Alguns elementos DOM para edição de perfil não foram encontrados."
-      );
-      return;
-    }
-
-    if (enable) {
-      DOM.nomeUsuario.style.display = "none";
-      DOM.descricaoUsuario.style.display = "none";
-      DOM.editarPerfilBtn.style.display = "none";
-
-      DOM.inputNomeUsuario.style.display = "block";
-      DOM.inputDescricaoUsuario.style.display = "block";
-      DOM.inputFotoPerfil.style.display = "block";
-      DOM.previewFotoPerfil.style.display = "block";
-      DOM.salvarPerfilBtn.style.display = "inline-block";
-      DOM.cancelarEdicaoBtn.style.display = "inline-block";
-      if (labelInputFoto) labelInputFoto.style.display = "block";
-
-      if (fotoPerfilPadrao) fotoPerfilPadrao.style.display = "none";
-    } else {
-      DOM.nomeUsuario.style.display = "block";
-      DOM.descricaoUsuario.style.display = "block";
-
-      DOM.inputNomeUsuario.style.display = "none";
-      DOM.inputDescricaoUsuario.style.display = "none";
-      DOM.inputFotoPerfil.style.display = "none";
-      DOM.previewFotoPerfil.style.display = "none";
-      DOM.salvarPerfilBtn.style.display = "none";
-      DOM.cancelarEdicaoBtn.style.display = "none";
-      if (labelInputFoto) labelInputFoto.style.display = "none";
-
-      if (fotoPerfilPadrao) fotoPerfilPadrao.style.display = "block";
-    }
-  }
-
-  function configurarEdicaoPerfil() {
+  function setupProfileEditFunctionality() {
     console.log("Perfil JS: Configurando edição de perfil...");
     if (
       !DOM.editarPerfilBtn ||
@@ -639,14 +543,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       !DOM.salvarPerfilBtn
     ) {
       console.warn(
-        "Perfil JS: WARNING - Botões ou inputs de edição de perfil não encontrados. Edição de perfil desativada."
+        "Perfil JS: WARNING - Alguns elementos DOM para edição de perfil não foram encontrados. Edição de perfil desativada."
       );
       return;
     }
 
     DOM.editarPerfilBtn.addEventListener("click", async () => {
       console.log("Perfil JS: Botão 'Editar Perfil' clicado.");
-      const currentUser = await carregarPerfilUsuario();
+      const currentUser = await carregarPerfilUsuario(); // carregarPerfilUsuario já usa authenticatedFetch
       if (currentUser) {
         DOM.inputNomeUsuario.value =
           currentUser.username || currentUser.name || "";
@@ -669,12 +573,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       toggleEditMode(true);
     });
-
     DOM.cancelarEdicaoBtn.addEventListener("click", () => {
       console.log("Perfil JS: Botão 'Cancelar Edição' clicado.");
-      carregarPerfilUsuario();
+      carregarPerfilUsuario(); // carregarPerfilUsuario já usa authenticatedFetch
       toggleEditMode(false);
-      mostrarMensagem("Edição cancelada.", "informacao");
+      mostrarMensagem(MESSAGES.success.editCanceled, "informacao");
     });
 
     DOM.inputFotoPerfil.addEventListener("change", (e) => {
@@ -688,6 +591,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           console.log("Perfil JS: Pré-visualização da nova foto de perfil.");
         };
         reader.readAsDataURL(file);
+      } else {
+        // Se a seleção for cancelada, tenta carregar a foto de perfil atual do usuário
+        carregarPerfilUsuario(); // carregarPerfilUsuario já usa authenticatedFetch
+        DOM.previewFotoPerfil.style.display = "none"; // Esconde o preview se não houver arquivo
       }
     });
 
@@ -709,7 +616,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log(
           "Perfil JS: Foto de perfil selecionada. Iniciando upload para Cloudinary."
         );
-        fotoPerfilUrl = await uploadCloudinary(fotoFile);
+        fotoPerfilUrl = await uploadCloudinary(fotoFile); // uploadCloudinary usa fetch normal (para Cloudinary)
         if (!fotoPerfilUrl) {
           mostrarMensagem(MESSAGES.errors.uploadFailed, "erro");
           console.error("Perfil JS: Falha no upload da foto de perfil.");
@@ -720,23 +627,20 @@ document.addEventListener("DOMContentLoaded", async () => {
           fotoPerfilUrl
         );
       } else {
-        const fotoPadrao = document.getElementById("foto-perfil-padrao").src;
-        const urlBasePadrao =
-          "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif";
-
-        if (
+        const isPreviewShowingExistingImage =
           DOM.previewFotoPerfil.src &&
-          DOM.previewFotoPerfil.src !== fotoPadrao &&
-          !DOM.previewFotoPerfil.src.includes(urlBasePadrao) &&
-          DOM.previewFotoPerfil.src.includes("http")
-        ) {
+          DOM.previewFotoPerfil.src !==
+            "../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif" &&
+          DOM.previewFotoPerfil.src.includes("http"); // Verifica se é uma URL completa (indicando que já veio de algum lugar)
+
+        if (isPreviewShowingExistingImage) {
           fotoPerfilUrl = DOM.previewFotoPerfil.src;
           console.log(
             "Perfil JS: Usando URL da foto de perfil existente (não alterada).",
             fotoPerfilUrl
           );
         } else {
-          fotoPerfilUrl = null;
+          fotoPerfilUrl = null; // Se não tem foto nova e não tinha foto existente (ou era fallback), setta como null
           console.log(
             "Perfil JS: Nenhuma nova foto, usando foto atual ou definindo como null."
           );
@@ -756,6 +660,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log("Perfil JS: Enviando atualização para o ID:", loggedInUserId);
 
       try {
+        // Usando authenticatedFetch para enviar a atualização do perfil (rota protegida)
         const response = await authenticatedFetch(
           `${CONFIG.API_EDITAR_USUARIO}${loggedInUserId}`,
           {
@@ -770,14 +675,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
 
         if (!response.ok) {
-          const errorBody = await response.json().catch(() => ({
-            message: "Falha ao atualizar perfil",
-          }));
-          console.error(
-            "Perfil JS: Erro na atualização de perfil (JSON de erro):",
-            errorBody
-          );
-          throw new Error(errorBody.message || "Falha ao atualizar perfil");
+          throw await handleFetchError(response);
         }
         const dados = await response.json();
         console.log(
@@ -786,7 +684,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
 
         mostrarMensagem(MESSAGES.success.profileUpdated, "sucesso");
-        await carregarPerfilUsuario();
+        await carregarPerfilUsuario(); // Recarrega o perfil após a atualização para refletir as mudanças
         toggleEditMode(false);
       } catch (error) {
         console.error("Perfil JS: Erro ao salvar perfil (capturado):", error);
@@ -795,7 +693,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  function inicializarModal() {
+  function setupPostDetailsModal() {
     console.log("Perfil JS: Inicializando modal de detalhes do post.");
     const modal = DOM.modalDetalhesPost;
     const closeButtonX = DOM.closeModalDetalhesPost;
@@ -820,15 +718,94 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  function iniciarExclusaoPost(idDoPost) {
+    console.log(
+      "Perfil JS: Iniciando processo de confirmação de exclusão para o post ID:",
+      idDoPost
+    );
+    if (DOM.confirmacaoExclusaoModal) {
+      DOM.confirmacaoExclusaoModal.style.display = "flex";
+
+      // Limpa event listeners anteriores para evitar múltiplos disparos
+      DOM.btnConfirmarExclusao.onclick = null;
+      DOM.btnCancelarConfirmacao.onclick = null;
+
+      DOM.btnConfirmarExclusao.onclick = () => {
+        DOM.confirmacaoExclusaoModal.style.display = "none";
+        executarExclusaoPost(idDoPost);
+      };
+
+      DOM.btnCancelarConfirmacao.onclick = () => {
+        DOM.confirmacaoExclusaoModal.style.display = "none";
+        mostrarMensagem(MESSAGES.success.deleteCanceled, "informacao");
+      };
+    } else {
+      console.error(
+        "Perfil JS: Elemento de confirmação de exclusão não encontrado. Usando confirm() padrão."
+      );
+      // Fallback para confirm() padrão (evitar em produção)
+      if (
+        confirm(
+          "Tem certeza que deseja excluir este post? Esta ação não pode ser desfeita."
+        )
+      ) {
+        executarExclusaoPost(idDoPost);
+      }
+    }
+  }
+
+  async function executarExclusaoPost(idDoPost) {
+    console.log("Perfil JS: Executando exclusão do post com ID:", idDoPost);
+    try {
+      // Usando authenticatedFetch para excluir o post (rota protegida)
+      const response = await authenticatedFetch(
+        `${CONFIG.API_EXCLUIR_POST}${idDoPost}`,
+        {
+          method: "DELETE",
+          // headers não precisam de 'Content-Type' para DELETE sem corpo
+        }
+      );
+      console.log("Perfil JS: Resposta da API de exclusão de post:", response);
+
+      if (!response.ok) {
+        throw await handleFetchError(response);
+      }
+
+      console.log("Perfil JS: Post excluído com sucesso!");
+      mostrarMensagem(MESSAGES.success.postDeleted, "sucesso");
+      DOM.modalDetalhesPost.style.display = "none";
+      fetchAndRenderUserPosts(); // Recarrega os posts para refletir a exclusão
+    } catch (error) {
+      console.error("Perfil JS: Erro ao excluir post (capturado):", error);
+      mostrarMensagem(
+        error.message || MESSAGES.errors.postDeleteFailed,
+        "erro"
+      );
+      if (DOM.confirmacaoExclusaoModal)
+        DOM.confirmacaoExclusaoModal.style.display = "none";
+    }
+  }
+
+  // --- FUNÇÃO DE INICIALIZAÇÃO PRINCIPAL ---
   (function init() {
     console.log("Perfil JS: Iniciando script principal do perfil.");
+
+    // Verifica a autenticação e carrega os dados do perfil e posts
+    const token = getAuthToken(); // Chama getAuthToken aqui novamente para ser explícito dentro de init, embora já tenha sido chamado no topo.
+    if (!token) {
+      console.warn(
+        "Perfil JS: Token JWT não encontrado na inicialização. Redirecionamento já deveria ter ocorrido."
+      );
+      // Se chegou aqui sem token, algo está errado ou o redirecionamento está pendente.
+      return; // Interrompe para evitar erros.
+    }
+
     if (currentProfileId) {
       console.log(
         "Perfil JS: currentProfileId está definido. Carregando perfil e posts."
       );
-
       carregarPerfilUsuario();
-      exibirPostUsuario();
+      fetchAndRenderUserPosts();
     } else {
       console.warn(
         "Perfil JS: WARNING - ID do usuário não disponível. Algumas funcionalidades podem não carregar."
@@ -838,8 +815,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         "erro"
       );
     }
-    configurarEdicaoPerfil();
-    inicializarModal();
+
+    setupProfileEditFunctionality(); // Configura os event listeners para edição de perfil
+    setupPostDetailsModal(); // Configura os event listeners para o modal de detalhes do post
+
     console.log("Perfil JS: Script principal do perfil inicializado.");
   })();
 });

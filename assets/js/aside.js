@@ -1,5 +1,3 @@
-// assets/js/aside.js
-
 document.addEventListener("DOMContentLoaded", function () {
   const config = {
     cssPath: "../assets/css/aside.css",
@@ -8,29 +6,30 @@ document.addEventListener("DOMContentLoaded", function () {
     links: [
       {
         href: "/pages/publicar.html",
-        text: "Publicar",
         class: "btn-publicar",
+        text: "Publicar", // Re-adicionado o texto para o botão Publicar
+        // Removido o 'icon' e 'altText' para o botão Publicar, pois ele terá texto
       },
       {
         href: "/pages/feed.html",
         icon: "../assets/img/aside/desktop/Frame 2.png",
-        text: "Feed",
+        altText: "Ícone de Feed", // Mantido o texto alt para acessibilidade do ícone
       },
       {
         href: "/pages/perfil.html",
         icon: "../assets/img/aside/desktop/Frame 3.png",
-        text: "Perfil",
+        altText: "Ícone de Perfil", // Mantido o texto alt para acessibilidade do ícone
       },
       {
         href: "/pages/sobre.html",
         icon: "../assets/img/aside/desktop/Frame 5.png",
-        text: "Sobre nós",
+        altText: "Ícone Sobre nós", // Mantido o texto alt para acessibilidade do ícone
       },
       {
         href: "/pages/login.html",
         icon: "../assets/img/aside/desktop/Frame 4.png",
-        text: "Sair",
         id: "logout-link",
+        altText: "Ícone de Sair", // Mantido o texto alt para acessibilidade do ícone
       },
     ],
   };
@@ -48,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const linksHTML = config.links
       .map((link) => {
         if (link.class === "btn-publicar") {
+          // Renderiza o botão Publicar com texto
           return `
             <li>
               <a href="${link.href}" class="${link.class}">
@@ -55,21 +55,15 @@ document.addEventListener("DOMContentLoaded", function () {
               </a>
             </li>
           `;
-        } else if (link.id === "logout-link") {
-          return `
-            <li>
-              <a href="${link.href}" class="menu-link" id="${link.id}">
-                <img src="${link.icon}" class="desktop-icon" alt="${link.text}" />
-                <span class="link-text">${link.text}</span>
-              </a>
-            </li>
-          `;
         } else {
+          // Renderiza os outros links com apenas o ícone
+          const altText = link.altText || `Ícone`; // Fallback genérico para altText
+          const linkId = link.id ? `id="${link.id}"` : "";
+
           return `
             <li>
-              <a href="${link.href}" class="menu-link">
-                <img src="${link.icon}" class="desktop-icon" alt="${link.text}" />
-                <span class="link-text">${link.text}</span>
+              <a href="${link.href}" class="menu-link" ${linkId}>
+                <img src="${link.icon}" class="desktop-icon" alt="${altText}" />
               </a>
             </li>
           `;
@@ -95,9 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Aside JS: Realizando logout...");
 
     localStorage.removeItem("jwt_token");
-
     localStorage.removeItem("userId");
-
     localStorage.removeItem("userName");
 
     window.location.href = "/pages/login.html";
