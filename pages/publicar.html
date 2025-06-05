@@ -29,11 +29,16 @@
       <form>
         <div>
           <label for="nome">Nome do projeto</label>
-          <input type="text" id="nome" name="nome" minlength="3" maxlength="30" autofocus required />
+          <input class="input-nome-projeto" type="text" id="nome" name="nome" minlength="3" maxlength="30" autofocus
+            required />
+
         </div>
         <div>
           <label for="descricao">Descrição</label>
-          <textarea id="descricao" name="descricao" minlength="10" maxlength="255"></textarea>
+          <div class="textarea-container">
+            <textarea id="descricao" name="descricao" minlength="10" maxlength="4000"></textarea>
+            <span id="contador-caracteres" class="contador-caracteres">0/4000</span>
+          </div>
         </div>
 
         <output id="mensagem-publicar" role="status" aria-live="polite"></output>

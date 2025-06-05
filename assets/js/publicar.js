@@ -38,11 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
     mensagem: null,
     btnPublicar: null,
     btnPublicarText: null,
+    btnPublicarLoader: null,
     btnDescartar: null,
     btnUpload: null,
     inputUpload: null,
     imagemPrincipal: null,
     nomeImagem: null,
+    contadorCaracteres: null,
 
     init: () => {
       DOM.form = document.querySelector("form") || {
@@ -107,6 +109,13 @@ document.addEventListener("DOMContentLoaded", () => {
       DOM.nomeImagem = document.querySelector(".container-imagem-nome p") || {
         textContent: "",
         style: {},
+      };
+
+      DOM.contadorCaracteres = document.getElementById(
+        "contador-caracteres"
+      ) || {
+        textContent: "",
+        classList: { add: () => {}, remove: () => {} },
       };
     },
   };
@@ -199,14 +208,22 @@ document.addEventListener("DOMContentLoaded", () => {
         return false;
       }
 
-      if (descricao.length < 10) {
+      const maxLengthDescricao = parseInt(
+        DOM.descricao.getAttribute("maxlength")
+      );
+      if (
+        descricao.length < 10 ||
+        (maxLengthDescricao && descricao.length > maxLengthDescricao)
+      ) {
         Utils.exibirMensagem(
           DOM.mensagem,
-          MESSAGES.errors.descriptionTooShort,
+          descricao.length < 10
+            ? MESSAGES.errors.descriptionTooShort
+            : `A descrição excede o limite de ${maxLengthDescricao} caracteres.`,
           "erro"
         );
         if (DOM.descricao) DOM.descricao.focus();
-        console.warn("Utils.validarFormulario: Descrição muito curta.");
+        console.warn("Utils.validarFormulario: Descrição inválida.");
         return false;
       }
       return true;
@@ -253,20 +270,59 @@ document.addEventListener("DOMContentLoaded", () => {
       if (DOM.nomeImagem) DOM.nomeImagem.textContent = "image_projeto.png";
       if (DOM.inputUpload) DOM.inputUpload.value = "";
       console.log("Utils.limparFormulario: Formulário limpo.");
+      Utils.atualizarContadorCaracteres();
     },
 
     toggleLoader: (isLoading) => {
-      if (!DOM.btnPublicar) {
-        console.warn("Utils.toggleLoader: Botão publicar não encontrado.");
+      if (!DOM.btnPublicar || !DOM.btnPublicarText || !DOM.btnPublicarLoader) {
+        console.warn(
+          "Utils.toggleLoader: Elementos do botão publicar não encontrados."
+        );
         return;
       }
 
       if (isLoading) {
         DOM.btnPublicar.disabled = true;
         DOM.btnPublicar.classList.add("loading");
+        DOM.btnPublicarText.style.display = "none";
+        DOM.btnPublicarLoader.style.display = "block";
+        DOM.btnPublicarLoader.classList.remove("hidden");
       } else {
         DOM.btnPublicar.disabled = false;
         DOM.btnPublicar.classList.remove("loading");
+        DOM.btnPublicarText.style.display = "block";
+        DOM.btnPublicarLoader.style.display = "none";
+        DOM.btnPublicarLoader.classList.add("hidden");
+      }
+    },
+
+    atualizarContadorCaracteres: () => {
+      if (!DOM.descricao || !DOM.contadorCaracteres) {
+        console.warn(
+          "Utils.atualizarContadorCaracteres: Elementos de texto ou contador não encontrados."
+        );
+        return;
+      }
+
+      const comprimentoAtual = DOM.descricao.value.length;
+      const maxLength = parseInt(DOM.descricao.getAttribute("maxlength"));
+
+      if (isNaN(maxLength)) {
+        DOM.contadorCaracteres.textContent = `${comprimentoAtual}`;
+        DOM.contadorCaracteres.classList.remove("aviso", "limite-atingido");
+        return;
+      }
+
+      const restantes = maxLength - comprimentoAtual;
+
+      DOM.contadorCaracteres.textContent = `${comprimentoAtual}/${maxLength}`;
+
+      DOM.contadorCaracteres.classList.remove("aviso", "limite-atingido");
+
+      if (restantes <= 20 && restantes > 0) {
+        DOM.contadorCaracteres.classList.add("aviso");
+      } else if (restantes <= 0) {
+        DOM.contadorCaracteres.classList.add("limite-atingido");
       }
     },
   };
@@ -360,6 +416,7 @@ document.addEventListener("DOMContentLoaded", () => {
         DOM.descricao.addEventListener("input", function () {
           this.style.height = "auto";
           this.style.height = this.scrollHeight + "px";
+          Utils.atualizarContadorCaracteres();
         });
         console.log(
           "Handlers.ajustarTextarea: Listener de ajuste de textarea adicionado."
@@ -490,6 +547,7 @@ document.addEventListener("DOMContentLoaded", () => {
           "erro"
         );
       } finally {
+        Utils.toggleLoader(false);
         console.log("Handlers.handleSubmit: Finalizando submissão.");
       }
     },
@@ -498,6 +556,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const init = () => {
     DOM.init();
     Handlers.ajustarTextarea();
+
+    if (DOM.descricao && DOM.contadorCaracteres) {
+      Utils.atualizarContadorCaracteres();
+      DOM.descricao.addEventListener(
+        "input",
+        Utils.atualizarContadorCaracteres
+      );
+      console.log("init: Listener de contador de caracteres adicionado.");
+    } else {
+      console.warn(
+        "init: Elementos de descrição ou contador não encontrados para o contador de caracteres."
+      );
+    }
 
     if (DOM.form) {
       DOM.form.addEventListener("submit", Handlers.handleSubmit);
