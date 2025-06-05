@@ -17,22 +17,15 @@
         <input id="search-input" type="text" placeholder="Digite o que você busca" />
         <div class="filtros">
           <div class="filter-icon-wrapper">
-            <img src="../assets/img/feed/list.png" alt="Filtrar" class="filter-main-icon">
-            <label for="sort-by" class="visually-hidden">Filtrar por:</label>
+
+            <label for="sort-by" class="visually-hidden"></label>
           </div>
 
           <div class="sort-controls-wrapper">
             <select id="sort-by" onchange="filtrarProjetos()">
-              <option value="recentes">Mais recentes</option>
-              <option value="antigos">Mais antigos</option>
+              <option value="recentes">Recentes</option>
+              <option value="antigos">Antigos</option>
             </select>
-
-            <button class="sort-button sort-up" data-value="recentes" aria-label="Ordenar por mais recentes">
-              <img src="../assets/img/feed/arrow-up.png" alt="Seta para cima">
-            </button>
-            <button class="sort-button sort-down" data-value="antigos" aria-label="Ordenar por mais antigos">
-              <img src="../assets/img/feed/arrow-down.png" alt="Seta para baixo">
-            </button>
           </div>
         </div>
       </div>
