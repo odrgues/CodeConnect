@@ -129,18 +129,19 @@ document.addEventListener("DOMContentLoaded", () => {
           });
 
           projectCard.innerHTML = `
+              ${
+                projeto.imageUrl
+                  ? `<img src="${projeto.imageUrl}" alt="Imagem do Projeto ${projeto.title}" />`
+                  : ""
+              }
             <h3>${projeto.title}</h3>
             <p>${
               projeto.descricao
-                ? projeto.descricao.substring(0, 100) +
+                ? projeto.descricao.substring(0, 60) +
                   (projeto.descricao.length > 100 ? "..." : "")
                 : "Sem descrição"
             }</p>
-            ${
-              projeto.imageUrl
-                ? `<img src="${projeto.imageUrl}" alt="Imagem do Projeto ${projeto.title}" />`
-                : ""
-            }
+        
             <div class="detalhes-projeto">
               <span>${
                 projeto.dataCriacaoPosts
@@ -264,6 +265,12 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const projeto = await API.buscarDetalhesProjeto(idDoProjeto);
 
+        if (projeto.imageUrl) {
+          DOM.detalheImagemPost.src = projeto.imageUrl;
+          DOM.detalheImagemPost.style.display = "block";
+        } else {
+          DOM.detalheImagemPost.style.display = "none";
+        }
         DOM.detalheTitulo.textContent = projeto.title;
         DOM.detalheUsuario.textContent = projeto.nomeUsuario;
 
@@ -272,13 +279,6 @@ document.addEventListener("DOMContentLoaded", () => {
         DOM.detalheCriacao.textContent = projeto.dataCriacaoPosts
           ? projeto.dataCriacaoPosts.split(" ")[0]
           : "N/A";
-
-        if (projeto.imageUrl) {
-          DOM.detalheImagemPost.src = projeto.imageUrl;
-          DOM.detalheImagemPost.style.display = "block";
-        } else {
-          DOM.detalheImagemPost.style.display = "none";
-        }
       } catch (error) {
         console.error(
           "Handlers.verDetalhesProjeto: Erro ao buscar detalhes:",
@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
         DOM.detalheTitulo.textContent = `Erro: ${
           error.message || MESSAGES.errors.fetchDetails
         }`;
-        DOM.detalheTitulo.style.color = "red";
+
         DOM.detalheImagemPost.style.display = "none";
       }
     },
@@ -314,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const data = await API.buscarTodosProjetos();
         listaDeProjetos = data;
-        Utils.exibirProjetos(data);
+        Utils.filtrarProjetos(data);
       } catch (error) {
         console.error(
           "Handlers.carregarProjetosIniciais: Erro ao carregar projetos:",

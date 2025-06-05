@@ -119,7 +119,7 @@ aside img[alt="logo do codeconnect"]:hover {
   }
 
   body::before {
-    content: '';
+    content: "";
     position: fixed;
     top: 0;
     left: 0;
@@ -143,7 +143,7 @@ aside img[alt="logo do codeconnect"]:hover {
   .btn-publicar {
     display: block;
     position: fixed;
-    top: 2.0rem;
+    top: 2rem;
     right: 1.8rem;
     font-size: 0.9rem;
     padding: 0.5rem 0.75rem;
@@ -212,21 +212,17 @@ aside img[alt="logo do codeconnect"]:hover {
     filter: brightness(1.2);
   }
 
-  /* REGRAS PARA OCULTAR NA PÁGINA DE PUBLICAR (RESPONSIVO) */
-  /* Oculta o logo e o botão */
   aside.pagina-publicar img[alt="logo do codeconnect"],
   aside.pagina-publicar .btn-publicar {
     display: none !important;
   }
 
-  /* Oculta o background fixo e remove o padding-top do body
-     quando o body tem a classe 'pagina-publicar' */
   body.pagina-publicar::before {
     display: none;
   }
 
   body.pagina-publicar {
-    padding-top: 0 !important; /* Remove o padding-top para evitar espaço vazio */
+    padding-top: 0 !important;
   }
 }
 

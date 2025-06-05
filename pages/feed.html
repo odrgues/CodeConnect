@@ -19,12 +19,24 @@
         <img src="../assets/img/feed/search.png" alt="ícone de busca" class="input-icon">
         <input id="search-input" type="text" placeholder="Digite o que você busca" />
         <div class="filtros">
-          <!-- TODO: CSS AQUI -->
-          <label for="sort-by" style="color: aliceblue;">Filtrar por:</label>
-          <select id="sort-by" onchange="filtrarProjetos()">
-            <option value="recentes">Mais recentes</option>
-            <option value="antigos">Mais antigos</option>
-          </select>
+          <div class="filter-icon-wrapper">
+            <img src="../assets/img/feed/list.png" alt="Filtrar" class="filter-main-icon">
+            <label for="sort-by" class="visually-hidden">Filtrar por:</label>
+          </div>
+
+          <div class="sort-controls-wrapper">
+            <select id="sort-by" onchange="filtrarProjetos()">
+              <option value="recentes">Mais recentes</option>
+              <option value="antigos">Mais antigos</option>
+            </select>
+
+            <button class="sort-button sort-up" data-value="recentes" aria-label="Ordenar por mais recentes">
+              <img src="../assets/img/feed/arrow-up.png" alt="Seta para cima">
+            </button>
+            <button class="sort-button sort-down" data-value="antigos" aria-label="Ordenar por mais antigos">
+              <img src="../assets/img/feed/arrow-down.png" alt="Seta para baixo">
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -39,16 +51,24 @@
   <div id="detalhes-modal" class="modal">
     <div class="modal-content">
       <span class="close-button">&times;</span>
+      <img id="detalhe-imagem-post" src="" alt="Imagem do Post">
       <h2 id="detalhe-titulo"></h2>
-      <!-- TODO: CSS AQUI -->
-      <a id="detalhe-usuario" href="#" style="color: #007bff; text-decoration: underline; cursor: pointer;"></a>
-
-      <img id="detalhe-imagem-post" src="" alt="Imagem do Post"
-        style="max-width: 100%; height: auto; margin-bottom: 15px;">
-      <!-- TODO: CSS AQUI -->
       <p id="detalhe-descricao"></p>
-      <p id="detalhe-data-criacao"></p>
+
+      <div class="modal-footer">
+
+        <p id="detalhe-data-criacao"></p>
+        <a id="detalhe-usuario" href="#"></a>
+      </div>
+
     </div>
+  </div>
+
+
+  <!-- TODO: CSS AQUI -->
+
+  <p id="detalhe-data-criacao"></p>
+  </div>
   </div>
 
   <script src="../assets/js/feed.js"></script>
