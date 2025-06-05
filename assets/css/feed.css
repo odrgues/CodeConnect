@@ -1,6 +1,5 @@
 @import url(./global.css);
 
-/* --- Container principal da aplicação, para o sticky funcionar bem --- */
 body {
   background-color: var(--cor-fundo);
   display: flex;
@@ -8,7 +7,7 @@ body {
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  font-family: var(--fonte-principal); 
+  font-family: var(--fonte-principal);
 }
 
 main {
@@ -17,32 +16,28 @@ main {
   align-items: stretch;
   gap: 10px;
   width: 80%;
-  margin-left: 10%; 
-  padding-top: 100px; 
+  margin-left: 10%;
+  padding-top: 100px;
 }
 
-/* --- Nova classe para o contêiner da busca e filtros --- */
 .busca-e-filtros {
   position: sticky;
-  top: 0; 
-  width: 80%; 
-  margin-left: 10%; 
-  background-color: var(
-    --cor-fundo
-  ); 
-  z-index: 100; 
-  padding: 10px 0; 
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  top: 0;
+  width: 80%;
+  margin-left: 10%;
+  background-color: var(--cor-fundo);
+  z-index: 100;
+  padding: 10px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* --- Ajustes na barra de busca --- */
 .search-bar {
-  width: 100%; 
+  width: 95%;
   display: flex;
   align-items: center;
-  padding: 0; 
+  padding: 0;
   gap: 10px;
-  position: relative; 
+  position: relative;
   margin-left: 1%;
 }
 
@@ -52,7 +47,7 @@ main {
 
 .input-icon {
   position: absolute;
-  top: 50%; 
+  top: 50%;
   left: 10px;
   transform: translateY(-50%);
   width: 20px;
@@ -68,9 +63,9 @@ main {
   border-radius: 5px;
   font-size: 1em;
   border: none;
-  width: 100%; 
+  width: 100%;
   color: var(--cor-cinza-claro);
-  margin-top: 0; 
+  margin-top: 0;
   padding-left: 50px;
 }
 
@@ -89,116 +84,326 @@ main {
   margin-bottom: 50px;
 }
 
-/* --- Estilos para o Contêiner de Projetos (Flexbox) --- */
 .container-projetos {
-  display: flex; 
-  flex-wrap: wrap; 
-  justify-content: space-between; 
-  gap: 20px; 
-  padding: 10px; 
-  margin: 20px 0; 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 10px;
+  margin: 20px 0;
 }
 
-/* --- Estilos para cada Cartão de Projeto --- */
 .cartao-projeto {
-  flex: 0 1 calc(50% - 10px); 
-  box-sizing: border-box; 
-  border-radius: 10px; 
+  flex: 0 1 calc(50% - 10px);
+  box-sizing: border-box;
+  border-radius: 10px;
   padding: 20px;
   background-color: var(--cor-cinza-escuro);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para profundidade */
-  display: flex; /* Transforma o cartão em um contêiner flex para seu próprio conteúdo */
-  flex-direction: column; /* Organiza o conteúdo em coluna */
-  justify-content: space-between; /* Empurra o conteúdo para as extremidades, se necessário */
-  align-items: center; /* Centraliza itens horizontalmente */
-  text-align: center; /* Alinha o texto ao centro */
-  transition: transform 0.2s ease-in-out; /* Efeito de transição ao passar o mouse */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .cartao-projeto:hover {
-  transform: translateY(
-    -5px
-  ); /* Efeito de levantar o cartão ao passar o mouse */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra mais intensa no hover */
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* --- Estilos para o conteúdo interno do Cartão --- */
 .cartao-projeto h3 {
   margin-top: 0;
   margin-bottom: 10px;
+  font-size: 1.2em;
+  line-height: 1;
   color: var(--cor-cinza-claro);
-  font-size: 1.5em;
 }
 
 .cartao-projeto p {
   color: var(--cor-cinza-claro);
-  font-size: 0.95em;
+  font-size: 0.85em;
   line-height: 1.4;
   margin-bottom: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  max-height: calc(0.95em * 1.4 * 3);
 }
 
 .cartao-projeto img {
-  max-width: 100%; /* Garante que a imagem não transborde o cartão */
-  height: auto; /* Mantém a proporção da imagem */
-  border-radius: 8px; /* Cantos arredondados para a imagem */
-  margin-bottom: 15px;
-  display: block; /* Garante que a imagem preencha o espaço sem distorção */
-  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorção */
-  max-height: 180px; /* NOVO: Limita a altura máxima da imagem para evitar cortar o título */
+  max-width: 100%; 
+  height: auto; 
+  border-radius: 8px; 
+  margin-bottom: 25px;
+  display: block; 
+  object-fit: cover; 
+  max-height: 180px; /
+}
+
+.link-perfil-usuario {
+  color: var(--cor-verde-destaque);
+  text-decoration: none; 
+  font-weight: medium; 
+  margin-bottom: 10px; 
 }
 
 .detalhes-projeto {
-  margin-top: auto; /* Empurra os detalhes para o final do cartão */
-  width: 100%; /* Ocupa toda a largura disponível */
+  margin-top: auto; 
+  width: 100%; 
   display: flex;
-  justify-content: space-around; /* Espaça os likes e a data */
+  justify-content: space-around; 
   font-size: 0.8em;
   color: var(--cor-cinza-claro);
-  border-top: 1px solid var(--cor-cinza-claro); /* Linha divisória sutil */
+  border-top: 1px solid var(--cor-cinza-claro); 
   padding-top: 10px;
 }
 
-/* --- Estilo para mensagem de "Nenhum projeto encontrado" --- */
+
 .no-projects {
   width: 100%;
   text-align: center;
-  color: #888;
+  color: var(--cor-cinza-claro);
   font-size: 1.1em;
   padding: 30px;
-  border: 1px dashed #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+  border: 1px dashed var(--cor-cinza-escuro);
+  border-radius: 10px;
+  background-color: var(--cor-cinza-escuro);
 }
 
-/* --- Pseudo-elemento para corrigir alinhamento do último item em linha ímpar --- */
-/* Isso evita que o último item fique desalinhado à esquerda se for ímpar */
+
+.sort-controls-wrapper {
+  margin-bottom: 5.5px; 
+  width: fit-content;
+  margin-top: 6px;
+}
+
+#sort-by {
+  -webkit-appearance: none; 
+  -moz-appearance: none;   
+  appearance: none;        
+  width: 180px;
+  height: 39px; 
+  padding: 10px 18px; 
+  background-color: var(--cor-cinza-escuro); 
+  color: var(--cor-cinza-claro); 
+  border-radius: 5px; 
+  border:none;
+  font-family: var(--font-family);
+  font-size: 0.95em; 
+  line-height: 1.5; 
+  cursor: pointer; 
+  outline: none; 
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e1e1e1'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center; 
+  background-size: 16px; 
+  padding-right: 40px; 
+  transition: all 0.2s ease-in-out;
+}
+
+
+#sort-by:hover {
+   transform: scale(1.05);
+}
+
+
+#sort-by option {
+  background-color: var(--itens-background);
+  color: var(--text-color); 
+}
+
+#sort-by::-webkit-scrollbar {
+  width: 8px;
+  background-color: var(--itens-background);
+}
+
+#sort-by::-webkit-scrollbar-thumb {
+  background-color: var(--secondary-color);
+  border-radius: 4px;
+}
+
+#sort-by::-webkit-scrollbar-track {
+  background-color: var(--tag-color); 
+}
+
+
+.modal {
+  display: none; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  background-color: var(--cor-cinza-escuro);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 900px; 
+  max-height: 80vh; 
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  padding-right: 15px; 
+}
+
+
+.modal-content::-webkit-scrollbar {
+  width: 8px; 
+  height: 8px; 
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: var(
+    --cor-cinza-escuro
+  ); 
+  border-radius: 10px; 
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: var(
+    --cor-verde-destaque
+  ); 
+  border-radius: 10px; 
+  border: 2px solid var(--cor-cinza-escuro); 
+}
+
+
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--cor-verde-destaque);
+  cursor: pointer;
+  transition: color 0.2s ease;
+  z-index: 10; 
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: var(--cor-cinza-claro);
+  text-decoration: none;
+}
+
+#detalhe-titulo {
+  color: var(--cor-verde-destaque);
+  font-size: 1.8em;
+  margin-bottom: 5px;
+  word-wrap: break-word;
+}
+
+#detalhe-descricao {
+  color: var(--cor-cinza-claro);
+  font-size: 0.95em;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  flex-grow: 1; 
+  word-wrap: break-word; 
+}
+
+#detalhe-imagem-post {
+  width: 100%;
+  max-height: 250px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.85em;
+  color: var(--cor-cinza-claro);
+  flex-shrink: 0; 
+}
+
+#detalhe-usuario {
+  color: var(--cor-verde-destaque);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+#detalhe-data-criacao {
+  color: var(--cor-cinza-claro);
+  font-size: 0.9em;
+  opacity: 0.8;
+  text-align: right;
+}
+
+
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: 95%; 
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 15px;
+    max-width: 100%; 
+    max-height: 90vh; 
+  }
+  #detalhe-titulo {
+    font-size: 1.5em;
+  }
+  #detalhe-imagem-post {
+    max-height: 200px;
+  }
+  .modal-footer {
+    flex-direction: column; 
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
+
+
 .container-projetos::after {
   content: "";
-  flex: 0 1 calc(50% - 10px); /* Ocupa o mesmo espaço que um cartão */
+  flex: 0 1 calc(50% - 10px); 
 }
 
-/* --- Media Queries para Responsividade --- */
 @media (max-width: 768px) {
   .cartao-projeto {
-    flex: 0 1 100%; /* Em telas menores, cada cartão ocupa 100% da largura */
+    flex: 0 1 100%; 
   }
   .container-projetos::after {
-    display: none; /* Não precisa do pseudo-elemento quando os itens estão em coluna */
+    display: none; 
   }
 
-  /* Ajuste para o sticky header em telas menores */
+ 
   main {
-    margin-left: 0; /* Remove a margem esquerda para ocupar a largura total */
-    width: 100%; /* Ocupa 100% da largura do body */
+    margin-left: 0; 
+    width: 100%; 
   }
 
   .busca-e-filtros {
-    width: 100%; /* Ocupa 100% da largura do body */
-    margin-left: 0; /* Remove a margem esquerda */
+    width: 100%; 
+    margin-left: 0; 
   }
 
   .search-bar {
-    padding: 0 15px; /* Adiciona padding horizontal para não grudar nas bordas */
+    padding: 0 15px; 
   }
 }
 
@@ -213,98 +418,7 @@ main {
     font-size: 0.9em;
   }
   .detalhes-projeto {
-    flex-direction: column; /* Empilha likes e data em telas muito pequenas */
+    flex-direction: column; 
     gap: 5px;
   }
-}
-
-/* Estilos para o modal */
-.modal {
-  display: none; /* Inicialmente escondido */
-  position: fixed; /* Fica fixo na tela */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  color: var(--cor-cinza-claro);
-  background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
-  z-index: 1000; /* Garante que fique acima de outros elementos */
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
-}
-
-.detalhe-titulo {
-  color: var(--cor-cinza-claro);
-}
-.modal-content {
-  background-color: var(--cor-cinza-escuro);
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 90%; /* Largura do modal */
-  max-width: 600px;
-  position: relative; /* Para posicionar o botão de fechar */
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #aaa;
-  cursor: pointer;
-}
-
-.close-button:hover,
-.close-button:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.fechar-detalhes-btn {
-  background-color: #f44336; /* Cor vermelha */
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 15px;
-}
-
-.fechar-detalhes-btn:hover {
-  background-color: #d32f2f; /* Tom mais escuro de vermelho */
-}
-
-h2 {
-  color: floralwhite;
-}
-
-.close-button {
-  color: var(--cor-verde-destaque)
-}
-
-/* Estilos para o link do nome do usuário no modal */
-.user-link {
-  color: #007bff; /* Uma cor típica de link */
-  cursor: pointer; /* Muda o cursor para uma mãozinha */
-  text-decoration: underline; /* Adiciona sublinhado */
-  font-weight: bold; /* Opcional: para destacar */
-}
-
-.user-link:hover {
-  color: #0056b3; /* Cor mais escura ao passar o mouse */
-  text-decoration: none; /* Opcional: remove o sublinhado ao passar o mouse */
-}
-
-/* Opcional: Ajustes básicos para o modal da imagem */
-#detalhe-imagem-post {
-  display: none; /* Esconde por padrão, só mostra se tiver URL */
-  margin-top: 15px; /* Espaçamento acima da imagem */
-  margin-bottom: 15px; /* Espaçamento abaixo da imagem */
-  border-radius: 8px; /* Cantos arredondados */
-  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
 }

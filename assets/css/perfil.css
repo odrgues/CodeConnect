@@ -26,7 +26,7 @@ main {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  margin-left: 10%;
+  margin-left: 13%;
 }
 
 .container {
@@ -37,11 +37,11 @@ main {
   text-align: start;
   max-width: 100%;
   margin-left: 4%;
+  margin-right: 3%;
   height: 18rem;
   border-bottom: 2px solid var(--cor-cinza-claro);
 }
 
-/* --- Detalhes do Usuário (Perfil) --- */
 .detalhes-usuario {
   display: flex;
   flex-direction: row;
@@ -50,7 +50,6 @@ main {
   text-align: left;
 }
 
-/* NOVO ESTILO: Para agrupar o nome e a descrição */
 .info-usuario-texto {
   font-weight: 300;
   display: flex;
@@ -80,7 +79,7 @@ main {
   font-size: 1.1em;
   color: var(--cor-cinza-claro);
   line-height: 1.5;
-  max-width: 1000px; /* MANTIDO: Largura máxima da descrição original */
+  max-width: 1000px;
   margin-bottom: 0;
 }
 
@@ -101,9 +100,8 @@ main {
   min-height: 210px;
 }
 
-/* Estilo para o input de arquivo (foto de perfil) */
 .detalhes-usuario input[type="file"] {
-  max-width: 600px; /* AJUSTADO: Revertido para 600px para alinhar com a descrição */
+  max-width: 600px;
   padding: 8px 0;
   margin-top: 10px;
   font-size: 0.9em;
@@ -120,7 +118,6 @@ main {
   text-align: center;
 }
 
-/* Estilos para os botões */
 button {
   background-color: var(--cor-verde-destaque);
   color: var(--cor-fundo);
@@ -149,7 +146,6 @@ button:hover {
   transform: scale(1.05);
 }
 
-/* --- Mensagens de feedback (sucesso/erro/info) --- */
 #mensagem-perfil {
   text-align: center;
   padding: 10px;
@@ -177,7 +173,7 @@ button:hover {
 }
 
 /* --- Seção de Posts (Projetos) --- */
-#lista-de-posts { /* Este é o <section> pai */
+#lista-de-posts {
   background-color: var(--cor-fundo);
   border-radius: 8px;
   box-shadow: 0 4px 8px var(--shadow-color);
@@ -193,7 +189,7 @@ button:hover {
   text-align: center;
 }
 
-#posts-list { /* Este é o <div> que contém os cartões de posts */
+#posts-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -203,10 +199,9 @@ button:hover {
   width: 100%;
 }
 
-/* Pseudo-elemento para corrigir alinhamento do último item em linha ímpar */
 #posts-list::after {
   content: "";
-  flex: 0 1 calc(50% - 10px); /* Ocupa o mesmo espaço que um cartão */
+  flex: 0 1 calc(50% - 10px);
 }
 
 .post-card {
@@ -219,8 +214,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  text-align: center;
+  /* Removido: align-items: center; e text-align: center; para padronizar com feed.css */
   transition: transform 0.2s ease-in-out;
 }
 
@@ -230,32 +224,37 @@ button:hover {
 }
 
 .post-card h3 {
-  font-size: 1.5em;
   margin-top: 0;
   margin-bottom: 10px;
   color: var(--cor-cinza-claro);
+  font-size: 1.2em; /* Padronizado com feed.css */
 }
 
 .post-card p {
-  font-size: 0.95em;
+  color: var(--cor-cinza-claro);
+  font-size: 0.85em; /* Padronizado com feed.css */
   line-height: 1.4;
   margin-bottom: 15px;
-  color: var(--cor-cinza-claro);
   flex-grow: 1;
+  overflow: hidden; /* Padronizado com feed.css */
+  text-overflow: ellipsis; /* Padronizado com feed.css */
+  display: -webkit-box; /* Padronizado com feed.css */
+  -webkit-box-orient: vertical; /* Padronizado com feed.css */
+  max-height: calc(0.85em * 1.4 * 3); /* Padronizado com feed.css, calcula altura para 3 linhas */
 }
 
 .post-card img {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 25px; /* Padronizado com feed.css */
   display: block;
   object-fit: cover;
   max-height: 180px;
 }
 
 .detalhes-post-card {
-  font-size: 0.7em;
+  font-size: 0.8em; /* Padronizado com feed.css */
   color: var(--cor-cinza-claro);
   border-top: 1px solid var(--cor-cinza-claro);
   display: flex;
@@ -263,7 +262,7 @@ button:hover {
   margin-top: auto;
   width: 100%;
   padding-top: 10px;
-  padding-left: 120px;
+  padding-left: 20%;
 }
 
 .detalhes-post-card span {
@@ -274,163 +273,240 @@ button:hover {
 #btn-excluir-post {
   justify-content: center;
   align-items: center;
-  margin-left: 40%;
+  width: 40%;
+  margin-left: 30%;
 }
-a {
-  text-decoration: none;
-}
-/* --- Modal de Detalhes do Post (Existente) --- */
+
 .modal {
-  display: none;
+  display: none; 
   position: fixed;
-  z-index: 1000;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
   background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
   justify-content: center;
   align-items: center;
+  padding: 15px;
+  box-sizing: border-box;
 }
 
+/* Conteúdo interno do modal */
 .modal-content {
   background-color: var(--cor-cinza-escuro);
-  margin: auto;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px var(--shadow-color);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
   width: 90%;
-  max-width: 600px;
+  max-width: 900px; 
+  max-height: 80vh; 
   position: relative;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  padding-right: 15px; 
 }
 
+/* Estilos da barra de rolagem (scroll) para o modal-content */
+.modal-content::-webkit-scrollbar {
+  width: 8px; 
+  height: 8px; 
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: var(--cor-cinza-escuro); 
+  border-radius: 10px; 
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: var(--cor-verde-destaque); 
+  border-radius: 10px; 
+  border: 2px solid var(--cor-cinza-escuro); 
+}
+
+/* Botão de fechar do modal */
 .close-button {
-  color: var(--cor-cinza-claro);
+  position: absolute;
+  top: 15px;
+  right: 20px;
   font-size: 28px;
   font-weight: bold;
-  position: absolute;
-  top: 10px;
-  right: 20px;
+  color: var(--cor-verde-destaque); 
   cursor: pointer;
+  transition: color 0.2s ease;
+  z-index: 10; 
 }
 
 .close-button:hover,
 .close-button:focus {
-  color: var(--cor-cinza-escuro);
+  color: var(--cor-cinza-claro);
   text-decoration: none;
-  cursor: pointer;
 }
 
-.modal-content h2 {
-  color: var(--cor-cinza-claro);
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 1.8em;
+/* Título do post no modal */
+.modal-content h2 { /* Usando o seletor mais genérico do perfil */
+  color: var(--cor-verde-destaque); 
+  font-size: 1.8em; 
+  margin-bottom: 5px; 
+  word-wrap: break-word; 
 }
 
-.modal-content p {
-  color: var(--cor-cinza-claro);
-  line-height: 1.6;
-  margin-bottom: 10px;
+/* Descrição do post no modal */
+.modal-content p { /* Usando o seletor mais genérico do perfil */
+  color: var(--cor-cinza-claro); 
+  font-size: 0.95em; 
+  line-height: 1.5; 
+  margin-bottom: 10px; 
+  flex-grow: 1; 
+  word-wrap: break-word; 
 }
 
-/* Estilos para as divs de edição - Escondidas por padrão */
+/* Imagem do post no modal */
+#detalhe-imagem-post {
+  width: 100%; 
+  max-height: 250px; 
+  object-fit: contain; 
+  border-radius: 8px;
+  margin-top: 10px; 
+  margin-bottom: 10px; 
+  display: block;
+}
+
+#detalhe-usuario-post { 
+  color: var(--cor-verde-destaque); 
+  text-decoration: none; 
+  font-weight: 500; 
+  transition: color 0.2s ease, text-decoration 0.2s ease;  
+  border-top: 1px solid rgba(255, 255, 255, 0.1); 
+  padding-top: 15px; 
+  width: 100%; 
+  text-align: right; 
+  font-size: 0.85em; 
+}
+
+#detalhe-data-criacao {
+  color: var(--cor-cinza-claro); 
+  margin-top: -40px;
+  font-size: 0.9em; 
+  opacity: 0.8; 
+  text-align: left; 
+  width: 100%; 
+}
+
 .container-inputs,
 .container-img,
 .container-buttons {
-  justify-content: end;
-  flex-direction: column; /* Conteúdo interno em coluna */
-  width: 30%; /* Ocupa a largura total disponível */
-  max-width: 300px; /* AJUSTADO: Revertido para 600px para alinhar com a descrição */
-  gap: 40px; /* Espaçamento entre os elementos internos */
+  flex-direction: column;
+  width: 30%;
+  max-width: 300px;
+  gap: 40px;
 }
 
+.detalhes-usuario.is-editing {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
 
-/* Ajustes de margem para espaçamento entre as novas seções de edição */
+.detalhes-usuario.is-editing .info-usuario-texto,
+.detalhes-usuario.is-editing #editar-perfil-btn {
+  display: none;
+}
+
+.detalhes-usuario.is-editing .container-inputs,
+.detalhes-usuario.is-editing .container-img,
+.detalhes-usuario.is-editing .container-buttons {
+  display: flex;
+  align-self: flex-start;
+}
+
+.detalhes-usuario.is-editing #foto-perfil-padrao {
+  display: block;
+  margin-bottom: 15px;
+  align-self: flex-start;
+}
+
 .detalhes-usuario.is-editing .container-inputs {
-  margin-top: 20px; /* Espaço após a foto de perfil */
+  margin-top: 20px;
 }
 
 .detalhes-usuario.is-editing .container-img {
-  margin-top: 15px; /* Espaço após a seção de inputs */
+  margin-top: 15px;
 }
 
 .detalhes-usuario.is-editing .container-buttons {
-  margin-top: 20px; /* Espaço após a seção de imagem/inputs */
+  margin-top: 20px;
 }
 
 /* --- Media Queries para Responsividade --- */
-/* Para telas de até 1023px (tablets maiores e laptops pequenos) */
 @media (max-width: 1023px) {
   main {
-    width: 90%; /* Aumenta a largura para ocupar mais espaço */
-    margin-left: auto; /* Centraliza o main */
-    margin-right: auto; /* Centraliza o main */
-    padding-top: 80px; /* Ajusta o padding top para o sticky header */
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 80px;
   }
 
-  .container { /* Ajuste para o container do perfil em telas menores */
+  .container {
     padding: 20px;
-    height: auto; /* Permite que a altura se ajuste ao conteúdo */
+    height: auto;
   }
 
-  .busca-e-filtros { /* Não existe no perfil, mas mantido para contexto */
-    width: 90%; /* Alinha com o main */
-    margin-left: auto; /* Centraliza o sticky header */
-    margin-right: auto; /* Centraliza o sticky header */
+  .busca-e-filtros {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .post-card h3 {
-    font-size: 1.4em; /* Leve redução no tamanho da fonte */
+    font-size: 1.4em;
   }
 
   .post-card p {
-    font-size: 0.9em; /* Leve redução no tamanho da fonte */
+    font-size: 0.9em;
   }
 }
 
-/* Para telas de até 767px (tablets menores e a maioria dos celulares) */
 @media (max-width: 767px) {
   main {
-    width: 100%; /* Ocupa a largura total */
-    margin-left: 0; /* Remove a margem esquerda */
-    padding: 15px; /* Adiciona padding geral para não grudar nas bordas */
-    padding-top: 80px; /* Mantém o padding top para o sticky header */
+    width: 100%;
+    margin-left: 0;
+    padding: 15px;
+    padding-top: 80px;
   }
 
-  .container { /* Ajuste para o container do perfil em telas menores */
+  .container {
     padding: 15px;
   }
 
   .post-card {
-    flex: 0 1 100%; /* Cada cartão ocupa 100% da largura (layout em coluna) */
-    padding: 15px; /* Reduz o padding do cartão */
+    flex: 0 1 100%;
+    padding: 15px;
   }
 
-  #posts-list::after { /* Agora aplicado a #posts-list */
-    display: none; /* Não precisa do pseudo-elemento quando os itens estão em coluna */
+  #posts-list::after {
+    display: none;
   }
 
   .post-card h3 {
-    font-size: 1.2em; /* Reduz mais o tamanho da fonte */
+    font-size: 1.2em;
   }
 
   .post-card p {
-    font-size: 0.85em; /* Reduz mais o tamanho da fonte */
+    font-size: 0.85em;
   }
 
   .detalhes-post-card {
-    flex-direction: column; /* Empilha likes e data em telas menores */
+    flex-direction: column;
     gap: 5px;
   }
 }
 
-/* Para telas de até 480px (celulares muito pequenos) */
 @media (max-width: 480px) {
   .post-card {
-    padding: 10px; /* Reduz o padding para telas muito pequenas */
+    padding: 10px;
   }
   .post-card h3 {
     font-size: 1.1em;
@@ -443,14 +519,11 @@ a {
   }
 }
 
-
-/* Estilos para o modal */
 .modal {
   display: none;
   position: fixed;
-  z-index: 1000;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -485,7 +558,6 @@ a {
 .close-button:focus {
   color: var(--cor-cinza-claro);
   text-decoration: none;
-  cursor: pointer;
 }
 
 .modal-content h2 {
@@ -509,7 +581,7 @@ a {
   border-radius: 5px;
   cursor: pointer;
   margin-top: 20px;
-  display: none; /* Mantido para controle via JS */
+  display: none;
 }
 
 #btn-excluir-post:hover {
@@ -517,33 +589,31 @@ a {
 }
 
 h2 {
-  color: floralwhite; /* Esta regra pode estar duplicada ou em conflito, verificar global.css */
+  color: floralwhite;
 }
 
 .close-button {
   color: var(--cor-verde-destaque);
 }
 
-/* Estilos para o link do nome do usuário no modal */
 .user-link {
-  color: var(--cor-verde-destaque); /* Uma cor típica de link */
-  cursor: pointer; /* Muda o cursor para uma mãozinha */
-  text-decoration: underline; /* Adiciona sublinhado */
-  font-weight: bold; /* Opcional: para destacar */
+  color: var(--cor-verde-destaque);
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: bold;
 }
 
 .user-link:hover {
-  color: var(--cor-cinza-claro); /* Cor mais escura ao passar o mouse */
-  text-decoration: none; /* Opcional: remove o sublinhado ao passar o mouse */
+  color: var(--cor-cinza-claro);
+  text-decoration: none;
 }
 
-/* Ajustes básicos para o modal da imagem */
 #detalhe-imagem-post {
-  max-width: 100%; /* Garante que a imagem não ultrapasse a largura do modal */
-  height: auto; /* Mantém a proporção da imagem */
-  margin-top: 15px; /* Espaço acima da imagem */
-  margin-bottom: 15px; /* Espaço abaixo da imagem */
-  border-radius: 8px; /* Cantos arredondados */
-  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorção */
-  display: none; 
+  max-width: 100%;
+  height: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  object-fit: cover;
+  display: none;
 }

@@ -69,6 +69,7 @@ h2 {
   font-size: 26px;
   margin-bottom: 40px;
   font-weight: 400;
+  color: var(--primary-color);
 }
 
 form {
@@ -84,6 +85,10 @@ form div label {
   margin-bottom: 8px;
 }
 
+.input-nome-projeto {
+  background-color: var(--secondary-color);
+}
+
 form div input,
 textarea {
   width: 100%;
@@ -93,6 +98,34 @@ textarea {
   border-radius: 4px;
   font-family: var(--font-family);
   line-height: 22.5px;
+}
+
+.textarea-container {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+#descricao {
+  width: 100%;
+
+  padding-right: 30px;
+  box-sizing: border-box;
+}
+
+.contador-caracteres {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-size: 12px;
+  color: var(--cor-cinza-escuro);
+  background-color: var(--secondary-color);
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: 1;
+  pointer-events: none;
+  white-space: nowrap;
+  opacity: 0.8;
 }
 
 form div input {
@@ -160,10 +193,8 @@ textarea {
   width: 422px;
 }
 
-.main-imagem {
-  border-radius: 8px;
-  height: 100%;
-  object-fit: cover;
+.container-upload-imagem {
+  width: 422px;
 }
 
 .container-imagem {
@@ -171,6 +202,13 @@ textarea {
   padding: 24px 16px;
   background-color: var(--secondary-color);
   border-radius: 8px;
+}
+
+.main-imagem {
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .container-upload-imagem button {
@@ -189,57 +227,44 @@ textarea {
   cursor: pointer;
 }
 
-.container-upload-imagem button::after {
-  content: "";
-  background-size: contain;
-  background-repeat: no-repeat;
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+.loader {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid var(--background-color);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  display: none;
   margin-left: 8px;
 }
 
-/* .loader{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: var(--cor-fundo);
-  animation: spin 1s ease-in-out infinite;}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
-  .tipo {
-    padding: 16px;
-    border-radius: 8px;
-    margin: 10px 0;
-    font-size: 16px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: opacity 0.3s ease-in-out;
-  }
+.botao-publicar.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: wait;
+}
 
-  .tipo.sucesso {
-    background-color: #4caf50;
-    color: white;
-    border: 2px solid #388e3c;
-  }
-  .tipo.erro {
-    background-color: #f44336;
-    color: white;
-    border: 2px solid #d32f2f;
-  }
-  
-  .tipo.sucesso, .tipo.erro {
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
-  } */
+.botao-publicar.loading .button-text {
+  display: none;
+}
+
+.botao-publicar.loading .loader {
+  display: inline-block;
+}
+
+.hidden {
+  display: none;
+}
 
 @media (max-width: 1023px) {
   .imagem-logo {
