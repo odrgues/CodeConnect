@@ -135,12 +135,12 @@ document.addEventListener("DOMContentLoaded", () => {
                   : ""
               }
             <h3>${projeto.title}</h3>
-            <p>${
-              projeto.descricao
-                ? projeto.descricao.substring(0, 60) +
-                  (projeto.descricao.length > 100 ? "..." : "")
-                : "Sem descrição"
-            }</p>
+              <p>${
+          projeto.descricao
+            ? projeto.descricao.substring(0, 60) +
+              (projeto.descricao.length > 100 ? "..." : "")
+            : "Sem descrição"
+        }</p>
         
             <div class="detalhes-projeto">
               <span>${
@@ -237,6 +237,8 @@ document.addEventListener("DOMContentLoaded", () => {
     },
 
     verDetalhesProjeto: async (idDoProjeto) => {
+      debugger;
+
       if (
         !DOM.detalhesModal ||
         !DOM.detalheTitulo ||
