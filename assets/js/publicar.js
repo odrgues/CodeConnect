@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     descricao: null,
     mensagem: null,
     btnPublicar: null,
+    btnPublicarText: null,
     btnDescartar: null,
     btnUpload: null,
     inputUpload: null,
@@ -64,11 +65,23 @@ document.addEventListener("DOMContentLoaded", () => {
         className: "",
         style: { display: "none" },
       };
+
       DOM.btnPublicar = document.getElementById("btn-publicar") || {
         disabled: false,
         addEventListener: () => {},
         textContent: "",
+        classList: { add: () => {}, remove: () => {} },
+        querySelector: () => null,
       };
+
+      DOM.btnPublicarText = DOM.btnPublicar.querySelector(".button-text") || {
+        style: { display: "" },
+      };
+      DOM.btnPublicarLoader = DOM.btnPublicar.querySelector(".loader") || {
+        style: { display: "" },
+        classList: { add: () => {}, remove: () => {} },
+      };
+
       DOM.btnDescartar = document.getElementById("btn-descartar") || {
         disabled: false,
         addEventListener: () => {},
@@ -241,6 +254,21 @@ document.addEventListener("DOMContentLoaded", () => {
       if (DOM.inputUpload) DOM.inputUpload.value = "";
       console.log("Utils.limparFormulario: Formulário limpo.");
     },
+
+    toggleLoader: (isLoading) => {
+      if (!DOM.btnPublicar) {
+        console.warn("Utils.toggleLoader: Botão publicar não encontrado.");
+        return;
+      }
+
+      if (isLoading) {
+        DOM.btnPublicar.disabled = true;
+        DOM.btnPublicar.classList.add("loading");
+      } else {
+        DOM.btnPublicar.disabled = false;
+        DOM.btnPublicar.classList.remove("loading");
+      }
+    },
   };
 
   async function uploadCloudinary(file) {
@@ -347,7 +375,8 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       const startTime = Date.now();
 
-      if (DOM.btnPublicar) DOM.btnPublicar.disabled = true;
+      Utils.toggleLoader(true);
+
       console.log("Handlers.handleSubmit: Início da submissão do formulário.");
 
       const currentUserId = localStorage.getItem("userId");
@@ -461,7 +490,6 @@ document.addEventListener("DOMContentLoaded", () => {
           "erro"
         );
       } finally {
-        if (DOM.btnPublicar) DOM.btnPublicar.disabled = false;
         console.log("Handlers.handleSubmit: Finalizando submissão.");
       }
     },
