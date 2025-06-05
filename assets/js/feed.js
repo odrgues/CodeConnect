@@ -135,12 +135,12 @@ document.addEventListener("DOMContentLoaded", () => {
                   : ""
               }
             <h3>${projeto.title}</h3>
-              <p>${
-          projeto.descricao
-            ? projeto.descricao.substring(0, 60) +
-              (projeto.descricao.length > 100 ? "..." : "")
-            : "Sem descrição"
-        }</p>
+         <p>${
+           projeto.descricao
+             ? projeto.descricao.substring(0, 60) +
+               (projeto.descricao.length > 100 ? "..." : "")
+             : "Sem descrição"
+         }</p>
         
             <div class="detalhes-projeto">
               <span>${
@@ -170,14 +170,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (sortBy === "recentes" || sortBy === "antigos") {
         listaOrdenada = listaOrdenada.map((projeto) => {
-          const dataString = projeto.dataCriacaoPosts
-            ? projeto.dataCriacaoPosts.split(" ")[0]
-            : null;
+          const dataHoraStringOriginal = projeto.dataCriacaoPosts;
+
+          let dataParaParse = null;
+          if (dataHoraStringOriginal) {
+            const partes = dataHoraStringOriginal.split(" ");
+            if (partes.length === 2) {
+              const dataPartes = partes[0].split("/");
+              dataParaParse = `${dataPartes[2]}-${dataPartes[1]}-${dataPartes[0]} ${partes[1]}`;
+            }
+          }
           return {
             ...projeto,
-
-            _dataOrdenacao: dataString
-              ? new Date(dataString.split("/").reverse().join("-"))
+            _dataOrdenacao: dataParaParse
+              ? new Date(dataParaParse)
               : new Date(0),
           };
         });
