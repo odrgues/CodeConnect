@@ -320,6 +320,11 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         postDiv.innerHTML = `
+          ${
+            post.imageUrl
+              ? `<img src="${post.imageUrl}" alt="Imagem do Post ${post.title}" />`
+              : ""
+          }
           <h3>${post.title || "Título Indisponível"}</h3>
           <p>${
             post.descricao
@@ -327,11 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 (post.descricao.length > 100 ? "..." : "")
               : "Sem descrição"
           }</p>
-          ${
-            post.imageUrl
-              ? `<img src="${post.imageUrl}" alt="Imagem do Post ${post.title}" />`
-              : ""
-          }
+
           <div class="detalhes-post-card";">
             <span>${
               post.dataCriacaoPosts
@@ -341,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <p>
               <a href="../pages/perfil.html?userId=${
                 post.userId
-              }" style="color: #007bff; text-decoration: underline; cursor: pointer;">
+              }" style="color: #81fe88; text-decoration: none; cursor: pointer; padding-left: 50%;">
                 ${post.nomeUsuario || "Usuário Desconhecido"}
               </a>
             </p>
@@ -480,9 +481,9 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log(
         `Perfil JS: Montando link de usuário no modal. userId do post: ${post.userId}, nomeUsuario do post: ${post.nomeUsuario}`
       );
-      detalheUsuario.innerHTML = `Por: <a href="../pages/perfil.html?userId=${
+      detalheUsuario.innerHTML = `<a href="../pages/perfil.html?userId=${
         post.userId
-      }" style="color: #007bff; text-decoration: underline; cursor: pointer;">${
+      }" style="color: #81fe88; text-decoration: none; cursor: pointer;">${
         post.nomeUsuario || "Usuário Desconhecido" //css
       }</a>`;
 
