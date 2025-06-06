@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (error) {
         Utils.exibirMensagem(
           DOM.mensagem,
-          error.message || "Credenciais inválidas. Tente novamente.",
+          "Erro ao fazer login. Tente novamente.",
           "erro"
         );
       } finally {

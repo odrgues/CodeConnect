@@ -74,20 +74,37 @@ document.addEventListener("DOMContentLoaded", () => {
           body: JSON.stringify(dados),
         });
 
-        const resposta = await response.json();
+        // Tenta parsear a resposta como JSON. Se falhar, assume que a resposta é um erro não-JSON ou vazia.
+        const resposta = await response.json().catch((err) => {
+          console.warn(
+            "API.cadastrarUsuario: Erro ao parsear JSON da resposta:",
+            err
+          );
+          // Retorna um objeto com uma mensagem de erro padrão, pois o parse falhou
+          return { message: "Resposta do servidor não pôde ser processada." };
+        });
 
         if (!response.ok) {
+          // Se a resposta HTTP não foi OK (e.g., 400, 500), usa a mensagem do backend ou uma padrão.
           const error = new Error(
             resposta.message || `Erro do servidor: Status ${response.status}`
           );
           error.status = response.status;
-          throw error;
+          throw error; // Lança o erro para o catch externo no handleSubmit
         }
 
-        return resposta;
+        return resposta; // Retorna a resposta de sucesso
       } catch (error) {
-        console.error("Erro na API:", error);
-        throw error;
+        // --- ALTERAÇÃO AQUI: Exibir mensagem amigável ao usuário ---
+        Utils.exibirMensagem(
+          DOM.mensagem, // Garante que a mensagem seja exibida no elemento correto
+          "Erro ao conectar com o servidor. Tente novamente mais tarde.",
+          "erro"
+        );
+        // --- FIM DA ALTERAÇÃO ---
+
+        console.error("Erro na API:", error); // Continua logando o erro técnico para depuração
+        throw error; // Lança o erro para que o handleSubmit o pegue no seu próprio catch/finally
       }
     },
   };
@@ -209,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (error) {
         Utils.exibirMensagem(
           DOM.mensagem,
-          error.message || "Erro ao cadastrar. Tente novamente.",
+          "Erro ao cadastrar. Tente novamente.",
           "erro"
         );
         Utils.toggleLoader(DOM.btnCadastro, false);
