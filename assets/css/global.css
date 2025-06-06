@@ -64,3 +64,13 @@ body {
   height: 100%;
   overflow-x: hidden;
 }
+
+input[type="password"]::-webkit-password-toggle-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+input[type="password"]::-ms-reveal {
+  display: none;
+}
