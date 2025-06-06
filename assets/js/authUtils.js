@@ -1,46 +1,65 @@
+// Função para obter o token JWT do localStorage
 function getAuthToken() {
   return localStorage.getItem("jwt_token");
 }
 
-function removeAuthToken() {
+// Função para simular um redirecionamento de logout
+// Idealmente, esta função pode ser mais robusta, limpando outros dados do usuário, se houver
+function logoutAndRedirect() {
+  console.log(
+    "authUtils: Token JWT expirado ou inválido. Realizando logout e redirecionando para login."
+  );
   localStorage.removeItem("jwt_token");
+  localStorage.removeItem("userId"); // Limpa também o userId
+  localStorage.removeItem("userName"); // Limpa também o userName
+  // Redireciona para a página de login
+  window.location.href = "../pages/login.html";
 }
 
+// Função fetch autenticada
 async function authenticatedFetch(url, options = {}) {
   const token = getAuthToken();
 
+  // Se não houver token, o usuário já deveria ter sido redirecionado pela lógica na página de carregamento.
+  // Mas, para garantir, podemos acionar o logout se tentar usar fetch sem token.
   if (!token) {
-    removeAuthToken();
-    window.location.href = "login.html";
-
-    throw new Error("Usuário não autenticado. Redirecionando para o login.");
+    console.warn(
+      "authUtils: Tentativa de requisição autenticada sem token. Redirecionando."
+    );
+    logoutAndRedirect();
+    // Lança um erro para interromper a execução da função chamadora
+    throw new Error("Token de autenticação não encontrado.");
   }
 
-  options.headers = options.headers || {};
-  options.headers["Authorization"] = `Bearer ${token}`;
+  // Adiciona o cabeçalho de Autorização com o token JWT
+  const headers = {
+    ...options.headers, // Mantém quaisquer outros cabeçalhos existentes
+    Authorization: `Bearer ${token}`,
+  };
 
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url, {
+      ...options,
+      headers: headers,
+    });
 
-    if (response.status === 403) {
-      alert("Sua sessão expirou ou é inválida. Faça login novamente.");
-      window.location.href = "login.html";
-      throw new Error("Sessão expirada ou acesso negado (403 Forbidden).");
+    // --- Lógica de tratamento de erro para JWT expirado/inválido ---
+    // Verifica se a resposta indica um erro de autenticação/autorização
+    if (response.status === 401 || response.status === 403) {
+      console.error(
+        `authUtils: Erro de autenticação/autorização (${response.status}). Token pode estar expirado ou inválido.`
+      );
+      logoutAndRedirect(); // Aciona o logout e redirecionamento
+      // Lança um erro para que a função chamadora saiba que a requisição falhou devido à autenticação
+      throw new Error(`Erro de autenticação: ${response.status}`);
     }
+    // --- Fim da lógica de tratamento de erro ---
 
-    if (!response.ok) {
-      let errorMessage = `Erro na requisição para ${url}: ${response.status} ${response.statusText}`;
-      try {
-        const errorData = await response.json();
-        errorMessage += ` - ${errorData.message || JSON.stringify(errorData)}`;
-      } catch (jsonError) {}
-      throw new Error(errorMessage);
-    }
-
-    return response;
+    return response; // Retorna a resposta se for bem-sucedida ou outro tipo de erro
   } catch (error) {
-    console.error("Erro em authenticatedFetch:", error);
-
-    throw error;
+    console.error("authUtils: Erro na requisição autenticada:", error);
+    // Em caso de erro de rede ou outros, não necessariamente um problema de JWT.
+    // O tratamento de erro específico para 401/403 já é feito acima.
+    throw error; // Relança o erro para ser tratado pela função que chamou authenticatedFetch
   }
 }
