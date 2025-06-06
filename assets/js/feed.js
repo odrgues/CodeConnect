@@ -257,8 +257,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         ? DOM.searchInput.value.trim().toLowerCase()
         : "";
 
-      // Removemos a condição de 3 caracteres mínimos.
-      // Se o termo de busca estiver vazio, carregamos os projetos iniciais.
       if (!searchTerm) {
         await Handlers.carregarProjetosIniciais();
         return;

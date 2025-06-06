@@ -74,37 +74,33 @@ document.addEventListener("DOMContentLoaded", () => {
           body: JSON.stringify(dados),
         });
 
-        // Tenta parsear a resposta como JSON. Se falhar, assume que a resposta é um erro não-JSON ou vazia.
         const resposta = await response.json().catch((err) => {
           console.warn(
             "API.cadastrarUsuario: Erro ao parsear JSON da resposta:",
             err
           );
-          // Retorna um objeto com uma mensagem de erro padrão, pois o parse falhou
+
           return { message: "Resposta do servidor não pôde ser processada." };
         });
 
         if (!response.ok) {
-          // Se a resposta HTTP não foi OK (e.g., 400, 500), usa a mensagem do backend ou uma padrão.
           const error = new Error(
             resposta.message || `Erro do servidor: Status ${response.status}`
           );
           error.status = response.status;
-          throw error; // Lança o erro para o catch externo no handleSubmit
+          throw error;
         }
 
-        return resposta; // Retorna a resposta de sucesso
+        return resposta;
       } catch (error) {
-        // --- ALTERAÇÃO AQUI: Exibir mensagem amigável ao usuário ---
         Utils.exibirMensagem(
-          DOM.mensagem, // Garante que a mensagem seja exibida no elemento correto
+          DOM.mensagem,
           "Erro ao conectar com o servidor. Tente novamente mais tarde.",
           "erro"
         );
-        // --- FIM DA ALTERAÇÃO ---
 
-        console.error("Erro na API:", error); // Continua logando o erro técnico para depuração
-        throw error; // Lança o erro para que o handleSubmit o pegue no seu próprio catch/finally
+        console.error("Erro na API:", error);
+        throw error;
       }
     },
   };

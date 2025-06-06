@@ -102,6 +102,19 @@ main {
   max-height: 150px;
 }
 
+#input-nome-usuario:focus {
+  outline: none;
+  border: var(--cor-verde-destaque) 1px solid;
+}
+#input-descricao-usuario:focus {
+  outline: none;
+  border: var(--cor-verde-destaque) 1px solid;
+}
+textarea:focus {
+  outline: none;
+  border: var(--cor-verde-destaque) 1px solid;
+}
+
 .foto-perfil {
   width: 150px;
   height: 150px;

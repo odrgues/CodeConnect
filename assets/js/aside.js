@@ -7,29 +7,28 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         href: "/pages/publicar.html",
         class: "btn-publicar",
-        text: "Publicar", // Re-adicionado o texto para o botão Publicar
-        // Removido o 'icon' e 'altText' para o botão Publicar, pois ele terá texto
+        text: "Publicar",
       },
       {
         href: "/pages/feed.html",
         icon: "../assets/img/aside/desktop/Frame 2.png",
-        altText: "Ícone de Feed", // Mantido o texto alt para acessibilidade do ícone
+        altText: "Ícone de Feed",
       },
       {
         href: "/pages/perfil.html",
         icon: "../assets/img/aside/desktop/Frame 3.png",
-        altText: "Ícone de Perfil", // Mantido o texto alt para acessibilidade do ícone
+        altText: "Ícone de Perfil",
       },
       {
         href: "/pages/sobre.html",
         icon: "../assets/img/aside/desktop/Frame 5.png",
-        altText: "Ícone Sobre nós", // Mantido o texto alt para acessibilidade do ícone
+        altText: "Ícone Sobre nós",
       },
       {
         href: "/pages/login.html",
         icon: "../assets/img/aside/desktop/Frame 4.png",
         id: "logout-link",
-        altText: "Ícone de Sair", // Mantido o texto alt para acessibilidade do ícone
+        altText: "Ícone de Sair",
       },
     ],
   };
@@ -47,7 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const linksHTML = config.links
       .map((link) => {
         if (link.class === "btn-publicar") {
-          // Renderiza o botão Publicar com texto
           return `
             <li>
               <a href="${link.href}" class="${link.class}">
@@ -56,8 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
             </li>
           `;
         } else {
-          // Renderiza os outros links com apenas o ícone
-          const altText = link.altText || `Ícone`; // Fallback genérico para altText
+          const altText = link.altText || `Ícone`;
           const linkId = link.id ? `id="${link.id}"` : "";
 
           return `

@@ -1,19 +1,14 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  // --- VERIFICAÇÃO DE AUTENTICAÇÃO JWT ---
-  // Esta é a primeira coisa a ser verificada em uma página protegida.
-  // getAuthToken() é uma função do authUtils.js que busca o token JWT no localStorage.
   const token = getAuthToken();
   if (!token) {
     console.log(
       "Publicar JS: Token JWT não encontrado. Redirecionando para login."
     );
-    window.location.href = "../pages/login.html"; // Redireciona para a página de login
-    return; // Interrompe a execução do script se não houver token
+    window.location.href = "../pages/login.html";
+    return;
   }
   console.log("Publicar JS: Token JWT encontrado. Usuário autenticado.");
-  // --- FIM DA VERIFICAÇÃO DE AUTENTICAÇÃO ---
 
-  // Obter o ID do usuário logado do localStorage (agora que o token foi verificado)
   const userId = localStorage.getItem("userId");
   console.log("ID do usuário (do localStorage, após autenticação):", userId);
 
@@ -25,12 +20,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       UPLOAD_URL: "https://api.cloudinary.com/v1_1/dzzk4ybjo/image/upload",
       UPLOAD_PRESET: "codeconnect_upload",
     },
-    LOGIN_PAGE: "../pages/login.html", // Corrigido para caminho relativo
+    LOGIN_PAGE: "../pages/login.html",
   };
 
   const MESSAGES = {
     errors: {
-      notLoggedIn: "Faça login para publicar.", // Esta mensagem será menos usada agora devido ao redirecionamento inicial
+      notLoggedIn: "Faça login para publicar.",
       requiredFields: "Preencha todos os campos obrigatórios.",
       invalidImage: "Selecione uma imagem válida (PNG, JPG, JPEG, GIF).",
       networkError:
@@ -62,7 +57,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     contadorCaracteres: null,
 
     init: () => {
-      // Atribuições diretas para referências DOM, sem getters para simplificar
       DOM.form = document.querySelector("form");
       DOM.nomeProjeto = document.getElementById("nome");
       DOM.descricao = document.getElementById("descricao");
@@ -81,7 +75,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       DOM.nomeImagem = document.querySelector(".container-imagem-nome p");
       DOM.contadorCaracteres = document.getElementById("contador-caracteres");
 
-      // Adiciona avisos para elementos não encontrados para depuração
       if (!DOM.form) console.warn("DOM.init: Elemento 'form' não encontrado.");
       if (!DOM.nomeProjeto)
         console.warn("DOM.init: Elemento 'nome' não encontrado.");
@@ -127,7 +120,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }, timeout);
 
       try {
-        // --- ALTERADO AQUI: Usando authenticatedFetch para API de publicação ---
         const response = await authenticatedFetch(CONFIG.API_PUBLICACAO_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -190,9 +182,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const nomeProjeto = DOM.nomeProjeto.value.trim();
       const descricao = DOM.descricao.value.trim();
 
-      // Utiliza a validação HTML5 nativa, mas DOM.form precisa ser o elemento real
       if (DOM.form && !DOM.form.checkValidity()) {
-        DOM.form.reportValidity(); // Exibe as mensagens de erro do navegador
+        DOM.form.reportValidity();
         console.warn(
           "Utils.validarFormulario: Formulário inválido (HTML5 validation)."
         );
@@ -268,7 +259,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     limparFormulario: () => {
       if (DOM.form) DOM.form.reset();
       if (DOM.imagemPrincipal)
-        DOM.imagemPrincipal.src = "../assets/img/publicacao/imagem1.png"; // Ajustado para caminho relativo correto
+        DOM.imagemPrincipal.src = "../assets/img/publicacao/imagem1.png";
       if (DOM.nomeImagem) DOM.nomeImagem.textContent = "image_projeto.png";
       if (DOM.inputUpload) DOM.inputUpload.value = "";
       console.log("Utils.limparFormulario: Formulário limpo.");
@@ -287,13 +278,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.btnPublicar.disabled = true;
         DOM.btnPublicar.classList.add("loading");
         DOM.btnPublicarText.style.display = "none";
-        // DOM.btnPublicarLoader.style.display = "block"; // Removido display: block aqui, controlado por classes
         DOM.btnPublicarLoader.classList.remove("hidden");
       } else {
         DOM.btnPublicar.disabled = false;
         DOM.btnPublicar.classList.remove("loading");
         DOM.btnPublicarText.style.display = "block";
-        // DOM.btnPublicarLoader.style.display = "none"; // Removido display: none aqui, controlado por classes
         DOM.btnPublicarLoader.classList.add("hidden");
       }
     },
@@ -338,7 +327,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     formData.append("file", file);
     formData.append("upload_preset", CONFIG.CLOUDINARY.UPLOAD_PRESET);
     try {
-      // Uso de fetch normal para Cloudinary, pois não exige JWT
       const response = await fetch(CONFIG.CLOUDINARY.UPLOAD_URL, {
         method: "POST",
         body: formData,
@@ -369,7 +357,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log("Handlers.handleUpload: Arquivo selecionado:", arquivo);
       if (!arquivo) {
         if (DOM.imagemPrincipal)
-          DOM.imagemPrincipal.src = "../assets/img/publicacao/imagem1.png"; // Ajustado para caminho relativo correto
+          DOM.imagemPrincipal.src = "../assets/img/publicacao/imagem1.png";
         if (DOM.nomeImagem) DOM.nomeImagem.textContent = "image_projeto.png";
         console.log(
           "Handlers.handleUpload: Nenhuma imagem selecionada ou seleção cancelada."
@@ -384,7 +372,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       } catch (erro) {
         Utils.exibirMensagem(DOM.mensagem, erro, "erro");
         if (DOM.imagemPrincipal)
-          DOM.imagemPrincipal.src = "../assets/img/publicacao/imagem1.png"; // Ajustado para caminho relativo correto
+          DOM.imagemPrincipal.src = "../assets/img/publicacao/imagem1.png";
         if (DOM.nomeImagem) DOM.nomeImagem.textContent = "image_projeto.png";
         if (DOM.inputUpload) DOM.inputUpload.value = "";
       }
@@ -417,19 +405,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       event.preventDefault();
       const startTime = Date.now();
 
-      Utils.toggleLoader(true); // Ativa o loader
+      Utils.toggleLoader(true);
 
       console.log("Handlers.handleSubmit: Início da submissão do formulário.");
 
-      // userId já foi verificado no topo do script e é garantido que existe
-      // A linha abaixo foi removida pois 'userId' já é uma constante global do DOMContentLoaded
-      // const currentUserId = localStorage.getItem("userId");
-
       try {
-        // A verificação de autenticação no topo do script já cuida disso.
-        // Se o usuário não estivesse logado, ele já teria sido redirecionado.
-        // Removida a chamada redundante: if (!Handlers.verificarAutenticacao()) { return; }
-
         if (!Utils.validarFormulario()) {
           console.warn(
             "Handlers.handleSubmit: Validação do formulário falhou. Abortando submissão."
@@ -473,7 +453,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const dadosParaEnvio = {
           title: DOM.nomeProjeto.value.trim(),
           descricao: DOM.descricao.value.trim(),
-          usuarioId: userId ? parseInt(userId) : null, // Usa a constante userId do topo
+          usuarioId: userId ? parseInt(userId) : null,
           imageUrl: imageUrl || null,
         };
 
@@ -495,7 +475,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           dadosParaEnvio
         );
 
-        await API.criarPublicacao(dadosParaEnvio); // Chama a API de criação de post
+        await API.criarPublicacao(dadosParaEnvio);
 
         Utils.exibirMensagem(
           DOM.mensagem,
@@ -515,7 +495,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           console.log(
             "Handlers.handleSubmit: Redirecionando para a página de perfil..."
           );
-          // Redireciona para o perfil do usuário logado após a publicação
           window.location.href = `${CONFIG.PERFIL_PAGE}?userId=${userId}`;
         }, remainingTime);
       } catch (error) {
@@ -529,17 +508,16 @@ document.addEventListener("DOMContentLoaded", async () => {
           "erro"
         );
       } finally {
-        Utils.toggleLoader(false); // Desativa o loader, mesmo em caso de erro
+        Utils.toggleLoader(false);
         console.log("Handlers.handleSubmit: Finalizando submissão.");
       }
     },
   };
 
   const init = () => {
-    DOM.init(); // Inicializa as referências aos elementos DOM
-    Handlers.ajustarTextarea(); // Configura o ajuste automático do textarea
+    DOM.init();
+    Handlers.ajustarTextarea();
 
-    // Listener para o contador de caracteres na descrição
     if (DOM.descricao && DOM.contadorCaracteres) {
       Utils.atualizarContadorCaracteres();
       DOM.descricao.addEventListener(
@@ -553,21 +531,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
     }
 
-    // Listener para a submissão do formulário
     if (DOM.form) {
       DOM.form.addEventListener("submit", Handlers.handleSubmit);
     } else {
       console.warn("init: Formulário não encontrado. Submissão desativada.");
     }
 
-    // Listener para o botão de upload (simula o clique no input file)
     if (DOM.btnUpload && DOM.inputUpload) {
       DOM.btnUpload.addEventListener("click", () => DOM.inputUpload.click());
     } else {
       console.warn("init: Botão de upload ou input de imagem não encontrado.");
     }
 
-    // Listener para a mudança no input de arquivo (quando um arquivo é selecionado)
     if (DOM.inputUpload) {
       DOM.inputUpload.addEventListener("change", Handlers.handleUpload);
     } else {
@@ -576,7 +551,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
     }
 
-    // Listener para o botão Descartar
     if (DOM.btnDescartar) {
       DOM.btnDescartar.addEventListener("click", Handlers.handleDescartar);
     } else {
@@ -586,5 +560,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("init: Event listeners configurados.");
   };
 
-  init(); // Chama a função de inicialização
+  init();
 });
