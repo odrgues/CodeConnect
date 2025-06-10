@@ -198,7 +198,7 @@ aside img[alt="logo do codeconnect"]:hover {
 
   .menu-link img {
     width: 52px;
-    height: 92px;
+    height: 92px; 
     object-fit: contain;
     transition: all 0.3s ease;
   }
@@ -238,8 +238,8 @@ aside img[alt="logo do codeconnect"]:hover {
   aside img[alt="logo do codeconnect"] {
     width: 4rem;
     top: 1rem;
-    left: 42%;
-    transform: none;
+    left: 50%; 
+    transform: translateX(-50%); 
     right: auto;
   }
 
@@ -247,9 +247,27 @@ aside img[alt="logo do codeconnect"]:hover {
     width: 100px;
     height: 35px;
     font-size: 0.8rem;
-    top: calc(0.5rem + 3rem + 0.1rem);
-    left: 40%;
-    transform: none;
+    top: calc(0.5rem + 3rem + 0.1rem + 0.5rem); 
+    left: 50%; 
+    transform: translateX(-50%); 
     right: auto;
+  }
+
+  aside {
+    padding: 0.5rem 1rem; 
+  }
+
+  .lista-links {
+    gap: 0.5rem;
+  }
+
+  .menu-link {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .menu-link img {
+    width: 52px;
+    height: 92px;
   }
 }
