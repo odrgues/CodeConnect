@@ -163,7 +163,7 @@ button:hover {
 
 .mensagem.sucesso {
   background-color: var(--cor-verde-destaque);
-  color: var(--cor-fundo);
+  color: var(--cor-branco);
 }
 
 .mensagem.erro {
@@ -392,7 +392,7 @@ textarea:focus {
   border: none;
   position: relative;
   cursor: pointer;
-  width: auto; /* Ajustado para largura baseada no conteúdo */
+  width: auto;
   margin: 0;
   padding: 8px 12px;
   border-radius: 5px;
@@ -427,7 +427,7 @@ textarea:focus {
   gap: 10px;
   overflow-y: auto;
   padding-right: 15px;
-  align-items: center; /* ADICIONADO: Centraliza horizontalmente o conteúdo do modal */
+  align-items: center;
 }
 
 .modal-content::-webkit-scrollbar {
@@ -494,13 +494,13 @@ textarea:focus {
 
 .modal-footer {
   display: flex;
-  justify-content: space-between; /* Para manter a data e o usuário nas extremidades opostas */
-  align-items: center; /* Alinha-os verticalmente */
+  justify-content: space-between;
+  align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 15px;
   margin-top: 15px;
   width: 100%;
-  flex-wrap: nowrap; /* ALTERADO: Impede quebra de linha por padrão */
+  flex-wrap: nowrap;
 }
 
 #detalhe-usuario-post {
@@ -566,17 +566,16 @@ h2 {
   cursor: pointer;
   margin-top: 20px;
   display: none;
-  margin-left: auto; /* ADICIONADO: Centraliza o botão */
-  margin-right: auto; /* ADICIONADO: Centraliza o botão */
-  width: auto; /* ADICIONADO: Permite que margin auto funcione */
-  max-width: 250px; /* ADICIONADO: Limita a largura para melhor visualização */
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  max-width: 250px;
 }
 
 #btn-excluir-post:hover {
   background-color: #d32f2f;
 }
 
-/* --- Media Query para Tablets (max-width: 1023px) --- */
 @media (max-width: 1023px) {
   body {
     padding-top: var(--mobile-header-height);
@@ -590,13 +589,12 @@ h2 {
     margin: 0 auto;
   }
 
-  /* Perfil do Usuário em Tablets (Modo de Visualização) */
   .detalhes-usuario {
-    flex-direction: column; /* Empilha os itens verticalmente */
-    align-items: center; /* Centraliza todos os itens */
+    flex-direction: column;
+    align-items: center;
     gap: 15px;
     padding: 20px;
-    justify-content: flex-start; /* Reset justify-content for column layout */
+    justify-content: flex-start;
   }
 
   .foto-perfil {
@@ -610,9 +608,9 @@ h2 {
     align-items: center;
     text-align: center;
     order: 2;
-    margin-left: 0; /* Reset margin */
-    flex-basis: auto; /* Reset flex-basis */
-    max-width: 100%; /* Allow it to take full width */
+    margin-left: 0;
+    flex-basis: auto;
+    max-width: 100%;
   }
 
   .detalhes-usuario h1,
@@ -621,12 +619,11 @@ h2 {
   }
 
   .editar-perfil-btn {
-    position: static; /* Remove absolute positioning */
-    margin: 15px auto 0; /* Centralize and add margin */
+    position: static;
+    margin: 15px auto 0;
     order: 3;
   }
 
-  /* Perfil do Usuário em Tablets (Modo de Edição) */
   .container-img {
     order: 1;
     flex-direction: column;
@@ -639,11 +636,10 @@ h2 {
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
-    margin-left: 0; /* Reset margin */
+    margin-left: 0;
   }
 
   .detalhes-usuario-botoes-acao {
-    /* Save/Cancel buttons */
     order: 3;
     flex-direction: row;
     justify-content: center;
@@ -652,10 +648,9 @@ h2 {
     max-width: 600px;
     margin: 0 auto;
     padding-top: 15px;
-    position: static; /* Remove absolute positioning */
+    position: static;
   }
 
-  /* Posts em Tablets */
   #posts-list {
     justify-content: center;
     gap: 15px;
@@ -673,7 +668,6 @@ h2 {
     font-size: 0.88em;
   }
 
-  /* Modal em Tablets */
   .modal-content {
     padding: 20px;
     max-width: 700px;
@@ -688,15 +682,15 @@ h2 {
   }
 
   .modal-footer {
-    flex-direction: row; /* GARANTINDO: Mantenha em linha em tablets */
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: nowrap; /* GARANTINDO: Não quebre a linha em tablets */
+    flex-wrap: nowrap;
   }
 
   #detalhe-usuario-post,
   #detalhe-data-criacao {
-    text-align: unset; /* ALTERADO: Remove alinhamento forçado */
+    text-align: unset;
     width: auto;
   }
 
@@ -705,7 +699,6 @@ h2 {
   }
 }
 
-/* --- Media Query para Smartphones (max-width: 767px) --- */
 @media (max-width: 767px) {
   body {
     padding-top: var(--mobile-header-height);
@@ -718,7 +711,6 @@ h2 {
     padding-top: var(--mobile-header-height);
   }
 
-  /* Perfil do Usuário em Smartphones (Modo de Visualização) */
   .detalhes-usuario {
     flex-direction: column;
     align-items: center;
@@ -748,10 +740,9 @@ h2 {
   .editar-perfil-btn {
     margin: 10px auto 0;
     width: 100%;
-    max-width: 150px; /* Constrain button width */
+    max-width: 150px;
   }
 
-  /* Perfil do Usuário em Smartphones (Modo de Edição) */
   .container-img {
     flex-direction: column;
     align-items: center;
@@ -775,7 +766,7 @@ h2 {
     gap: 10px;
     width: 100%;
     max-width: 100%;
-    margin-left: 0; /* Reset margin */
+    margin-left: 0;
   }
 
   #input-nome-usuario,
@@ -790,8 +781,7 @@ h2 {
   }
 
   .detalhes-usuario-botoes-acao {
-    /* Save/Cancel buttons */
-    flex-direction: column; /* Empilha os botões verticalmente em mobile */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -809,7 +799,6 @@ h2 {
     margin: 0;
   }
 
-  /* Posts em Smartphones */
   #lista-de-posts {
     padding: 15px;
     margin-top: 10px;
@@ -850,7 +839,6 @@ h2 {
     padding-top: 8px;
   }
 
-  /* Modal em Smartphones */
   .modal-content {
     padding: 15px;
     width: 98%;
@@ -881,8 +869,8 @@ h2 {
   }
 
   .modal-footer {
-    flex-direction: column; /* ALTERADO: Empilha os itens do rodapé no mobile */
-    align-items: center; /* ADICIONADO: Centraliza os itens empilhados */
+    flex-direction: column;
+    align-items: center;
     gap: 5px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 10px;
@@ -893,7 +881,7 @@ h2 {
   #detalhe-usuario-post,
   #detalhe-data-criacao {
     font-size: 0.75em;
-    text-align: center; /* ALTERADO: Centraliza o texto quando empilhados */
+    text-align: center;
     width: 100%;
     margin: 0;
     order: unset;
@@ -904,7 +892,6 @@ h2 {
   }
 }
 
-/* --- Media Query para Telas Extremamente Pequenas (max-width: 480px) --- */
 @media (max-width: 480px) {
   main {
     padding: 10px;
@@ -1000,14 +987,11 @@ h2 {
   .modal-footer {
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center; /* ADICIONADO: Centraliza os itens empilhados */
+    align-items: center;
   }
 
+  #detalhe-data-criacao,
   #detalhe-usuario-post {
-    display: none; /* ADICIONADO: Oculta o nome do usuário em telas muito pequenas */
-  }
-
-  #detalhe-data-criacao {
-    text-align: center; /* ALTERADO: Centraliza o texto em telas muito pequenas */
+    text-align: center;
   }
 }

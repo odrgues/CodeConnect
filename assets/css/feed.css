@@ -183,16 +183,14 @@ main {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  width: 180px; /* Largura padrão para desktop */
+  width: 180px;
   height: 39px;
   padding: 10px 18px;
   background-color: var(--cor-cinza-escuro);
   color: var(--cor-cinza-claro);
   border-radius: 5px;
   border: none;
-  font-family: var(
-    --font-family
-  ); /* Cuidado: aqui está var(--font-family), mas no body é var(--fonte-principal). Verifique a consistência. */
+  font-family: var(--font-family);
   font-size: 0.95em;
   line-height: 1.5;
   cursor: pointer;
@@ -228,7 +226,6 @@ main {
   background-color: var(--tag-color);
 }
 
-/* --- Estilos do Modal (já bem adaptados) --- */
 .modal {
   display: none;
   position: fixed;
@@ -348,115 +345,104 @@ main {
   text-align: right;
 }
 
-/* Para corrigir o alinhamento de 2 colunas no container-projetos (desktop) */
 .container-projetos::after {
   content: "";
   flex: 0 1 calc(50% - 10px);
 }
 
-/* --- Media Queries para Responsividade --- */
-
-/* Breakpoint para Tablets e Desktops Menores (Largura Máxima: 768px) */
 @media (max-width: 768px) {
   main {
-    width: 100%; /* Ocupa a largura total da tela */
-    margin-left: 0; /* Remove a margem lateral */
-    padding: 80px 15px 0; /* Ajusta padding-top e adiciona padding lateral */
+    width: 100%;
+    margin-left: 0;
+    padding: 80px 15px 0;
   }
 
   .busca-e-filtros {
-    width: 100%; /* Ocupa a largura total da tela */
-    margin-left: 0; /* Remove a margem lateral */
-    padding: 10px 15px; /* Adiciona padding interno */
+    width: 100%;
+    margin-left: 0;
+    padding: 10px 15px;
   }
 
   .search-bar {
-    width: 100%; /* Ocupa 100% do container pai com padding */
-    margin-left: 0; /* Remove margem */
+    width: 100%;
+    margin-left: 0;
   }
 
   .cartao-projeto {
-    flex: 0 1 100%; /* Cartões ocupam a largura total (uma coluna) */
+    flex: 0 1 100%;
   }
 
   .container-projetos::after {
-    display: none; /* Desabilita o "after" quando há apenas uma coluna */
+    display: none;
   }
 
   .container-projetos {
-    padding: 0; /* Remove padding extra para ocupar mais espaço */
-    gap: 15px; /* Ajusta o espaçamento entre os cartões */
+    padding: 0;
+    gap: 15px;
   }
 
-  /* Ajustes para o modal em tablets */
   .modal-content {
-    max-width: 95%; /* Continua usando a maior parte da tela */
+    max-width: 95%;
     padding: 20px;
   }
 }
 
-/* Breakpoint para Smartphones (Largura Máxima: 480px) */
 @media (max-width: 480px) {
   main {
-    padding-top: 60px; /* Reduz ainda mais o padding-top */
-    padding-left: 10px; /* Ajusta padding lateral */
-    padding-right: 10px; /* Ajusta padding lateral */
+    padding-top: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   #search-input {
-    padding-left: 40px; /* Reduz o padding para o ícone */
-    font-size: 0.9em; /* Reduz o tamanho da fonte do input */
+    padding-left: 40px;
+    font-size: 0.9em;
   }
 
   .input-icon {
-    /* Opcional: ajustar tamanho do ícone */
     width: 15px;
     height: 15px;
-    left: 10px; /* Ajusta a posição do ícone */
+    left: 10px;
   }
 
   .cartao-projeto {
-    padding: 15px; /* Reduz o padding interno do cartão */
+    padding: 15px;
   }
 
   .cartao-projeto h3 {
-    font-size: 1.1em; /* Ajusta o tamanho do título do cartão */
+    font-size: 1.1em;
   }
 
   .cartao-projeto p {
-    font-size: 0.8em; /* Ajusta o tamanho do parágrafo do cartão */
+    font-size: 0.8em;
   }
 
   .cartao-projeto img {
-    max-height: 150px; /* Opcional: Reduz a altura máxima da imagem no cartão */
+    max-height: 150px;
   }
 
-  /* Dentro de @media (max-width: 480px) */
   .detalhes-projeto {
     flex-direction: row;
     justify-content: space-between;
-    align-items: center; /* Manter este */
+    align-items: center;
     gap: 0;
     padding: 10px;
     border-top: none;
     font-size: 0.75em;
   }
 
-  /* Remover quaisquer margens/paddings que possam estar causando problema */
-  .link-perfil-usuario, /* Nome do usuário */
-.detalhes-projeto > *:last-child /* Elemento da data (se for o último filho) */ {
-    margin: 0 !important; /* !important para garantir que sobrescreva tudo */
-    padding: 0 !important; /* !important para garantir que sobrescreva tudo */
-    line-height: 1; /* Ajustar line-height para ser consistente */
-    display: flex; /* Faz com que eles próprios sejam flex containers */
-    align-items: center; /* Alinha o conteúdo interno deles verticalmente */
+  .link-perfil-usuario,
+  .detalhes-projeto > *:last-child {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1;
+    display: flex;
+    align-items: center;
     height: auto;
-    font-size: 12px; /* Garante que a altura se ajuste ao conteúdo */
+    font-size: 12px;
   }
 
-  /* Para a data especificamente, se for um span ou p direto */
   #detalhe-data-criacao {
-    /* Se o elemento da data tiver um ID */
     margin: 0 !important;
     padding: 0 !important;
     line-height: 1;
@@ -465,44 +451,39 @@ main {
   }
 
   .sort-controls-wrapper {
-    width: 100%; /* Garante que o wrapper ocupe a largura total */
+    width: 100%;
     display: flex;
-    justify-content: center; /* Centraliza o select */
+    justify-content: center;
     margin-bottom: 15px;
     margin-top: 15px;
   }
 
   #sort-by {
-    width: 100%; /* Faz com que o select ocupe a largura total */
-    max-width: 200px; /* Garante que não fique muito grande */
-    font-size: 0.85em; /* Reduz a fonte do select */
-    padding: 8px 15px; /* Ajusta o padding do select */
-    background-position: right 8px center; /* Ajusta a posição do ícone */
+    width: 100%;
+    max-width: 200px;
+    font-size: 0.85em;
+    padding: 8px 15px;
+    background-position: right 8px center;
 
-    color: transparent; /* Torna o texto da opção selecionada transparente */
-    text-indent: -9999px; /* Move o texto para fora da área visível */
-    -webkit-appearance: none; /* Garante que o estilo nativo seja removido (você já tem) */
-    -moz-appearance: none; /* Garante que o estilo nativo seja removido (você já tem) */
-    appearance: none; /* Garante que o estilo nativo seja removido (você já tem) */
+    color: transparent;
+    text-indent: -9999px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 
-    /* Ajuste a imagem de fundo (seta) para ficar visível */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e1e1e1'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: center; /* Centraliza a seta */
-    background-size: 16px; /* Tamanho da seta */
-    padding-right: 0; /* Remove o padding que empurrava o texto para a direita */
+    background-position: center;
+    background-size: 16px;
+    padding-right: 0;
     padding-left: 0;
   }
 
-  /* Opcional: Para alguns navegadores, pode ser necessário remover padding para que o texto não "apareça" */
   #sort-by option {
-    color: var(
-      --cor-cinza-claro
-    ); /* Garante que as opções no dropdown ainda sejam visíveis */
-    text-indent: 0; /* Restaura o indent para as opções no dropdown */
+    color: var(--cor-cinza-claro);
+    text-indent: 0;
   }
 
-  /* Ajustes para o modal em celulares */
   .modal-content {
     padding: 15px;
     max-width: 100%;
@@ -510,21 +491,21 @@ main {
   }
 
   #detalhe-titulo {
-    font-size: 1.5em; /* Reduz o tamanho do título do modal */
+    font-size: 1.5em;
   }
 
   #detalhe-imagem-post {
-    max-height: 200px; /* Reduz a altura da imagem no modal */
+    max-height: 200px;
   }
 
   #detalhe-descricao {
-    font-size: 0.85em; /* Opcional: Reduz a fonte da descrição no modal */
+    font-size: 0.85em;
   }
 
   .modal-footer {
-    flex-direction: row; /* Volta para linha */
-    justify-content: space-between; /* Empurra para as pontas */
-    align-items: center; /* Alinha verticalmente no centro se houver diferenças de altura */
-    gap: 0; /* Remove o gap se não for necessário */
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
   }
 }
