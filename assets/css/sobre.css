@@ -110,8 +110,8 @@ h3 {
   main {
     margin: 0 auto;
     padding: 15px;
-    height: 100rem;
-    width: 500px;
+    height: 120rem;
+    width: 700px;
     align-items: center;
   }
 
@@ -172,8 +172,8 @@ h3 {
 @media (max-width: 767px) {
   main {
     margin: 0 auto;
-    height: 120rem;
-    padding: 10px;
+    height: 140rem;
+    padding: 0 10%;
     width: 100%;
   }
 
