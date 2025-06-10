@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const CONFIG = {
-    API_URL: "http://localhost:8080/api/v1/auth",
+    API_URL: "https://codeconnect-production-ac3a.up.railway.app/api/v1/auth",
     MIN_LOADER_TIME: 1500,
     MESSAGE_DISPLAY_TIME: 1500,
     FEED_PAGE: "/pages/feed.html",

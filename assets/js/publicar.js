@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   console.log("ID do usuário (do localStorage, após autenticação):", userId);
 
   const CONFIG = {
-    API_PUBLICACAO_URL: "http://localhost:8080/api/v1/Posts",
+    API_PUBLICACAO_URL:
+      "https://codeconnect-production-ac3a.up.railway.app/api/v1/Posts",
     MESSAGE_DISPLAY_TIME: 3000,
     PERFIL_PAGE: "/pages/perfil.html",
     CLOUDINARY: {

@@ -12,9 +12,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   let listaDeProjetos = [];
 
   const CONFIG = {
-    API_FEED_POSTS: "http://localhost:8080/api/v1/Posts",
-    API_BUSCA_TITULO: "http://localhost:8080/api/v1/Posts/titulo",
-    API_DETALHES_POST: "http://localhost:8080/api/v1/Posts",
+    API_FEED_POSTS:
+      "https://codeconnect-production-ac3a.up.railway.app/api/v1/Posts",
+    API_BUSCA_TITULO:
+      "https://codeconnect-production-ac3a.up.railway.app/api/v1/Posts/titulo",
+    API_DETALHES_POST:
+      "https://codeconnect-production-ac3a.up.railway.app/api/v1/Posts",
     PERFIL_PAGE: "../pages/perfil.html",
     MESSAGE_DISPLAY_TIME: 3000,
   };
@@ -173,18 +176,18 @@ document.addEventListener("DOMContentLoaded", async () => {
           });
 
           projectCard.innerHTML = `
-              ${
-                projeto.imageUrl
-                  ? `<img src="${projeto.imageUrl}" alt="Imagem do Projeto ${projeto.title}" />`
-                  : ""
-              }
+            ${
+              projeto.imageUrl
+                ? `<img src="${projeto.imageUrl}" alt="Imagem do Projeto ${projeto.title}" />`
+                : ""
+            }
             <h3>${projeto.title}</h3>
-         <p>${
-           projeto.descricao
-             ? projeto.descricao.substring(0, 60) +
-               (projeto.descricao.length > 100 ? "..." : "")
-             : "Sem descrição"
-         }</p>
+           <p>${
+             projeto.descricao
+               ? projeto.descricao.substring(0, 60) +
+                 (projeto.descricao.length > 100 ? "..." : "")
+               : "Sem descrição"
+           }</p>
         
             <div class="detalhes-projeto">
               <span>${

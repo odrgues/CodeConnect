@@ -1,14 +1,15 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const loggedInUserId = localStorage.getItem("userId");
-  const urlParams = new URLSearchParams(window.location.search);
-  const profileIdFromUrl = urlParams.get("userId");
-  const currentProfileId = profileIdFromUrl || loggedInUserId;
-
   console.log(
     "Perfil JS: (1) ID do usuário logado do localStorage:",
     loggedInUserId
   );
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const profileIdFromUrl = urlParams.get("userId");
   console.log("Perfil JS: (2) ID do usuário obtido da URL:", profileIdFromUrl);
+
+  const currentProfileId = profileIdFromUrl || loggedInUserId;
   console.log(
     "Perfil JS: (3) ID FINAL do perfil a ser carregado (currentProfileId):",
     currentProfileId
@@ -25,11 +26,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   console.log("Perfil JS: Token JWT encontrado. Usuário autenticado.");
 
   const CONFIG = {
-    API_BUSCAR_POSTS_USUARIO: "http://localhost:8080/api/v1/Posts/usuario",
-    API_BUSCAR_POST: "http://localhost:8080/api/v1/Posts",
-    API_BUSCAR_USUARIO: "http://localhost:8080/api/v1/usuarios",
-    API_EDITAR_USUARIO: "http://localhost:8080/api/v1/usuarios/atualiza-dados/",
-    API_EXCLUIR_POST: "http://localhost:8080/api/v1/Posts/",
+    API_BUSCAR_POSTS_USUARIO:
+      "https://codeconnect-production-ac3a.up.railway.app/api/v1/Posts/usuario",
+    API_BUSCAR_POST:
+      "https://codeconnect-production-ac3a.up.railway.app/api/v1/Posts",
+    API_BUSCAR_USUARIO:
+      "https://codeconnect-production-ac3a.up.railway.app/api/v1/usuarios",
+    API_EDITAR_USUARIO:
+      "https://codeconnect-production-ac3a.up.railway.app/api/v1/usuarios/atualiza-dados/",
+    API_EXCLUIR_POST:
+      "https://codeconnect-production-ac3a.up.railway.app/api/v1/Posts/",
     MESSAGE_DISPLAY_TIME: 3000,
     MIN_LOADER_TIME: 1500,
     CLOUDINARY: {
@@ -331,34 +337,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
 
         postDiv.innerHTML = `
-                    ${
-                      post.imageUrl
-                        ? `<img src="${post.imageUrl}" alt="Imagem do Post ${post.title}" />`
-                        : ""
-                    }
-                    <h3>${post.title || "Título Indisponível"}</h3>
-                    <p>${
-                      post.descricao
-                        ? post.descricao.substring(0, 60) +
-                          (post.descricao.length > 100 ? "..." : "")
-                        : "Sem descrição"
-                    }</p>
+          ${
+            post.imageUrl
+              ? `<img src="${post.imageUrl}" alt="Imagem do Post ${post.title}" />`
+              : ""
+          }
+          <h3>${post.title || "Título Indisponível"}</h3>
+          <p>${
+            post.descricao
+              ? post.descricao.substring(0, 60) +
+                (post.descricao.length > 100 ? "..." : "")
+              : "Sem descrição"
+          }</p>
 
-                    <div class="detalhes-post-card">
-                        <span>${
-                          post.dataCriacaoPosts
-                            ? post.dataCriacaoPosts.split(" ")[0]
-                            : "N/A"
-                        }</span>
-                        <p>
-                            <a href="../pages/perfil.html?userId=${
-                              post.userId
-                            }" style="color: #81fe88; text-decoration: none; cursor: pointer; padding-left: 50%;">
-                                ${post.nomeUsuario || "Usuário Desconhecido"}
-                            </a>
-                        </p>
-                    </div>
-                `;
+          <div class="detalhes-post-card">
+              <span>${
+                post.dataCriacaoPosts
+                  ? post.dataCriacaoPosts.split(" ")[0]
+                  : "N/A"
+              }</span>
+              <p>
+                  <a href="../pages/perfil.html?userId=${
+                    post.userId
+                  }" style="color: #81fe88; text-decoration: none; cursor: pointer; padding-left: 50%;">
+                      ${post.nomeUsuario || "Usuário Desconhecido"}
+                  </a>
+              </p>
+          </div>
+        `;
 
         DOM.listaDePosts.appendChild(postDiv);
       });
@@ -488,7 +494,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
 
       detalheTitulo.textContent = post.title || "Título Indisponível";
-
+      detalheTitulo.style.color = "black";
       console.log(
         `Perfil JS: Montando link de usuário no modal. userId do post: ${post.userId}, nomeUsuario do post: ${post.nomeUsuario}`
       );
