@@ -1,3 +1,4 @@
+/* Seus estilos base (para desktop e telas maiores) */
 @import url(./global.css);
 
 :root {
@@ -384,11 +385,15 @@ button:hover {
 }
 
 .delete-button {
-  background-color: var(--itens-background);
-  color: var(--primary-color);
-  border: 1px solid var(--cor-verde-destaque);
-  position: relative;
+  background-color: var(--error-color);
+  color: white;
+  position: relative; /* Mantenha se precisar para outros fins (ex: tooltip) */
   cursor: pointer;
+  width: 50%;
+  /* --- Adicione estas duas linhas para centralizar --- */
+  margin-left: auto;
+  margin-right: auto;
+  /* Ou, para encurtar: margin: 0 auto; */
 }
 
 .modal {
@@ -472,6 +477,10 @@ button:hover {
   word-wrap: break-word;
 }
 
+#detalhe-titulo-post {
+  color: var(--cor-verde-destaque);
+}
+
 #detalhe-imagem-post {
   width: 100%;
   max-width: 100%;
@@ -546,141 +555,289 @@ button:hover {
   }
 }
 
+/* --- Media Query para Smartphones (max-width: 767px) --- */
 @media (max-width: 767px) {
   main {
-    width: 100%;
-    margin-left: 0;
-    padding: 15px;
-    padding-top: 80px;
+    padding: 15px; /* Padding menor nas laterais */
+    width: 100%; /* Ocupa toda a largura */
   }
 
-  .container {
+  .detalhes-usuario {
+    gap: 15px;
     padding: 15px;
+  }
+
+  .foto-perfil {
+    width: 100px; /* Diminui a foto de perfil para mobile */
+    height: 100px;
+  }
+
+  .detalhes-usuario h1 {
+    font-size: 20px; /* Fonte menor para o nome */
+  }
+
+  .detalhes-usuario p {
+    font-size: 0.9em; /* Fonte menor para a descrição */
+  }
+
+  .container-inputs {
+    font-size: 1em; /* Fonte menor para labels dos inputs */
+  }
+
+  #input-nome-usuario,
+  #input-descricao-usuario {
+    font-size: 0.9em; /* Fonte menor para o texto dos inputs */
+  }
+
+  #input-descricao-usuario {
+    height: 100px; /* Altura menor para o textarea em mobile */
+    min-height: 80px;
+    max-height: 120px;
+  }
+
+  #salvar-perfil-btn,
+  #cancelar-edicao-btn {
+    width: 100%; /* Botões um abaixo do outro em telas menores */
+    max-width: none; /* Remove a largura máxima */
+    padding: 10px;
+    font-size: 0.9em;
+  }
+
+  .detalhes-usuario > div:last-of-type {
+    flex-direction: column; /* Empilha os botões Salvar/Cancelar */
+    gap: 10px;
+  }
+
+  #lista-de-posts {
+    padding: 15px;
+    margin-top: 10px;
+  }
+
+  .section-title {
+    font-size: 1.3em; /* Título da seção de posts menor */
+    margin-bottom: 10px;
+  }
+
+  #posts-list {
+    gap: 10px;
   }
 
   .post-card {
-    flex: 0 1 100%;
-    padding: 15px;
+    flex: 0 1 100%; /* Cada post-card ocupa 100% da largura */
+    padding: 10px;
   }
 
   #posts-list::after {
-    display: none;
+    display: none; /* Não precisa de after para alinhar em coluna única */
   }
 
   .post-card h3 {
-    font-size: 1.2em;
+    font-size: 1em;
   }
 
   .post-card p {
+    font-size: 0.75em;
+    max-height: calc(
+      0.75em * 1.4 * 4
+    ); /* Ajusta max-height para talvez 4 linhas */
+  }
+
+  .detalhes-post-card {
+    flex-direction: column; /* Empilha o nome do usuário e a data no card */
+    align-items: flex-start; /* Alinha à esquerda */
+    gap: 5px;
+    font-size: 0.7em;
+    padding-top: 8px;
+  }
+
+  .modal-content {
+    padding: 15px;
+    width: 98%;
+    max-width: none; /* Remove max-width para ser totalmente flexível */
+    gap: 8px;
+  }
+
+  .modal-content h2 {
+    font-size: 1.3em;
+    margin-bottom: 5px;
+  }
+
+  .modal-content p {
+    font-size: 0.85em;
+    margin-bottom: 8px;
+  }
+
+  .close-button {
+    font-size: 24px;
+    top: 10px;
+    right: 15px;
+  }
+
+  #detalhe-imagem-post {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    max-height: 180px;
+  }
+
+  /* Ajusta o alinhamento da data e usuário no modal */
+  #detalhe-usuario-post,
+  #detalhe-data-criacao {
+    font-size: 0.75em;
+    text-align: left; /* Ambos à esquerda quando empilhados */
+    width: 100%;
+    padding-top: 0; /* Remove padding-top se o border-top for suficiente */
+    border-top: none; /* Remove border-top se for empilhado e não fizer sentido */
+  }
+
+  /* Se você quiser que o usuário fique em uma linha e a data na outra no modal */
+  .modal-content .modal-footer {
+    /* Crie um wrapper ou selecione os elementos de data/usuario */
+    display: flex;
+    flex-direction: column; /* Para empilhar */
+    align-items: flex-start; /* Alinha à esquerda */
+    gap: 5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+    margin-top: 10px;
+  }
+}
+
+/* --- Media Query para Telas Extremamente Pequenas (max-width: 480px) --- */
+@media (max-width: 480px) {
+  main {
+    padding: 10px;
+  }
+
+  .detalhes-usuario {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .foto-perfil {
+    width: 80px;
+    height: 80px;
+  }
+
+  .detalhes-usuario h1 {
+    font-size: 18px;
+  }
+
+  .detalhes-usuario p {
     font-size: 0.85em;
   }
 
-  .detalhes-post-card {
-    flex-direction: column;
-    gap: 5px;
+  .container-inputs {
+    font-size: 0.9em;
+    gap: 10px;
   }
-}
 
-@media (max-width: 480px) {
-  .post-card {
+  #input-nome-usuario,
+  #input-descricao-usuario {
+    font-size: 0.85em;
+    padding: 6px 10px;
+  }
+
+  #input-descricao-usuario {
+    height: 70px;
+    min-height: 60px;
+    max-height: 100px;
+  }
+
+  #salvar-perfil-btn,
+  #cancelar-edicao-btn {
+    padding: 8px;
+    font-size: 0.85em;
+  }
+
+  #lista-de-posts {
     padding: 10px;
   }
+
+  .section-title {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+  }
+
+  .post-card {
+    padding: 8px;
+  }
+
   .post-card h3 {
+    font-size: 0.95em;
+  }
+
+  .post-card p {
+    font-size: 0.7em;
+    max-height: calc(0.7em * 1.4 * 3); /* Volta para 3 linhas se necessário */
+  }
+
+  .detalhes-post-card {
+    display: flex; /* Transforma em um contêiner flexível */
+    justify-content: space-between; /* Empurra o primeiro item para o início, o último para o fim */
+    align-items: center; /* Alinha verticalmente ao centro */
+    border-top: 1px solid var(--cor-cinza-claro);
+    padding-top: 10px;
+    font-size: 0.8em;
+    color: var(--cor-cinza-claro);
+    width: 100%;
+    margin-top: auto;
+    /* Remover flex-direction: column ou garantir que seja row nas media queries apropriadas */
+    flex-direction: row; /* Garante que estejam lado a lado em telas maiores */
+  }
+
+  /* Para garantir que não haja margens ou paddings extras que causem desalinhamento */
+  .detalhes-post-card span,
+  .detalhes-post-card a {
+    /* Se o nome for um link */
+    margin: 0;
+    padding: 0;
+    line-height: 1; /* Altura de linha consistente */
+    white-space: nowrap; /* Impede quebra de linha dentro do elemento */
+    overflow: hidden; /* Oculta qualquer conteúdo que transborde */
+    text-overflow: ellipsis; /* Adiciona "..." se o conteúdo for cortado */
+  }
+
+  .modal-content {
+    padding: 12px;
+  }
+
+  .modal-content h2 {
     font-size: 1.1em;
   }
-  .post-card p {
+
+  .modal-content p {
     font-size: 0.8em;
   }
-  .detalhes-post-card {
-    font-size: 0.75em;
+
+  #detalhe-imagem-post {
+    max-height: 150px;
   }
-}
 
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.6);
-  justify-content: center;
-  align-items: center;
-}
+  /* --- AJUSTES AQUI PARA O MODAL --- */
+  /* Assumindo que você tem um wrapper como .modal-footer, use ele: */
+  .modal-content .modal-footer {
+    display: flex;
+    flex-direction: row; /* Volta a ser row (lado a lado) */
+    justify-content: space-between; /* Data em uma ponta, usuário na outra */
+    align-items: center; /* Alinha verticalmente ao centro */
+    gap: 0; /* Remova o gap se não for mais necessário */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+    margin-top: 10px;
+  }
 
-.modal-content {
-  background-color: var(--cor-cinza-escuro);
-  margin: auto;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px var(--shadow-color);
-  width: 90%;
-  max-width: 600px;
-  position: relative;
-  text-align: left;
-}
-
-.close-button {
-  color: var(--cor-cinza-claro);
-  font-size: 28px;
-  font-weight: bold;
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  cursor: pointer;
-}
-
-.close-button:hover,
-.close-button:focus {
-  color: var(--cor-cinza-claro);
-  text-decoration: none;
-}
-
-.modal-content h2 {
-  color: var(--cor-cinza-claro);
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 1.8em;
-}
-
-.modal-content p {
-  color: var(--cor-cinza-claro);
-  line-height: 1.6;
-  margin-bottom: 10px;
-}
-
-#btn-excluir-post {
-  background-color: #dc3545;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 20px;
-  display: none;
-}
-
-#btn-excluir-post:hover {
-  background-color: #d32f2f;
-}
-
-h2 {
-  color: floralwhite;
-}
-
-.close-button {
-  color: var(--cor-verde-destaque);
-}
-
-.user-link {
-  color: var(--cor-verde-destaque);
-  cursor: pointer;
-  text-decoration: underline;
-  font-weight: bold;
-}
-
-.user-link:hover {
-  color: var(--cor-cinza-claro);
-  text-decoration: none;
+  /* Se você não tem .modal-footer e os itens são irmãos, ajuste individualmente */
+  /* Exemplo se #detalhe-data-criacao e #detalhe-usuario-post forem irmãos diretos: */
+  #detalhe-data-criacao {
+    text-align: left; /* Garante que a data fique à esquerda */
+    width: auto; /* Permite que ocupe apenas o espaço necessário */
+    padding-top: 0; /* Remove padding-top se o border-top do pai for suficiente */
+    border-top: none; /* Remove border-top se for empilhado e não fizer sentido */
+  }
+  #detalhe-usuario-post {
+    text-align: right; /* Garante que o usuário fique à direita */
+    width: auto; /* Permite que ocupe apenas o espaço necessário */
+    padding-top: 0;
+    border-top: none;
+  }
 }

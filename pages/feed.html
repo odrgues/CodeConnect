@@ -54,6 +54,26 @@
   <script src="../assets/js/authUtils.js"></script>
   <script src="../assets/js/feed.js"></script>
   <script src="../assets/js/aside.js"></script>
+  <script>
+    function ajustarElementosResponsivos() {
+      const sortBySelect = document.getElementById('sort-by');
+      const recentesOption = sortBySelect ? sortBySelect.querySelector('option[value="recentes"]') : null;
+      const antigosOption = sortBySelect ? sortBySelect.querySelector('option[value="antigos"]') : null;
+
+      if (window.innerWidth <= 480) {
+        if (recentesOption) {
+          recentesOption.textContent = 'Recentes';
+        }
+        if (antigosOption) {
+          antigosOption.textContent = 'Antigos';
+        }
+
+      }
+    }
+    window.addEventListener('load', ajustarElementosResponsivos);
+    window.addEventListener('resize', ajustarElementosResponsivos);
+  </script>
+
 </body>
 
 </html>

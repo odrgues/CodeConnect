@@ -1,5 +1,6 @@
 @import url(./global.css);
 
+/* Estilos base (para desktop e telas maiores) */
 body {
   background-color: var(--cor-fundo);
   display: flex;
@@ -15,30 +16,32 @@ main {
   flex-direction: column;
   align-items: stretch;
   gap: 10px;
-  width: 80%;
-  margin-left: 10%;
+  width: 80%; /* Largura para desktop */
+  margin-left: 10%; /* Centraliza o conteúdo */
   padding-top: 100px;
+  box-sizing: border-box; /* Garante que o padding não adicione à largura total */
 }
 
 .busca-e-filtros {
   position: sticky;
   top: 0;
-  width: 80%;
-  margin-left: 10%;
+  width: 80%; /* Largura para desktop */
+  margin-left: 10%; /* Centraliza a barra de busca */
   background-color: var(--cor-fundo);
   z-index: 100;
   padding: 10px 0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Importante para o padding em media queries */
 }
 
 .search-bar {
-  width: 95%;
+  width: 95%; /* Ocupa a maior parte da largura */
   display: flex;
   align-items: center;
   padding: 0;
   gap: 10px;
   position: relative;
-  margin-left: 1%;
+  margin-left: 1%; /* Pequena margem à esquerda */
 }
 
 ::placeholder {
@@ -66,7 +69,7 @@ main {
   width: 100%;
   color: var(--cor-cinza-claro);
   margin-top: 0;
-  padding-left: 50px;
+  padding-left: 50px; /* Espaço para o ícone */
 }
 
 #search-input:focus {
@@ -94,7 +97,7 @@ main {
 }
 
 .cartao-projeto {
-  flex: 0 1 calc(50% - 10px);
+  flex: 0 1 calc(50% - 10px); /* Dois cartões por linha */
   box-sizing: border-box;
   border-radius: 10px;
   padding: 20px;
@@ -127,37 +130,37 @@ main {
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  max-height: calc(0.95em * 1.4 * 3);
+  max-height: calc(0.95em * 1.4 * 3); /* Limita o texto a 3 linhas */
 }
 
 .cartao-projeto img {
-  max-width: 100%; 
-  height: auto; 
-  border-radius: 8px; 
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
   margin-bottom: 25px;
-  display: block; 
-  object-fit: cover; 
-  max-height: 180px; /
+  display: block;
+  object-fit: cover;
+  max-height: 180px;
 }
 
 .link-perfil-usuario {
   color: var(--cor-verde-destaque);
-  text-decoration: none; 
-  font-weight: medium; 
-  margin-bottom: 10px; 
+  text-decoration: none;
+  font-weight: medium;
+  margin-bottom: 10px;
 }
 
 .detalhes-projeto {
-  margin-top: auto; 
-  width: 100%; 
+  margin-top: auto;
+  width: 100%;
   display: flex;
-  justify-content: space-around; 
+  justify-content: space-around;
   font-size: 0.8em;
   color: var(--cor-cinza-claro);
-  border-top: 1px solid var(--cor-cinza-claro); 
+  border-top: 1px solid var(--cor-cinza-claro);
   padding-top: 10px;
+  align-items: center;
 }
-
 
 .no-projects {
   width: 100%;
@@ -170,46 +173,45 @@ main {
   background-color: var(--cor-cinza-escuro);
 }
 
-
 .sort-controls-wrapper {
-  margin-bottom: 5.5px; 
+  margin-bottom: 5.5px;
   width: fit-content;
   margin-top: 6px;
 }
 
 #sort-by {
-  -webkit-appearance: none; 
-  -moz-appearance: none;   
-  appearance: none;        
-  width: 180px;
-  height: 39px; 
-  padding: 10px 18px; 
-  background-color: var(--cor-cinza-escuro); 
-  color: var(--cor-cinza-claro); 
-  border-radius: 5px; 
-  border:none;
-  font-family: var(--font-family);
-  font-size: 0.95em; 
-  line-height: 1.5; 
-  cursor: pointer; 
-  outline: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 180px; /* Largura padrão para desktop */
+  height: 39px;
+  padding: 10px 18px;
+  background-color: var(--cor-cinza-escuro);
+  color: var(--cor-cinza-claro);
+  border-radius: 5px;
+  border: none;
+  font-family: var(
+    --font-family
+  ); /* Cuidado: aqui está var(--font-family), mas no body é var(--fonte-principal). Verifique a consistência. */
+  font-size: 0.95em;
+  line-height: 1.5;
+  cursor: pointer;
+  outline: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e1e1e1'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 12px center; 
-  background-size: 16px; 
-  padding-right: 40px; 
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
   transition: all 0.2s ease-in-out;
 }
 
-
 #sort-by:hover {
-   transform: scale(1.05);
+  transform: scale(1.05);
 }
-
 
 #sort-by option {
   background-color: var(--itens-background);
-  color: var(--text-color); 
+  color: var(--text-color);
 }
 
 #sort-by::-webkit-scrollbar {
@@ -223,12 +225,12 @@ main {
 }
 
 #sort-by::-webkit-scrollbar-track {
-  background-color: var(--tag-color); 
+  background-color: var(--tag-color);
 }
 
-
+/* --- Estilos do Modal (já bem adaptados) --- */
 .modal {
-  display: none; 
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -248,37 +250,31 @@ main {
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
   width: 90%;
-  max-width: 900px; 
-  max-height: 80vh; 
+  max-width: 900px;
+  max-height: 80vh;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
-  padding-right: 15px; 
+  padding-right: 15px;
 }
 
-
 .modal-content::-webkit-scrollbar {
-  width: 8px; 
-  height: 8px; 
+  width: 8px;
+  height: 8px;
 }
 
 .modal-content::-webkit-scrollbar-track {
-  background: var(
-    --cor-cinza-escuro
-  ); 
-  border-radius: 10px; 
+  background: var(--cor-cinza-escuro);
+  border-radius: 10px;
 }
 
 .modal-content::-webkit-scrollbar-thumb {
-  background-color: var(
-    --cor-verde-destaque
-  ); 
-  border-radius: 10px; 
-  border: 2px solid var(--cor-cinza-escuro); 
+  background-color: var(--cor-verde-destaque);
+  border-radius: 10px;
+  border: 2px solid var(--cor-cinza-escuro);
 }
-
 
 .close-button {
   position: absolute;
@@ -289,7 +285,7 @@ main {
   color: var(--cor-verde-destaque);
   cursor: pointer;
   transition: color 0.2s ease;
-  z-index: 10; 
+  z-index: 10;
 }
 
 .close-button:hover,
@@ -310,18 +306,18 @@ main {
   font-size: 0.95em;
   line-height: 1.5;
   margin-bottom: 10px;
-  flex-grow: 1; 
-  word-wrap: break-word; 
+  flex-grow: 1;
+  word-wrap: break-word;
 }
 
 #detalhe-imagem-post {
   width: 100%;
-  max-width: 100%; 
-  height: auto; 
-  max-height: 250px; 
-  object-fit: cover; 
-  border-radius: 8px; 
-  margin-top: 15px; 
+  max-width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-top: 15px;
   margin-bottom: 15px;
   display: block;
 }
@@ -335,7 +331,7 @@ main {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.85em;
   color: var(--cor-cinza-claro);
-  flex-shrink: 0; 
+  flex-shrink: 0;
 }
 
 #detalhe-usuario {
@@ -352,75 +348,183 @@ main {
   text-align: right;
 }
 
+/* Para corrigir o alinhamento de 2 colunas no container-projetos (desktop) */
+.container-projetos::after {
+  content: "";
+  flex: 0 1 calc(50% - 10px);
+}
 
+/* --- Media Queries para Responsividade --- */
+
+/* Breakpoint para Tablets e Desktops Menores (Largura Máxima: 768px) */
 @media (max-width: 768px) {
+  main {
+    width: 100%; /* Ocupa a largura total da tela */
+    margin-left: 0; /* Remove a margem lateral */
+    padding: 80px 15px 0; /* Ajusta padding-top e adiciona padding lateral */
+  }
+
+  .busca-e-filtros {
+    width: 100%; /* Ocupa a largura total da tela */
+    margin-left: 0; /* Remove a margem lateral */
+    padding: 10px 15px; /* Adiciona padding interno */
+  }
+
+  .search-bar {
+    width: 100%; /* Ocupa 100% do container pai com padding */
+    margin-left: 0; /* Remove margem */
+  }
+
+  .cartao-projeto {
+    flex: 0 1 100%; /* Cartões ocupam a largura total (uma coluna) */
+  }
+
+  .container-projetos::after {
+    display: none; /* Desabilita o "after" quando há apenas uma coluna */
+  }
+
+  .container-projetos {
+    padding: 0; /* Remove padding extra para ocupar mais espaço */
+    gap: 15px; /* Ajusta o espaçamento entre os cartões */
+  }
+
+  /* Ajustes para o modal em tablets */
   .modal-content {
-    max-width: 95%; 
+    max-width: 95%; /* Continua usando a maior parte da tela */
     padding: 20px;
   }
 }
 
+/* Breakpoint para Smartphones (Largura Máxima: 480px) */
 @media (max-width: 480px) {
+  main {
+    padding-top: 60px; /* Reduz ainda mais o padding-top */
+    padding-left: 10px; /* Ajusta padding lateral */
+    padding-right: 10px; /* Ajusta padding lateral */
+  }
+
+  #search-input {
+    padding-left: 40px; /* Reduz o padding para o ícone */
+    font-size: 0.9em; /* Reduz o tamanho da fonte do input */
+  }
+
+  .input-icon {
+    /* Opcional: ajustar tamanho do ícone */
+    width: 15px;
+    height: 15px;
+    left: 10px; /* Ajusta a posição do ícone */
+  }
+
+  .cartao-projeto {
+    padding: 15px; /* Reduz o padding interno do cartão */
+  }
+
+  .cartao-projeto h3 {
+    font-size: 1.1em; /* Ajusta o tamanho do título do cartão */
+  }
+
+  .cartao-projeto p {
+    font-size: 0.8em; /* Ajusta o tamanho do parágrafo do cartão */
+  }
+
+  .cartao-projeto img {
+    max-height: 150px; /* Opcional: Reduz a altura máxima da imagem no cartão */
+  }
+
+  /* Dentro de @media (max-width: 480px) */
+  .detalhes-projeto {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center; /* Manter este */
+    gap: 0;
+    padding: 10px;
+    border-top: none;
+    font-size: 0.75em;
+  }
+
+  /* Remover quaisquer margens/paddings que possam estar causando problema */
+  .link-perfil-usuario, /* Nome do usuário */
+.detalhes-projeto > *:last-child /* Elemento da data (se for o último filho) */ {
+    margin: 0 !important; /* !important para garantir que sobrescreva tudo */
+    padding: 0 !important; /* !important para garantir que sobrescreva tudo */
+    line-height: 1; /* Ajustar line-height para ser consistente */
+    display: flex; /* Faz com que eles próprios sejam flex containers */
+    align-items: center; /* Alinha o conteúdo interno deles verticalmente */
+    height: auto;
+    font-size: 12px; /* Garante que a altura se ajuste ao conteúdo */
+  }
+
+  /* Para a data especificamente, se for um span ou p direto */
+  #detalhe-data-criacao {
+    /* Se o elemento da data tiver um ID */
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .sort-controls-wrapper {
+    width: 100%; /* Garante que o wrapper ocupe a largura total */
+    display: flex;
+    justify-content: center; /* Centraliza o select */
+    margin-bottom: 15px;
+    margin-top: 15px;
+  }
+
+  #sort-by {
+    width: 100%; /* Faz com que o select ocupe a largura total */
+    max-width: 200px; /* Garante que não fique muito grande */
+    font-size: 0.85em; /* Reduz a fonte do select */
+    padding: 8px 15px; /* Ajusta o padding do select */
+    background-position: right 8px center; /* Ajusta a posição do ícone */
+
+    color: transparent; /* Torna o texto da opção selecionada transparente */
+    text-indent: -9999px; /* Move o texto para fora da área visível */
+    -webkit-appearance: none; /* Garante que o estilo nativo seja removido (você já tem) */
+    -moz-appearance: none; /* Garante que o estilo nativo seja removido (você já tem) */
+    appearance: none; /* Garante que o estilo nativo seja removido (você já tem) */
+
+    /* Ajuste a imagem de fundo (seta) para ficar visível */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e1e1e1'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center; /* Centraliza a seta */
+    background-size: 16px; /* Tamanho da seta */
+    padding-right: 0; /* Remove o padding que empurrava o texto para a direita */
+    padding-left: 0;
+  }
+
+  /* Opcional: Para alguns navegadores, pode ser necessário remover padding para que o texto não "apareça" */
+  #sort-by option {
+    color: var(
+      --cor-cinza-claro
+    ); /* Garante que as opções no dropdown ainda sejam visíveis */
+    text-indent: 0; /* Restaura o indent para as opções no dropdown */
+  }
+
+  /* Ajustes para o modal em celulares */
   .modal-content {
     padding: 15px;
-    max-width: 100%; 
-    max-height: 90vh; 
+    max-width: 100%;
+    max-height: 90vh;
   }
+
   #detalhe-titulo {
-    font-size: 1.5em;
+    font-size: 1.5em; /* Reduz o tamanho do título do modal */
   }
+
   #detalhe-imagem-post {
-    max-height: 200px;
+    max-height: 200px; /* Reduz a altura da imagem no modal */
   }
+
+  #detalhe-descricao {
+    font-size: 0.85em; /* Opcional: Reduz a fonte da descrição no modal */
+  }
+
   .modal-footer {
-    flex-direction: column; 
-    align-items: flex-start;
-    gap: 5px;
-  }
-}
-
-
-.container-projetos::after {
-  content: "";
-  flex: 0 1 calc(50% - 10px); 
-}
-
-@media (max-width: 768px) {
-  .cartao-projeto {
-    flex: 0 1 100%; 
-  }
-  .container-projetos::after {
-    display: none; 
-  }
-
- 
-  main {
-    margin-left: 0; 
-    width: 100%; 
-  }
-
-  .busca-e-filtros {
-    width: 100%; 
-    margin-left: 0; 
-  }
-
-  .search-bar {
-    padding: 0 15px; 
-  }
-}
-
-@media (max-width: 480px) {
-  .cartao-projeto {
-    padding: 15px;
-  }
-  .cartao-projeto h3 {
-    font-size: 1.3em;
-  }
-  .cartao-projeto p {
-    font-size: 0.9em;
-  }
-  .detalhes-projeto {
-    flex-direction: column; 
-    gap: 5px;
+    flex-direction: row; /* Volta para linha */
+    justify-content: space-between; /* Empurra para as pontas */
+    align-items: center; /* Alinha verticalmente no centro se houver diferenças de altura */
+    gap: 0; /* Remove o gap se não for necessário */
   }
 }

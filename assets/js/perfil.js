@@ -434,7 +434,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     modal.style.display = "flex";
-    detalheTitulo.textContent = "";
+    detalheTitulo.textContent = "Carregando...";
     detalheUsuario.innerHTML = "";
     detalheDescricao.textContent = "";
     detalheCriacao.textContent = "";
@@ -494,7 +494,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
 
       detalheTitulo.textContent = post.title || "Título Indisponível";
-      detalheTitulo.style.color = "black";
+
       console.log(
         `Perfil JS: Montando link de usuário no modal. userId do post: ${post.userId}, nomeUsuario do post: ${post.nomeUsuario}`
       );
@@ -525,7 +525,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       detalheTitulo.textContent = `Erro: ${
         error.message || MESSAGES.errors.default
       }`;
-      detalheTitulo.style.color = "black";
+
       mostrarMensagem("Erro ao carregar detalhes do post.", "erro");
       if (DOM.btnExcluirPost) DOM.btnExcluirPost.style.display = "none";
       if (detalheImagemPost) detalheImagemPost.style.display = "none";
