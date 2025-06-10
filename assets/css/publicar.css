@@ -429,5 +429,11 @@ textarea {
   .container-upload-imagem button {
     font-size: 14px;
     padding: 3px;
+    width: 80%;
+    margin-left: 10%;
+  }
+
+  .nome-upload {
+    margin-left: 10%;
   }
 }
