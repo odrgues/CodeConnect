@@ -436,4 +436,12 @@ textarea {
   .nome-upload {
     margin-left: 10%;
   }
+
+  .container-imagem-nome {
+    padding-bottom: 50px;
+    border-bottom: solid 2px var(--primary-color);
+    font-size: small;
+    width: 80%;
+    margin-left: 10%;
+  }
 }
