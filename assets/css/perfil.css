@@ -1,16 +1,12 @@
-/* Seus estilos base (para desktop e telas maiores) */
 @import url(./global.css);
 
 :root {
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --card-background-color: #ffffff;
-  --border-color: #dee2e6;
-  --text-color: #343a40;
   --success-color: #28a745;
   --error-color: #dc3545;
-  --info-color: #17a2b8;
-  --shadow-color: rgba(0, 0, 0, 0.1);
+
+  --cor-branco: #ffffff;
+  --aside-width: 7.5rem;
+  --mobile-header-height: 6rem;
 }
 
 body {
@@ -21,6 +17,8 @@ body {
   color: var(--cor-cinza-claro);
   min-height: 100vh;
   display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 main {
@@ -29,14 +27,13 @@ main {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .detalhes-usuario {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-
-  background-color: var(--cor-fundo);
   margin-bottom: 40px;
   font-size: 0.8em;
   color: var(--cor-cinza-claro);
@@ -45,13 +42,32 @@ main {
   padding: 15px;
   gap: 20px;
   box-sizing: border-box;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
+  min-height: 200px;
+}
+.foto-perfil {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  margin-top: 1rem;
+  flex-shrink: 0;
+  order: 1;
 }
 
 .info-usuario-texto {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  flex-grow: 10;
+  flex-grow: 1;
+  margin-left: 0;
+  margin-top: 0;
+
+  flex-basis: calc(100% - 150px - 40px);
+  max-width: calc(100% - 150px - 40px);
 }
 
 #descricao-usuario {
@@ -63,67 +79,8 @@ main {
   min-height: 50px;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  margin-left: 0;
-  margin-right: 0;
+  margin: 0;
   flex-grow: 1;
-}
-
-.container-inputs {
-  display: flex;
-  flex-direction: column;
-  font-size: 1.3em;
-  margin-top: 30px;
-  color: var(--cor-cinza-claro);
-  width: 100%;
-  max-width: unset;
-  padding: 0;
-  gap: 15px;
-  box-sizing: border-box;
-  flex-grow: 1;
-  order: 0;
-}
-
-#input-nome-usuario,
-#input-descricao-usuario {
-  width: 100%;
-  max-width: 100%;
-  padding: 10px;
-  border: 1px solid #444;
-  border-radius: 5px;
-  background-color: #333;
-  color: #e0e0e0;
-  font-size: 1em;
-  transition: all 0.3s ease-in-out;
-}
-
-#input-descricao-usuario {
-  resize: none;
-  height: 150px;
-  min-height: 150px;
-  max-height: 150px;
-}
-
-#input-nome-usuario:focus {
-  outline: none;
-  border: var(--cor-verde-destaque) 1px solid;
-}
-#input-descricao-usuario:focus {
-  outline: none;
-  border: var(--cor-verde-destaque) 1px solid;
-}
-textarea:focus {
-  outline: none;
-  border: var(--cor-verde-destaque) 1px solid;
-}
-
-.foto-perfil {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 2px 4px var(--shadow-color);
-  margin-top: 1rem;
-  flex-shrink: 0;
 }
 
 .detalhes-usuario h1 {
@@ -136,13 +93,15 @@ textarea:focus {
   text-overflow: ellipsis;
   max-width: 100%;
   display: block;
+  text-align: left;
 }
 
 .detalhes-usuario p {
   font-size: 1.1em;
   color: var(--cor-cinza-claro);
   line-height: 1.5;
-  margin-bottom: 0;
+  margin: 0;
+  text-align: left;
 }
 
 .editar-perfil-btn {
@@ -155,6 +114,12 @@ textarea:focus {
   cursor: pointer;
   font-size: 1em;
   transition: all 0.3s ease;
+  margin: 0;
+
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 5;
 }
 
 button {
@@ -215,10 +180,10 @@ button:hover {
   display: flex;
   flex-direction: column-reverse;
   gap: 15px;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 15px;
   flex-shrink: 0;
-  order: -1;
+  order: 1;
 }
 
 #input-foto-perfil {
@@ -242,51 +207,82 @@ button:hover {
   transition: all 0.3s ease-in-out;
 }
 
-.container-botao {
-  margin-left: auto;
-  display: flex;
-  align-items: flex-start;
-  flex-shrink: 0;
-  order: 1;
-}
-
-.detalhes-usuario > div:last-of-type {
-  margin-left: auto;
+.container-inputs {
   display: flex;
   flex-direction: column;
+  font-size: 1.3em;
+  margin-top: 0;
+  color: var(--cor-cinza-claro);
+  width: 100%;
+  max-width: 550px;
+  padding: 0;
+  gap: 15px;
+  box-sizing: border-box;
+  flex-grow: 1;
+  margin-left: 0px;
+  margin-top: 40px;
+  margin-right: auto;
+}
+
+#input-nome-usuario,
+#input-descricao-usuario {
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 5px;
+  background-color: #333;
+  color: #e0e0e0;
+  font-size: 1em;
+  transition: all 0.3s ease-in-out;
+}
+
+#input-descricao-usuario {
+  resize: none;
+  height: 90px;
+  min-height: 10px;
+  max-height: 100px;
+}
+
+#input-nome-usuario:focus,
+#input-descricao-usuario:focus,
+textarea:focus {
+  outline: none;
+  border: var(--cor-verde-destaque) 1px solid;
+}
+
+.detalhes-usuario-botoes-acao {
+  display: flex;
+  flex-direction: row;
   gap: 10px;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: flex-end;
   flex-shrink: 0;
-  order: 2;
+  order: 3;
+  width: auto;
+  padding-top: 0;
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  z-index: 5;
 }
 
 #salvar-perfil-btn,
 #cancelar-edicao-btn {
   width: 120px;
   box-sizing: border-box;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.3s ease;
+  margin: 0;
 }
 
 #salvar-perfil-btn {
   background-color: var(--cor-verde-destaque);
   color: var(--cor-fundo);
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: all 0.3s ease;
-}
-
-#cancelar-edicao-btn {
-  background-color: var(--cor-cinza-escuro);
-  color: var(--cor-verde-destaque);
-  border: 1px solid var(--cor-verde-destaque);
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: all 0.3s ease;
-  margin-top: 10px;
 }
 
 #lista-de-posts {
@@ -326,6 +322,8 @@ button:hover {
   border-radius: 10px;
   padding: 20px;
   background-color: var(--cor-cinza-escuro);
+  color: var(--cor-cinza-claro);
+  font-family: var(--fonte-principal);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -343,6 +341,7 @@ button:hover {
   margin-bottom: 10px;
   color: var(--cor-cinza-claro);
   font-size: 1.2em;
+  font-family: var(--fonte-principal);
 }
 
 .post-card p {
@@ -372,11 +371,14 @@ button:hover {
   color: var(--cor-cinza-claro);
   border-top: 1px solid var(--cor-cinza-claro);
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
   margin-top: auto;
   width: 100%;
   padding-top: 10px;
-  padding-left: 20%;
+  padding-left: 0;
+  padding-right: 0;
+  gap: 10px;
 }
 
 .detalhes-post-card span {
@@ -386,14 +388,14 @@ button:hover {
 
 .delete-button {
   background-color: var(--error-color);
-  color: white;
-  position: relative; /* Mantenha se precisar para outros fins (ex: tooltip) */
+  color: var(--cor-branco);
+  border: none;
+  position: relative;
   cursor: pointer;
-  width: 50%;
-  /* --- Adicione estas duas linhas para centralizar --- */
-  margin-left: auto;
-  margin-right: auto;
-  /* Ou, para encurtar: margin: 0 auto; */
+  width: auto; /* Ajustado para largura baseada no conteúdo */
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 5px;
 }
 
 .modal {
@@ -425,6 +427,7 @@ button:hover {
   gap: 10px;
   overflow-y: auto;
   padding-right: 15px;
+  align-items: center; /* ADICIONADO: Centraliza horizontalmente o conteúdo do modal */
 }
 
 .modal-content::-webkit-scrollbar {
@@ -477,10 +480,6 @@ button:hover {
   word-wrap: break-word;
 }
 
-#detalhe-titulo-post {
-  color: var(--cor-verde-destaque);
-}
-
 #detalhe-imagem-post {
   width: 100%;
   max-width: 100%;
@@ -493,25 +492,40 @@ button:hover {
   display: block;
 }
 
+.modal-footer {
+  display: flex;
+  justify-content: space-between; /* Para manter a data e o usuário nas extremidades opostas */
+  align-items: center; /* Alinha-os verticalmente */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 15px;
+  margin-top: 15px;
+  width: 100%;
+  flex-wrap: nowrap; /* ALTERADO: Impede quebra de linha por padrão */
+}
+
 #detalhe-usuario-post {
   color: var(--cor-verde-destaque);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease, text-decoration 0.2s ease;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 15px;
-  width: 100%;
+  padding-top: 0;
+  width: auto;
   text-align: right;
   font-size: 0.85em;
+  margin: 0;
+  flex-shrink: 0;
+  order: 2;
 }
 
 #detalhe-data-criacao {
   color: var(--cor-cinza-claro);
-  margin-top: -40px;
+  margin: 0;
   font-size: 0.9em;
   opacity: 0.8;
   text-align: left;
-  width: 100%;
+  width: auto;
+  flex-shrink: 0;
+  order: 1;
 }
 
 .error {
@@ -523,98 +537,286 @@ button:hover {
   align-items: center;
   display: flex;
   justify-content: center;
-  margin-left: 35%;
-  margin-top: 50px;
+  margin: 50px auto 0;
+  padding: 10px;
 }
 
+h2 {
+  color: floralwhite;
+}
+
+.user-link {
+  color: var(--cor-verde-destaque);
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.user-link:hover {
+  color: var(--cor-cinza-claro);
+  text-decoration: none;
+}
+
+#btn-excluir-post {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  display: none;
+  margin-left: auto; /* ADICIONADO: Centraliza o botão */
+  margin-right: auto; /* ADICIONADO: Centraliza o botão */
+  width: auto; /* ADICIONADO: Permite que margin auto funcione */
+  max-width: 250px; /* ADICIONADO: Limita a largura para melhor visualização */
+}
+
+#btn-excluir-post:hover {
+  background-color: #d32f2f;
+}
+
+/* --- Media Query para Tablets (max-width: 1023px) --- */
 @media (max-width: 1023px) {
+  body {
+    padding-top: var(--mobile-header-height);
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
   main {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 80px;
-  }
-
-  .container {
     padding: 20px;
-    height: auto;
+    width: 90%;
+    margin: 0 auto;
   }
 
-  .busca-e-filtros {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+  /* Perfil do Usuário em Tablets (Modo de Visualização) */
+  .detalhes-usuario {
+    flex-direction: column; /* Empilha os itens verticalmente */
+    align-items: center; /* Centraliza todos os itens */
+    gap: 15px;
+    padding: 20px;
+    justify-content: flex-start; /* Reset justify-content for column layout */
+  }
+
+  .foto-perfil {
+    width: 120px;
+    height: 120px;
+    margin-top: 0;
+    order: 1;
+  }
+
+  .info-usuario-texto {
+    align-items: center;
+    text-align: center;
+    order: 2;
+    margin-left: 0; /* Reset margin */
+    flex-basis: auto; /* Reset flex-basis */
+    max-width: 100%; /* Allow it to take full width */
+  }
+
+  .detalhes-usuario h1,
+  .detalhes-usuario p {
+    text-align: center;
+  }
+
+  .editar-perfil-btn {
+    position: static; /* Remove absolute positioning */
+    margin: 15px auto 0; /* Centralize and add margin */
+    order: 3;
+  }
+
+  /* Perfil do Usuário em Tablets (Modo de Edição) */
+  .container-img {
+    order: 1;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .container-inputs {
+    order: 2;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-left: 0; /* Reset margin */
+  }
+
+  .detalhes-usuario-botoes-acao {
+    /* Save/Cancel buttons */
+    order: 3;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: 15px;
+    position: static; /* Remove absolute positioning */
+  }
+
+  /* Posts em Tablets */
+  #posts-list {
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .post-card {
+    flex: 0 1 calc(50% - 10px);
   }
 
   .post-card h3 {
-    font-size: 1.4em;
+    font-size: 1.3em;
   }
 
   .post-card p {
+    font-size: 0.88em;
+  }
+
+  /* Modal em Tablets */
+  .modal-content {
+    padding: 20px;
+    max-width: 700px;
+  }
+
+  .modal-content h2 {
+    font-size: 1.6em;
+  }
+
+  .modal-content p {
     font-size: 0.9em;
+  }
+
+  .modal-footer {
+    flex-direction: row; /* GARANTINDO: Mantenha em linha em tablets */
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap; /* GARANTINDO: Não quebre a linha em tablets */
+  }
+
+  #detalhe-usuario-post,
+  #detalhe-data-criacao {
+    text-align: unset; /* ALTERADO: Remove alinhamento forçado */
+    width: auto;
+  }
+
+  .error {
+    margin: 50px auto 0;
   }
 }
 
 /* --- Media Query para Smartphones (max-width: 767px) --- */
 @media (max-width: 767px) {
-  main {
-    padding: 15px; /* Padding menor nas laterais */
-    width: 100%; /* Ocupa toda a largura */
+  body {
+    padding-top: var(--mobile-header-height);
   }
 
-  .detalhes-usuario {
-    gap: 15px;
+  main {
+    width: 100%;
+    margin: 0;
     padding: 15px;
+    padding-top: var(--mobile-header-height);
+  }
+
+  /* Perfil do Usuário em Smartphones (Modo de Visualização) */
+  .detalhes-usuario {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
   }
 
   .foto-perfil {
-    width: 100px; /* Diminui a foto de perfil para mobile */
+    width: 100px;
     height: 100px;
+    margin-top: 0;
   }
 
   .detalhes-usuario h1 {
-    font-size: 20px; /* Fonte menor para o nome */
+    font-size: 20px;
   }
 
   .detalhes-usuario p {
-    font-size: 0.9em; /* Fonte menor para a descrição */
+    font-size: 0.9em;
+  }
+
+  .info-usuario-texto {
+    align-items: center;
+    text-align: center;
+  }
+
+  .editar-perfil-btn {
+    margin: 10px auto 0;
+    width: 100%;
+    max-width: 150px; /* Constrain button width */
+  }
+
+  /* Perfil do Usuário em Smartphones (Modo de Edição) */
+  .container-img {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  #input-foto-perfil {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 200px;
+  }
+
+  #preview-foto-perfil {
+    margin-top: 0;
   }
 
   .container-inputs {
-    font-size: 1em; /* Fonte menor para labels dos inputs */
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1em;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0; /* Reset margin */
   }
 
   #input-nome-usuario,
   #input-descricao-usuario {
-    font-size: 0.9em; /* Fonte menor para o texto dos inputs */
+    font-size: 0.9em;
   }
 
   #input-descricao-usuario {
-    height: 100px; /* Altura menor para o textarea em mobile */
+    height: 100px;
     min-height: 80px;
     max-height: 120px;
   }
 
+  .detalhes-usuario-botoes-acao {
+    /* Save/Cancel buttons */
+    flex-direction: column; /* Empilha os botões verticalmente em mobile */
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 0;
+    padding-top: 10px;
+  }
+
   #salvar-perfil-btn,
   #cancelar-edicao-btn {
-    width: 100%; /* Botões um abaixo do outro em telas menores */
-    max-width: none; /* Remove a largura máxima */
+    width: 100%;
+    max-width: 200px;
     padding: 10px;
     font-size: 0.9em;
+    margin: 0;
   }
 
-  .detalhes-usuario > div:last-of-type {
-    flex-direction: column; /* Empilha os botões Salvar/Cancelar */
-    gap: 10px;
-  }
-
+  /* Posts em Smartphones */
   #lista-de-posts {
     padding: 15px;
     margin-top: 10px;
   }
 
   .section-title {
-    font-size: 1.3em; /* Título da seção de posts menor */
+    font-size: 1.3em;
     margin-bottom: 10px;
   }
 
@@ -623,12 +825,12 @@ button:hover {
   }
 
   .post-card {
-    flex: 0 1 100%; /* Cada post-card ocupa 100% da largura */
+    flex: 0 1 100%;
     padding: 10px;
   }
 
   #posts-list::after {
-    display: none; /* Não precisa de after para alinhar em coluna única */
+    display: none;
   }
 
   .post-card h3 {
@@ -637,23 +839,22 @@ button:hover {
 
   .post-card p {
     font-size: 0.75em;
-    max-height: calc(
-      0.75em * 1.4 * 4
-    ); /* Ajusta max-height para talvez 4 linhas */
+    max-height: calc(0.75em * 1.4 * 4);
   }
 
   .detalhes-post-card {
-    flex-direction: column; /* Empilha o nome do usuário e a data no card */
-    align-items: flex-start; /* Alinha à esquerda */
+    flex-direction: column;
+    align-items: flex-start;
     gap: 5px;
     font-size: 0.7em;
     padding-top: 8px;
   }
 
+  /* Modal em Smartphones */
   .modal-content {
     padding: 15px;
     width: 98%;
-    max-width: none; /* Remove max-width para ser totalmente flexível */
+    max-width: none;
     gap: 8px;
   }
 
@@ -679,26 +880,27 @@ button:hover {
     max-height: 180px;
   }
 
-  /* Ajusta o alinhamento da data e usuário no modal */
-  #detalhe-usuario-post,
-  #detalhe-data-criacao {
-    font-size: 0.75em;
-    text-align: left; /* Ambos à esquerda quando empilhados */
-    width: 100%;
-    padding-top: 0; /* Remove padding-top se o border-top for suficiente */
-    border-top: none; /* Remove border-top se for empilhado e não fizer sentido */
-  }
-
-  /* Se você quiser que o usuário fique em uma linha e a data na outra no modal */
-  .modal-content .modal-footer {
-    /* Crie um wrapper ou selecione os elementos de data/usuario */
-    display: flex;
-    flex-direction: column; /* Para empilhar */
-    align-items: flex-start; /* Alinha à esquerda */
+  .modal-footer {
+    flex-direction: column; /* ALTERADO: Empilha os itens do rodapé no mobile */
+    align-items: center; /* ADICIONADO: Centraliza os itens empilhados */
     gap: 5px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 10px;
     margin-top: 10px;
+    width: 100%;
+  }
+
+  #detalhe-usuario-post,
+  #detalhe-data-criacao {
+    font-size: 0.75em;
+    text-align: center; /* ALTERADO: Centraliza o texto quando empilhados */
+    width: 100%;
+    margin: 0;
+    order: unset;
+  }
+
+  .error {
+    margin: 20px auto 0;
   }
 }
 
@@ -706,6 +908,7 @@ button:hover {
 @media (max-width: 480px) {
   main {
     padding: 10px;
+    padding-top: var(--mobile-header-height);
   }
 
   .detalhes-usuario {
@@ -768,33 +971,14 @@ button:hover {
 
   .post-card p {
     font-size: 0.7em;
-    max-height: calc(0.7em * 1.4 * 3); /* Volta para 3 linhas se necessário */
+    max-height: calc(0.7em * 1.4 * 3);
   }
 
   .detalhes-post-card {
-    display: flex; /* Transforma em um contêiner flexível */
-    justify-content: space-between; /* Empurra o primeiro item para o início, o último para o fim */
-    align-items: center; /* Alinha verticalmente ao centro */
-    border-top: 1px solid var(--cor-cinza-claro);
-    padding-top: 10px;
-    font-size: 0.8em;
-    color: var(--cor-cinza-claro);
-    width: 100%;
-    margin-top: auto;
-    /* Remover flex-direction: column ou garantir que seja row nas media queries apropriadas */
-    flex-direction: row; /* Garante que estejam lado a lado em telas maiores */
-  }
-
-  /* Para garantir que não haja margens ou paddings extras que causem desalinhamento */
-  .detalhes-post-card span,
-  .detalhes-post-card a {
-    /* Se o nome for um link */
-    margin: 0;
-    padding: 0;
-    line-height: 1; /* Altura de linha consistente */
-    white-space: nowrap; /* Impede quebra de linha dentro do elemento */
-    overflow: hidden; /* Oculta qualquer conteúdo que transborde */
-    text-overflow: ellipsis; /* Adiciona "..." se o conteúdo for cortado */
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 0.65em;
+    padding-top: 5px;
   }
 
   .modal-content {
@@ -813,31 +997,17 @@ button:hover {
     max-height: 150px;
   }
 
-  /* --- AJUSTES AQUI PARA O MODAL --- */
-  /* Assumindo que você tem um wrapper como .modal-footer, use ele: */
-  .modal-content .modal-footer {
-    display: flex;
-    flex-direction: row; /* Volta a ser row (lado a lado) */
-    justify-content: space-between; /* Data em uma ponta, usuário na outra */
-    align-items: center; /* Alinha verticalmente ao centro */
-    gap: 0; /* Remova o gap se não for mais necessário */
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 10px;
-    margin-top: 10px;
+  .modal-footer {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center; /* ADICIONADO: Centraliza os itens empilhados */
   }
 
-  /* Se você não tem .modal-footer e os itens são irmãos, ajuste individualmente */
-  /* Exemplo se #detalhe-data-criacao e #detalhe-usuario-post forem irmãos diretos: */
-  #detalhe-data-criacao {
-    text-align: left; /* Garante que a data fique à esquerda */
-    width: auto; /* Permite que ocupe apenas o espaço necessário */
-    padding-top: 0; /* Remove padding-top se o border-top do pai for suficiente */
-    border-top: none; /* Remove border-top se for empilhado e não fizer sentido */
-  }
   #detalhe-usuario-post {
-    text-align: right; /* Garante que o usuário fique à direita */
-    width: auto; /* Permite que ocupe apenas o espaço necessário */
-    padding-top: 0;
-    border-top: none;
+    display: none; /* ADICIONADO: Oculta o nome do usuário em telas muito pequenas */
+  }
+
+  #detalhe-data-criacao {
+    text-align: center; /* ALTERADO: Centraliza o texto em telas muito pequenas */
   }
 }

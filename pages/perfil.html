@@ -56,28 +56,33 @@
 
     <main>
         <div class="detalhes-usuario">
-            <img id="foto-perfil-padrao" src="../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif"
-                alt="Foto de Perfil" class="foto-perfil">
+            <div class="container-botoes-e-foto">
+                <div class="container-img">
+                    <input type="file" id="input-foto-perfil" class="input-foto-perfil">
+                    <img id="foto-perfil-padrao"
+                        src="../assets/img/perfil/Suspicious Look Around GIF by nounish ⌐◨-◨.gif" alt="Foto de Perfil"
+                        class="foto-perfil">
+                    <img id="preview-foto-perfil" src="" alt="Pré-visualização da Foto" class="foto-perfil"
+                        style="display: none;">
+                </div>
+
+                <div class="detalhes-usuario-botoes-acao">
+                    <button id="salvar-perfil-btn">Salvar</button>
+                    <button id="cancelar-edicao-btn">Cancelar</button>
+                </div>
+            </div>
+            <div class="container-inputs">
+                <input type="text" id="input-nome-usuario" placeholder="Seu Nome">
+                <textarea id="input-descricao-usuario" placeholder="Sua Descrição" maxlength="200"></textarea>
+            </div>
 
             <div class="info-usuario-texto">
                 <h1 id="nome-usuario">Nome</h1>
                 <p id="descricao-usuario">Descrição</p>
             </div>
-            <div class="container-inputs">
-                <input type="text" id="input-nome-usuario" placeholder="Seu Nome">
-                <textarea id="input-descricao-usuario" placeholder="Sua Descrição" maxlength="300"></textarea>
-            </div>
-            <div class="container-img">
-                <input type="file" id="input-foto-perfil" class="input-foto-perfil">
-                <img id="preview-foto-perfil" src="" alt="Pré-visualização da Foto" class="foto-perfil">
-            </div>
+
             <div class="container-botao">
                 <button id="editar-perfil-btn" class="editar-perfil-btn">Editar</button>
-
-            </div>
-            <div>
-                <button id="salvar-perfil-btn">Salvar</button>
-                <button id="cancelar-edicao-btn">Cancelar</button>
             </div>
         </div>
 
