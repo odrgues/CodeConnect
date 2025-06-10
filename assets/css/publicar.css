@@ -326,7 +326,7 @@ textarea {
     main {
       padding: 24px;
       gap: 16px;
-      margin: 0;
+      margin: 0 5%;
     }
 
     h2 {
@@ -338,6 +338,7 @@ textarea {
     form {
       width: 100%;
       margin-bottom: 50px;
+      padding: 0 5%;
     }
 
     form div label {
@@ -346,7 +347,7 @@ textarea {
 
     form div input,
     textarea {
-      padding: 8px 12px;
+      padding: 8px 20px;
       font-size: 14px;
     }
 
@@ -368,7 +369,8 @@ textarea {
 
     .container-imagem {
       height: auto;
-      padding: 16px;
+      padding: 20px;
+      margin: 5%;
     }
 
     .main-imagem {
@@ -426,6 +428,6 @@ textarea {
 
   .container-upload-imagem button {
     font-size: 14px;
-    padding: 8px;
+    padding: 3px;
   }
 }
