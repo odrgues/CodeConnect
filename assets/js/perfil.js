@@ -359,15 +359,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     
           </div>
         `;
-
-        //tirei essa parte pro nome de usuario sair do card (colocar acima):
-        // //           <p>
-        //           <a href="../pages/perfil.html?userId=${
-        //             post.userId
-        //           }" style="color: #81fe88; text-decoration: none; cursor: pointer; padding-left: 50%;">
-        //               ${post.nomeUsuario || "Usuário Desconhecido"}
-        //           </a>
-        //       </p>
         DOM.listaDePosts.appendChild(postDiv);
       });
     } else {

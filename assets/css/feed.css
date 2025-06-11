@@ -493,20 +493,12 @@ main {
     font-size: 1.5em;
   }
 
-  #detalhe-imagem-post {
-    max-height: 200px;
-  }
-
   #detalhe-descricao {
     font-size: 0.85em;
   }
 
   #detalhe-imagem-post {
-    width: 100%;
-    /* max-width: 100%; */
     height: auto;
-    /* max-height: 250px; */
-    /* object-fit: cover; */
     border-radius: 8px;
     margin-top: 15px;
     margin-bottom: 15px;
