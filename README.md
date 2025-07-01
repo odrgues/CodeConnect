@@ -25,6 +25,45 @@
 - Exclusão de projetos próprios
 - Responsividade para dispositivos móveis
 
+
+## 📷 Telas da Aplicação
+
+Abaixo você pode visualizar algumas telas da aplicação, demonstrando o fluxo completo do usuário:
+
+### 1️⃣ Tela de Cadastro  
+Permite que novos usuários criem uma conta informando nome, e-mail e senha.  
+![Cadastro](./demo/cadastro.png)
+
+### 2️⃣ Tela de Login  
+Usuários já cadastrados podem acessar suas contas inserindo suas credenciais.  
+![Login](./demo/login.png)
+
+### 3️⃣ Feed  
+Exibe as postagens públicas de todos os usuários em ordem cronológica.  
+![Feed](./demo/feed.png)
+
+### 4️⃣ Postagem (card do feed)  
+Cada post é mostrado em um card com imagem, título e resumo.  
+![Postagem](./demo/detalhes_post.png)
+
+### 5️⃣ Perfil do Usuário  
+Mostra informações do usuário e suas postagens.  
+![Perfil](./demo/perfil.png)
+
+### 6️⃣ Postagens do Perfil  
+Lista as postagens feitas por um usuário específico.  
+![Post do Perfil](./demo/post_perfil.png)
+
+### 7️⃣ Tela de Criar Publicação  
+Formulário para criar novas postagens com imagem, título e descrição.  
+![Criar Publicação](./demo/postagem.png)
+
+### 8️⃣ Tela Sobre Nós  
+Explica o objetivo do projeto e apresenta os responsáveis pelo desenvolvimento.  
+![Sobre Nós](./demo/sobre.png)
+
+
+
 ## Estrutura de Pastas
 
 ```
